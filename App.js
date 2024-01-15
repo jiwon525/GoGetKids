@@ -1,12 +1,12 @@
 import React from 'react';
 import RootStack from './src/navigators/RootStack'
 
-import LoginScreen from './src/screen/LoginScreen';
+import AccountScreen from './src/screen/AccountScreen';
 
 
 export default function App() {
   return (
     //<RootStack />
-    <LoginScreen />
+    <AccountScreen />
   );
 }
