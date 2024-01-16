@@ -6,14 +6,17 @@ import {
     ProfileContainer, BottomContainer,
 } from '../components/styles';
 import ProfileTop from '../components/ProfileTop';
-
+import Card from '../components/Card';
 
 const HomeScreen = () => {
     return (
         <StyledContainer>
             <ProfileTop />
-            <NormText>This is Homepage</NormText>
-
+            <InnerContainer>
+                <NormText>This is Homepage</NormText>
+                <Card />
+                <Card />
+            </InnerContainer>
         </StyledContainer>
 
     );

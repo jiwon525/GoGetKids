@@ -55,7 +55,6 @@ export const LeftIcon = styled.View`
     z-index: 1;
 `;
 
-
 export const AlignRow = styled.View`
     flex-direction: row;
     align-items: center;

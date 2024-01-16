@@ -13,7 +13,6 @@ const ProfileTop = () => {
                 <BackIcon>
                     <AntDesign name="arrowleft" size={24} color="black" />
                 </BackIcon>
-
                 <PageTitle>Home</PageTitle>
             </AlignRow>
         </View>
