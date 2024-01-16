@@ -36,6 +36,57 @@ export const InnerContainer = styled.View`
     align-items: center;
 `;
 
+export const LoginTab = styled.View`
+    
+    width: ${deviceWidth}px;
+    height: ${deviceHeight * 0.3}px;
+    background-color: ${primary};
+    padding-bottom: 20px;
+`;
+
+export const StyledFormArea = styled.View`
+  width: 90%;
+`;
+
+export const LeftIcon = styled.View`
+    left:15px;
+    top:38px;
+    position:absolute;
+    z-index: 1;
+`;
+
+
+export const AlignRow = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const Line = styled.View`
+    height: 1px;
+    width: ${deviceWidth}px;
+    backgroundColor: ${darkLight};
+    margin-vertical: 10px;
+`;
+
+export const ExtraView = styled.View`
+    justify-content: center;
+    flex-direction: row;
+    align-items:center;
+    padding:10px;
+`;
+
+export const ProfileContainer = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const BottomContainer = styled.View`
+    flex:1;
+    justify-content:flex-end;
+
+`;
+
 export const LoginLogo = styled.Image`
     width: ${deviceWidth * 0.3}px;
     height:${deviceHeight * 0.3}px;
@@ -48,22 +99,11 @@ export const LoginTitle = styled.Text`
     padding: 10px;
 `;
 
-export const pageTitle = styled.Text`
+export const PageTitle = styled.Text`
     font-size: 25px;
     font-weight: bold;
     text-align: center;
     padding: 10px;
-`;
-
-export const LoginTab = styled.View`
-    padding-top: 25px;
-    width: ${deviceWidth}px;
-    height: ${deviceHeight * 0.3}px;
-    background-color: ${primary};
-`;
-
-export const StyledFormArea = styled.View`
-  width: 90%;
 `;
 
 export const StyledTextInput = styled.TextInput`
@@ -83,13 +123,6 @@ export const StyledInputLabel = styled.Text`
     color: ${tertiary};
     font-size:13px;
     text-align: left;
-`;
-
-export const LeftIcon = styled.View`
-    left:15px;
-    top:38px;
-    position:absolute;
-    z-index: 1;
 `;
 
 export const RightIcon = styled.TouchableOpacity`
@@ -123,20 +156,6 @@ export const MsgBox = styled.Text`
     font-size: 13px;
 `;
 
-export const Line = styled.View`
-    height: 1px;
-    width: ${deviceWidth}px;
-    backgroundColor: ${darkLight};
-    margin-vertical: 10px;
-`;
-
-export const ExtraView = styled.View`
-    justify-content: center;
-    flex-direction: row;
-    align-items:center;
-    padding:10px;
-`;
-
 export const ExtraText = styled.Text`
     justify-content:center;
     align-content: center;
@@ -152,4 +171,19 @@ export const TextLink = styled.TouchableOpacity`
 export const TextLinkContent = styled.Text`
     color: ${tertiary};
     font-size:15px;
+`;
+
+export const BackIcon = styled.TouchableOpacity`
+    background-color: Colors.tertiary;
+    width: 45px;
+    height: 45px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const NormText = styled.Text`
+    color: ${tertiary};
+    font-size:16px;
 `;
