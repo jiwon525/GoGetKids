@@ -13,7 +13,6 @@ const HomeScreen = () => {
         <StyledContainer>
             <ProfileTop />
             <InnerContainer>
-                <NormText>This is Homepage</NormText>
                 <Card />
                 <Card />
             </InnerContainer>

@@ -37,11 +37,10 @@ export const InnerContainer = styled.View`
 `;
 
 export const LoginTab = styled.View`
-    
     width: ${deviceWidth}px;
     height: ${deviceHeight * 0.3}px;
     background-color: ${primary};
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 `;
 
 export const StyledFormArea = styled.View`

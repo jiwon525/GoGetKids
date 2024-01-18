@@ -9,18 +9,17 @@ import {
 } from '../components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
-import { View } from 'react-native';
+import ProfileTop from '../components/ProfileTop';
+import { View } from "react-native";
 
-SignupScreen = () => {
+SignUpScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
 
     return (
         <StyledContainer>
             <StatusBar style="dark" />
+            <ProfileTop />
             <InnerContainer>
-                <LoginTitle>Sign Up</LoginTitle>
-
-                <LoginLogo resizeMode="contain" source={require('../assets/children.png')} />
                 <Formik
                     initialValues={{ email: '', password: '' }}
                     onSubmit={(values) => {
@@ -96,4 +95,4 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
     );
 };
 
-export default SignupScreen; 
+export default SignUpScreen; 

@@ -9,7 +9,7 @@ import {
 } from '../components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
-import { View } from 'react-native';
+import { StyleSheet, View, Dimensions } from "react-native";
 
 LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -17,12 +17,12 @@ LoginScreen = () => {
     return (
         <StyledContainer>
             <StatusBar style="dark" />
-            <LoginTab>
+            <View style={styles.viewStyle}>
                 <LoginTitle>Welcome to GoGetKids!</LoginTitle>
                 <InnerMidContainer>
                     <LoginLogo resizeMode="contain" source={require('../assets/children.png')} />
                 </InnerMidContainer>
-            </LoginTab>
+            </View>
             <InnerContainer>
                 <Formik
                     initialValues={{ email: '', password: '' }}
@@ -98,5 +98,18 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
         </View>
     );
 };
+
+const deviceHeight = Dimensions.get('window').height
+const deviceWidth = Dimensions.get('window').width
+
+const styles = StyleSheet.create({
+    viewStyle: {
+        paddingTop: 20,
+        width: deviceWidth,
+        height: deviceHeight * 0.3,
+        paddingBottom: 10,
+        backgroundColor: Colors.primary,
+    },
+});
 
 export default LoginScreen; 

@@ -19,8 +19,19 @@ export default function Card() {
                 <Text style={styles.jobName} numberOfLines={1}>
                     Rachel Yeo
                 </Text>
-
+                <Text style={styles.cardTextStatus} numberOfLines={1}>
+                    In School
+                </Text>
                 <Text style={styles.jobType}>Methodist Primary School</Text>
+
+            </View>
+            <View style={styles.gradeTextContainer}>
+                <Text style={styles.jobType}>
+                    Class 1
+                </Text>
+                <Text style={styles.jobType}>
+                    S2301234
+                </Text>
             </View>
         </TouchableOpacity>
     );
@@ -31,11 +42,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     container: {
-        flex: 1,
+        //flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
         padding: 16,
+        marginBottom: 20,
         borderRadius: 12,
         backgroundColor: Colors.plain,
         shadowColor: '#000',
@@ -62,6 +74,11 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         marginHorizontal: 16,
+    },
+    gradeTextContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     jobName: {
         fontSize: 16,
@@ -109,7 +126,11 @@ const styles = StyleSheet.create({
         color: Colors.night,
         fontSize: 16,
     },
-
+    cardTextStatus: {
+        fontWeight: "bold",
+        color: Colors.tertiary,
+        fontSize: 16,
+    },
 });
 /*    cardTextTwo: {
         borderBottomColor: Colors.darkLight,

@@ -4,8 +4,9 @@ import {
     Colors, BackIcon, AlignRow,
 } from '../components/styles';
 import { AntDesign } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
-
+import { StyleSheet, View, Dimensions } from "react-native";
+const deviceHeight = Dimensions.get('window').height
+const deviceWidth = Dimensions.get('window').width
 const ProfileTop = () => {
     return (
         <View style={styles.viewStyle}>
@@ -21,8 +22,10 @@ const ProfileTop = () => {
 //change the title according to the page that calls it 
 const styles = StyleSheet.create({
     viewStyle: {
-        flex: 1,
-        paddingTop: 25,
+        paddingTop: 15,
+        width: deviceWidth,
+        height: deviceHeight * 0.1,
+        paddingBottom: 0,
         backgroundColor: Colors.primary,
     },
 });
