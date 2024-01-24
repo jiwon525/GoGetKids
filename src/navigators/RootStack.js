@@ -1,26 +1,68 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import LoginScreen from '../screen/LoginScreen';
-import HomeScreen from '../screen/HomeScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import footerTab from '../components/TabNav';
+import { createStackNavigator } from '@react-navigation/stack';
+//screens
+import AccountScreen from '../ScreenView/AccountScreen';
+import HomeScreen from '../ScreenView/HomeScreen';
+import LoginScreen from '../ScreenView/LoginScreen';
+import ScanScreen from '../ScreenView/ScanScreen';
+import SignupScreen from '../ScreenView/SignupScreen';
+import ChildScreen from '../ScreenView/ChildScreen';
+import DbTest from '../ScreenView/DbTestScreen';
+import { Colors } from '../components/styles'
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function Nav() {
+const RootStack = () => {
     return (
         <NavigationContainer>
-            <Tab.Navigator tabBar={(props) => <footerTab {...props} />}>
-                <Tab.Screen
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: 'transparent'
+                    },
+                    headerTintColor: Colors.primary,
+                    headerTransparent: true,
+                    headerTitle: '',
+                    headerLeftContainerStyle: 20
+                }}
+                initialRouteName="Login" >
+                <Stack.Screen
                     name="Login"
                     component={LoginScreen} />
-                <Tab.Screen
+                <Stack.Screen
                     name="Home"
                     component={HomeScreen} />
-                <Tab.Screen
-                    name="Home"
+                <Stack.Screen
+                    name="Account"
                     component={AccountScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
+                <Stack.Screen
+                    name="Scan"
+                    component={ScanScreen} />
+                <Stack.Screen
+                    name="Child"
+                    component={ChildScreen} />
+                <Stack.Screen
+                    name="SignUp"
+                    component={SignupScreen} />
+            </Stack.Navigator>
+        </NavigationContainer >
     );
 }
+
+export default RootStack;
+
+/*
+LoginScreen = ({ navigation }) => {
+    const [role, setRole] = useState('');
+    const handleLogin = (values) => {
+        // Your authentication logic
+        // Set the user's role after successful authentication
+        setRole(values.role);
+        // Navigate based on the role
+        if (values.role === 'parent') {
+            navigation.navigate('Parent');
+        } else if (values.role === 'teacher') {
+            navigation.navigate('Teacher');
+        }
+    };*/

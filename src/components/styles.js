@@ -13,9 +13,10 @@ export const Colors = {
     darkLight: "#9CA3AF",
     night: "#000000",
     blue: "#66B2FF",
+    bgrey: "#928E85",
 };
 
-const { primary, plain, secondary, tertiary, darkLight, night, blue } = Colors;
+const { primary, plain, secondary, tertiary, darkLight, night, blue, bgrey } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -61,9 +62,9 @@ export const AlignRow = styled.View`
 
 export const Line = styled.View`
     height: 1px;
-    width: ${deviceWidth}px;
+    flex:1;
     backgroundColor: ${darkLight};
-    margin-vertical: 10px;
+    margin-vertical: 5px;
 `;
 
 export const ExtraView = styled.View`
@@ -137,10 +138,13 @@ export const StyledButton = styled.TouchableOpacity`
     border-radius: 5px;
     align-items: center;
     margin-vertical: 5px;
-    height: 60px;
+    height: 50px;
 
     ${(props) => props.teacher == true && `
     background-color: ${blue};
+    `}
+    ${(props) => props.driver == true && `
+    background-color: ${bgrey};
     `}
 `;
 
