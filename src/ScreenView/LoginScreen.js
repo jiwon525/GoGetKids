@@ -11,6 +11,13 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
+
+
+
+
+
+
+
 LoginScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
 

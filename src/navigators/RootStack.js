@@ -52,17 +52,3 @@ const RootStack = () => {
 
 export default RootStack;
 
-/*
-LoginScreen = ({ navigation }) => {
-    const [role, setRole] = useState('');
-    const handleLogin = (values) => {
-        // Your authentication logic
-        // Set the user's role after successful authentication
-        setRole(values.role);
-        // Navigate based on the role
-        if (values.role === 'parent') {
-            navigation.navigate('Parent');
-        } else if (values.role === 'teacher') {
-            navigation.navigate('Teacher');
-        }
-    };*/
