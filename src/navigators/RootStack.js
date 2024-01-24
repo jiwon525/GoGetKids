@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import TabNavigator from './TabNavigator';
 //screens
 import AccountScreen from '../ScreenView/AccountScreen';
 import HomeScreen from '../ScreenView/HomeScreen';
@@ -32,21 +33,13 @@ const RootStack = () => {
                     component={LoginScreen} />
                 <Stack.Screen
                     name="Home"
-                    component={HomeScreen} />
-                <Stack.Screen
-                    name="Account"
-                    component={AccountScreen} />
-                <Stack.Screen
-                    name="Scan"
-                    component={ScanScreen} />
-                <Stack.Screen
-                    name="Child"
-                    component={ChildScreen} />
+                    component={TabNavigator}
+                    options={{ headerShown: false }} />
                 <Stack.Screen
                     name="SignUp"
                     component={SignupScreen} />
             </Stack.Navigator>
-        </NavigationContainer >
+        </NavigationContainer>
     );
 }
 

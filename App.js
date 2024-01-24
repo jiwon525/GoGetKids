@@ -7,7 +7,7 @@ import ScheduleScreen from './src/ScreenView/ScheduleScreen'
 
 export default function App() {
   return (
-    <ScheduleScreen />
+    <RootStack />
 
   );
 };
