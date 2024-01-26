@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "react-native";
+import PropTypes from 'prop-types'; // Import PropTypes for type-checking
 
 import {
     Colors,
 } from '../components/styles';
 
-export default function Card() {
+export default function Card({ name, status, school, grade, studentID, onPress }) {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <TouchableOpacity style={styles.logoContainer}>
                 <Image
                     resizeMode="contain" source={require('../assets/student.png')}
@@ -16,26 +17,35 @@ export default function Card() {
             </TouchableOpacity>
 
             <View style={styles.textContainer}>
-                <Text style={styles.jobName} numberOfLines={1}>
-                    Rachel Yeo
+                <Text style={styles.textOne} numberOfLines={1}>
+                    {name}
                 </Text>
                 <Text style={styles.cardTextStatus} numberOfLines={1}>
-                    In School
+                    {status}
                 </Text>
-                <Text style={styles.jobType}>Methodist Primary School</Text>
+                <Text style={styles.textTwo}>{school}</Text>
 
             </View>
             <View style={styles.gradeTextContainer}>
-                <Text style={styles.jobType}>
-                    Class 1
+                <Text style={styles.textTwo}>
+                    {grade}
                 </Text>
-                <Text style={styles.jobType}>
-                    S2301234
+                <Text style={styles.textTwo}>
+                    {studentID}
                 </Text>
             </View>
         </TouchableOpacity>
     );
 }
+
+Card.propTypes = {
+    name: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    school: PropTypes.string.isRequired,
+    grade: PropTypes.string.isRequired,
+    studentID: PropTypes.string.isRequired,
+    onPress: PropTypes.func,
+};
 
 const styles = StyleSheet.create({
     mainContainer: {
@@ -80,12 +90,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
-    jobName: {
+    textOne: {
         fontSize: 16,
         //fontFamily: "DMBold",
         color: Colors.night,
     },
-    jobType: {
+    textTwo: {
         fontSize: 14,
         //fontFamily: "DMRegular",
         color: Colors.darkLight,

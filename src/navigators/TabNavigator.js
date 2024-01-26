@@ -1,34 +1,34 @@
 // TabNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../components/styles'
 import HomeScreen from '../ScreenView/HomeScreen';
 import AccountScreen from '../ScreenView/AccountScreen';
 import ScanScreen from '../ScreenView/ScanScreen';
 import ChildScreen from '../ScreenView/ChildScreen';
+import AccountStack from './AccountStack';
+import { Colors } from '../components/styles';
 
 const Tab = createBottomTabNavigator();
+
 
 const TabNavigator = () => {
     return (
         <Tab.Navigator
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
                 },
-                headerTintColor: Colors.primary,
+                headerTintColor: 'transparent',
                 headerTransparent: true,
                 headerTitle: '',
-                headerLeftContainerStyle: 20
+                headerLeftContainerStyle: 20,
             }}
-            tabBarOptions={{
-                activeTintColor: 'blue',
-                inactiveTintColor: 'gray',
-            }}
+            initialRouteName="Home"
         >
             <Tab.Screen
-                name="Home"
+                name="ParentHome"
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',
@@ -59,7 +59,7 @@ const TabNavigator = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={AccountScreen}
+                component={AccountStack}
                 options={{
                     tabBarLabel: 'Account',
                     tabBarIcon: ({ color, size }) => (

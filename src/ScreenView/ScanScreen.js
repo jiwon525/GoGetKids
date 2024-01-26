@@ -6,7 +6,7 @@ import {
     StyledContainer, Colors, InnerContainer,
 } from '../components/styles';
 
-const ScanScreen = () => {
+const ScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = React.useState(false);
     const [scanData, setScanData] = React.useState();
 
@@ -29,10 +29,12 @@ const ScanScreen = () => {
         setScanData(data);
         console.log(`Data: ${data}`);
         console.log(`Type: ${type}`);
+        navigation.navigate("ParentHome");
     };
     return (
         <StyledContainer>
-            <ProfileTop />
+            <ProfileTop name="Scan QR" navigation={navigation} />
+
             <BarCodeScanner
                 style={styles.scanBox}
                 onBarCodeScanned={scanData ? undefined : handleQRScanned}

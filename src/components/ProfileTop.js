@@ -1,25 +1,39 @@
 import React from 'react';
 import {
-    PageTitle,
+    PageTitle, LoginSmallLogo,
     Colors, BackIcon, AlignRow,
 } from '../components/styles';
 import { AntDesign } from "@expo/vector-icons";
-import { StyleSheet, View, Dimensions } from "react-native";
-const deviceHeight = Dimensions.get('window').height
-const deviceWidth = Dimensions.get('window').width
-const ProfileTop = () => {
-    return (
-        <View style={styles.viewStyle}>
-            <AlignRow>
-                <BackIcon>
-                    <AntDesign name="arrowleft" size={24} color="black" />
-                </BackIcon>
-                <PageTitle>Home</PageTitle>
-            </AlignRow>
-        </View>
-    );
+import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
+
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+const homename = "Home";
+
+
+const ProfileTop = ({ name, navigation }) => {
+    const handleGoBack = () => {
+        navigation.navigate("ParentHome");
+    };
+    if (homename === name) {
+        return (
+            <View style={styles.viewStyle}>
+                <AlignRow>
+                    <LoginSmallLogo resizeMode="contain" source={require('../assets/children.png')} />
+                    <PageTitle>{name}</PageTitle>
+                </AlignRow>
+            </View>
+        );
+    } else {
+        return (
+            <View style={styles.viewStyle}>
+                <AlignRow>
+                    <PageTitle>{name}</PageTitle>
+                </AlignRow>
+            </View>
+        );
+    }
 };
-//change the title according to the page that calls it 
 const styles = StyleSheet.create({
     viewStyle: {
         paddingTop: 15,

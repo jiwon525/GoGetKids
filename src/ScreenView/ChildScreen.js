@@ -5,10 +5,11 @@ import {
 } from '../components/styles';
 import ProfileTop from '../components/ProfileTop';
 
-const ChildScreen = () => {
+const ChildScreen = ({ navigation }) => {
     return (
         <StyledContainer>
-            <ProfileTop />
+            <ProfileTop name="My Loved Ones" navigation={navigation} />
+
             <NormText>Name: Rachel Yeo</NormText>
             <NormText>School: Methodist Primary School</NormText>
             <NormText>Class 1</NormText>
@@ -16,19 +17,6 @@ const ChildScreen = () => {
             <NormText>Status: In School</NormText>
             <NormText>Pick Up Time for (Bus): 7: 45 AM</NormText>
             <NormText>Dismissal Time: 2:00 PM</NormText>
-            <BottomContainer>
-                <StyledButton>
-                    <ButtonText>
-                        Change Password
-                    </ButtonText>
-                </StyledButton>
-                <StyledButton>
-                    <ButtonText>
-                        Log Out
-                    </ButtonText>
-                </StyledButton>
-            </BottomContainer>
-
 
         </StyledContainer>
     );

@@ -10,7 +10,7 @@ import {
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../components/ProfileTop';
-import { View, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -18,10 +18,11 @@ SignUpScreen = ({ navigation }) => {
     return (
         <StyledContainer>
             <StatusBar style="dark" />
-            <ProfileTop />
+            <ProfileTop
+                name="Sign Up"
+            />
             <ScrollView
                 showsVerticalScrollIndicator={false}>
-
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
@@ -109,7 +110,7 @@ SignUpScreen = ({ navigation }) => {
                                 <Line />
                                 <ExtraView>
                                     <ExtraText>Already have an account? </ExtraText>
-                                    <TextLink>
+                                    <TextLink onPress={() => navigation.navigate("Login")}>
                                         <TextLinkContent>
                                             Login
                                         </TextLinkContent>
@@ -138,8 +139,32 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
                     <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={Colors.darkLight} />
                 </RightIcon>
             )}
-        </View >
+        </View>
     );
 };
+
+const SignUpTop = () => {
+    return (
+        <View style={styles.viewStyle}>
+            <AlignRow>
+                <BackIcon>
+                    <AntDesign name="arrowleft" size={24} color="black" />
+                </BackIcon>
+                <PageTitle>Home</PageTitle>
+            </AlignRow>
+        </View>
+    );
+};
+const deviceHeight = Dimensions.get('window').height
+const deviceWidth = Dimensions.get('window').width
+const styles = StyleSheet.create({
+    viewStyle: {
+        paddingTop: 15,
+        width: deviceWidth,
+        height: deviceHeight * 0.1,
+        paddingBottom: 0,
+        backgroundColor: Colors.primary,
+    },
+});
 
 export default SignUpScreen; 

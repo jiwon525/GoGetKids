@@ -90,6 +90,15 @@ export const LoginLogo = styled.Image`
     width: ${deviceWidth * 0.3}px;
     height:${deviceHeight * 0.3}px;
 `;
+export const LoginSmallLogo = styled.Image`
+    width: 45px;
+    height: 45px;
+    margin-left: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+`;
 
 export const LoginTitle = styled.Text`
     font-size: 25px;
@@ -103,6 +112,7 @@ export const PageTitle = styled.Text`
     font-weight: bold;
     text-align: center;
     padding: 10px;
+    margin-left:
 `;
 
 export const StyledTextInput = styled.TextInput`
@@ -186,6 +196,6 @@ export const BackIcon = styled.TouchableOpacity`
 `;
 
 export const NormText = styled.Text`
-    color: ${tertiary};
-    font-size:16px;
+    color: ${night};
+    font-size:18px;
 `;

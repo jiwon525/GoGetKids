@@ -3,13 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import TabNavigator from './TabNavigator';
 //screens
-import AccountScreen from '../ScreenView/AccountScreen';
-import HomeScreen from '../ScreenView/HomeScreen';
 import LoginScreen from '../ScreenView/LoginScreen';
-import ScanScreen from '../ScreenView/ScanScreen';
 import SignupScreen from '../ScreenView/SignupScreen';
-import ChildScreen from '../ScreenView/ChildScreen';
-import DbTest from '../ScreenView/DbTestScreen';
 import { Colors } from '../components/styles'
 
 const Stack = createStackNavigator();
@@ -22,7 +17,7 @@ const RootStack = () => {
                     headerStyle: {
                         backgroundColor: 'transparent'
                     },
-                    headerTintColor: Colors.primary,
+                    headerTintColor: 'transparent',
                     headerTransparent: true,
                     headerTitle: '',
                     headerLeftContainerStyle: 20
