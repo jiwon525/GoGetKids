@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "react-native";
-import PropTypes from 'prop-types'; // Import PropTypes for type-checking
+import PropTypes from 'prop-types';
 
 import {
     Colors,
@@ -15,7 +15,6 @@ export default function Card({ name, status, school, grade, studentID, onPress }
                     style={styles.logImage}
                 />
             </TouchableOpacity>
-
             <View style={styles.textContainer}>
                 <Text style={styles.textOne} numberOfLines={1}>
                     {name}
@@ -92,12 +91,10 @@ const styles = StyleSheet.create({
     },
     textOne: {
         fontSize: 16,
-        //fontFamily: "DMBold",
         color: Colors.night,
     },
     textTwo: {
         fontSize: 14,
-        //fontFamily: "DMRegular",
         color: Colors.darkLight,
         marginTop: 3,
         textTransform: "capitalize",
@@ -142,12 +139,3 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
-/*    cardTextTwo: {
-        borderBottomColor: Colors.darkLight,
-        color: Colors.darkLight,
-        fontWeight: "bold",
-        fontSize: 18,
-        borderBottomWidth: 1,
-        marginBottom: 3,
-    }, this is to show a form of 'underline' to the component
-*/

@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPool } from '@vercel/postgres';
 import {
-    StyledContainer, InnerContainer, PageTitle, LoginTab,
-    Colors, BackIcon, AlignRow, InnerMidContainer, LoginLogo,
-    StyledFormArea, LeftIcon, StyledButton, ButtonText, NormText,
-    ProfileContainer, BottomContainer,
+    StyledContainer,
+    InnerContainer,
+    ProfileTop,
+    Card,
+    NormText,
 } from '../components/styles';
-import ProfileTop from '../components/ProfileTop';
-import Card from '../components/Card';
+import { POSTGRES_URL } from '@env';
+
+
+const pool = createPool({
+    connectionString: POSTGRES_URL,
+});
 
 const HomeScreen = ({ navigation }) => {
+    const [students, setStudents] = useState([]);
+    useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const { rows } = await pool.sql`SELECT id, firstname, lastname FROM students;`;
+                setStudents(rows);
+            } catch (error) {
+                console.error('Error fetching students:', error);
+            }
+        };
+
+        fetchStudents();
+    }, []);
+
     const navigateToChildScreen = () => {
-        navigation.navigate("Child");
+        navigation.navigate('Child');
     };
-    //some sort of loop that checks that theres no more 
     const cardData = {
         name: 'Rachel Yeo',
         status: 'In School',
@@ -33,29 +52,24 @@ const HomeScreen = ({ navigation }) => {
             <InnerContainer>
                 <Card {...cardData} onPress={navigateToChildScreen}></Card>
                 <Card {...cardData2} onPress={navigateToChildScreen}></Card>
+                {students.map((student) => (
+                    <Card
+                        key={student.id}
+                        name={`${student.firstname} ${student.lastname}`}
+                        status="In School"
+                        school="Methodist Primary School"
+                        grade="Class 1"
+                        studentID={`S${student.id}`}
+                        onPress={navigateToChildScreen}
+                    />
+                ))}
+                <NormText>
+                    {`Number of students: ${students.length}`}
+                </NormText>
             </InnerContainer>
         </StyledContainer>
     );
 };
 
+
 export default HomeScreen;
-
-
-/*
-const ClassCard = ({ name, school, status, class, id }) => {
-    return (
-        <View>
-            <LeftIcon>
-                <Octicons name={icon} size={30} color="black" />
-            </LeftIcon>
-            <StyledInputLabel>{label}</StyledInputLabel>
-            <StyledTextInput {...props} />
-            {isPassword && (
-                <RightIcon onPress={() => setHidePassword(!hidePassword)}>
-                    <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={Colors.darkLight} />
-                </RightIcon>
-            )}
-        </View>
-    );
-};
-*/
