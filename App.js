@@ -13,7 +13,7 @@ const pool = createPool({
 
 export default function App() {
   return (
-    <DriverStack />
+    <ScheduleScreen />
 
   );
 };

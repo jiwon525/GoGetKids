@@ -14,6 +14,7 @@ const homename = "Home";
 const ProfileTop = ({ name, navigation }) => {
     const handleGoBack = () => {
         navigation.navigate("ParentHome");
+        //navigation.navigate.goBack();
     };
     if (homename === name) {
         return (

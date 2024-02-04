@@ -7,6 +7,7 @@ const deviceWidth = Dimensions.get('window').width
 
 export const Colors = {
     primary: '#FFE88A',
+    lightprimary: '#FDF0BE',
     plain: '#FFFFFF',
     secondary: '#E5E7EB',
     tertiary: '#6D28D9',
@@ -16,13 +17,25 @@ export const Colors = {
     bgrey: "#928E85",
 };
 
-const { primary, plain, secondary, tertiary, darkLight, night, blue, bgrey } = Colors;
+const { lightprimary, primary, plain, secondary, tertiary, darkLight, night, blue, bgrey } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
     background-color: ${plain};
 `;
-
+export const StyledScheduleView = styled.View`
+    padding: 10px;
+    flex-direction:row;
+    ${(props) => props.list == true && `
+    background-color: ${lightprimary};
+    `}
+`;
+export const InnerScheduleView = styled.View`
+    padding-left:10px;
+    padding-right:55px;
+    border-radius:5px;
+    margin-vertical: 3px;
+`;
 export const InnerMidContainer = styled.View`
     flex: 1;
     width: 100%;
@@ -62,8 +75,8 @@ export const AlignRow = styled.View`
 
 export const Line = styled.View`
     height: 1px;
-    flex:1;
-    backgroundColor: ${darkLight};
+    flex-direction:row;
+    background-color: ${darkLight};
     margin-vertical: 5px;
 `;
 
@@ -99,7 +112,15 @@ export const LoginSmallLogo = styled.Image`
     justify-content: center;
     align-items: center;
 `;
-
+export const MostSmallLogo = styled.Image`
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+`;
 export const LoginTitle = styled.Text`
     font-size: 25px;
     font-weight: bold;
@@ -112,7 +133,6 @@ export const PageTitle = styled.Text`
     font-weight: bold;
     text-align: center;
     padding: 10px;
-    margin-left:
 `;
 
 export const StyledTextInput = styled.TextInput`
@@ -129,7 +149,7 @@ export const StyledTextInput = styled.TextInput`
 `;
 
 export const StyledInputLabel = styled.Text`
-    color: ${tertiary};
+    color: ${night};
     font-size:13px;
     text-align: left;
 `;
@@ -173,6 +193,7 @@ export const ExtraText = styled.Text`
     align-content: center;
     color: ${night};
     font-size:15px;
+    text-align: center;
 `;
 
 export const TextLink = styled.TouchableOpacity`
@@ -198,4 +219,12 @@ export const BackIcon = styled.TouchableOpacity`
 export const NormText = styled.Text`
     color: ${night};
     font-size:18px;
+`;
+
+export const ListItem = styled.View`
+    margin-horizontal: 4px;
+    padding-vertical: 6px;
+    padding-horizontal: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
 `;

@@ -4,8 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AccountScreen from '../ScreenView/AccountScreen';
 import ScheduleScreen from '../ScreenView/ScheduleScreen';
-import ChildScreen from '../ScreenView/ChildScreen';
-import AccountStack from './AccountStack';
+import ScanScreen from '../ScreenView/ScanScreen';
 
 const Tab = createBottomTabNavigator();
 

@@ -8,14 +8,16 @@ import {
     NormText,
 } from '../components/styles';
 import { POSTGRES_URL } from '@env';
-
-
+//regarding db
+import 'react-native-url-polyfill/auto'
+//import { createClient } from '@supabase/supabase-js'
+//const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
 const pool = createPool({
     connectionString: POSTGRES_URL,
 });
 
 const HomeScreen = ({ navigation }) => {
-    const [students, setStudents] = useState([]);
+    /*const [students, setStudents] = useState([]);
     useEffect(() => {
         const fetchStudents = async () => {
             try {
@@ -27,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
         };
 
         fetchStudents();
-    }, []);
+    }, []);*/
 
     const navigateToChildScreen = () => {
         navigation.navigate('Child');
@@ -52,7 +54,14 @@ const HomeScreen = ({ navigation }) => {
             <InnerContainer>
                 <Card {...cardData} onPress={navigateToChildScreen}></Card>
                 <Card {...cardData2} onPress={navigateToChildScreen}></Card>
-                {students.map((student) => (
+            </InnerContainer>
+        </StyledContainer>
+    );
+};
+
+
+export default HomeScreen;
+/*                {students.map((student) => (
                     <Card
                         key={student.id}
                         name={`${student.firstname} ${student.lastname}`}
@@ -65,11 +74,4 @@ const HomeScreen = ({ navigation }) => {
                 ))}
                 <NormText>
                     {`Number of students: ${students.length}`}
-                </NormText>
-            </InnerContainer>
-        </StyledContainer>
-    );
-};
-
-
-export default HomeScreen;
+                </NormText>*/
