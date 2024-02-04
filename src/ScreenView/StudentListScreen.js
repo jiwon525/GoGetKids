@@ -1,59 +1,157 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import Checkbox from 'expo-checkbox';
 import {
-    StyleSheet,
-    SafeAreaView,
-    View,
-    TouchableWithoutFeedback,
-    Text,
-    Dimensions,
+    StyleSheet, View, SafeAreaView,
+    Dimensions, ScrollView,
     TouchableOpacity, FlatList,
 } from 'react-native';
 import moment from 'moment';
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import {
-    PageTitle,
-    Colors, BackIcon, AlignRow,
+    PageTitle, Line, StyledScheduleView, NormText, ListItem, InnerScheduleView, MostSmallLogo,
+    Colors, BackIcon, AlignRow, StyledContainer, InnerContainer, StyledFormArea, ExtraText,
+    Subtitle,
+    StyledInputLabel,
 } from '../components/styles';
-//import Swiper from 'react-native-swiper';
+import ProfileTop from '../components/ProfileTop';
 
 const { width } = Dimensions.get('window');
 
-const Example = () => {
+const DATA = [
+    {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        studentid: 'S10192353',
+        transport: 'Parent',
+        zone: '',
+        name: 'Elliot Batts',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        studentid: 'S10194567',
+        transport: 'Bus',
+        zone: 'Zone A',
+        name: 'Rachel Yeo',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        studentid: 'S10199865',
+        transport: 'Bus',
+        zone: 'Zone A',
+        name: 'Allyn Rodney',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e29d71',
+        studentid: 'S10195642',
+        transport: 'Bus',
+        zone: 'Zone B',
+        name: 'Oliver Tan',
+    },
+    {
+        id: '58694a0f-3341-471f-bd96-145571e29d71',
+        studentid: 'S10194567',
+        transport: 'Parent',
+        zone: '',
+        name: 'Chaim Yeo',
+    },
+    {
+        id: '58694a0f-3da1-4gtf-bd96-145571e29d71',
+        studentid: 'S10191212',
+        transport: 'Bus',
+        zone: 'Zone A',
+        name: 'Adam Lee',
+    },
+];
+
+const Item = ({ studentid, transport, zone, name }) => (
+    <StyledContainer>
+        <StyledScheduleView list={true}>
+            <MostSmallLogo
+                resizeMode="contain" source={require('../assets/student.png')} />
+            <InnerScheduleView>
+                <ExtraText>{name} - {studentid}</ExtraText>
+            </InnerScheduleView>
+        </StyledScheduleView>
+        <ListItem>
+            <ExtraText>Transport Type: </ExtraText><NormText>{zone} {transport}</NormText>
+        </ListItem>
+        <Line></Line>
+    </StyledContainer>
+);
+
+const StudentListScreen = ({ navigation }) => {
+    const [ParentisChecked, psetChecked] = useState(true);
+    const [BusisChecked, bsetChecked] = useState(true);
+
+    const [filteredList, setFilteredList] = useState(DATA);
+
+    useEffect(() => {
+        const updatedList = DATA.filter(item => {
+            if (ParentisChecked && BusisChecked) {
+                return true;  // Show all when both checkboxes are checked
+            } else if (ParentisChecked) {
+                return item.transport === 'Parent';
+            } else if (BusisChecked) {
+                return item.transport === 'Bus';
+            }
+            return false;  // Show nth when both checkboxes are unchecked
+        });
+        setFilteredList(updatedList);
+    }, [ParentisChecked, BusisChecked]);
+
+
     return (
-        <FlatList
-            key={index}
-            onPress={() => setValue(date.toDate())}
-        ></FlatList>
+        <SafeAreaView style={{ flex: 1 }}>
+            <StyledContainer>
+                <ProfileTop name="Students" navigation={navigation} />
+                <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 5 }}>
+                    <StyledScheduleView>
+                        <Ionicons name="easel-outline" size={30} color="black" />
+                        <InnerScheduleView>
+                            <NormText>Class 1</NormText>
+                        </InnerScheduleView>
+                    </StyledScheduleView>
+                    <StyledContainer>
+                        <Line></Line>
+                        <View style={styles.container}>
+                            <View style={styles.check}>
+                                <Checkbox
+                                    value={ParentisChecked}
+                                    onValueChange={psetChecked}
+                                    color={ParentisChecked ? '#4630EB' : undefined}
+                                /><Subtitle> Parent</Subtitle>
+                            </View>
+                            <View style={styles.check}>
+                                <Checkbox
+                                    value={BusisChecked}
+                                    onValueChange={bsetChecked}
+                                    color={BusisChecked ? '#4630EB' : undefined}
+                                /><Subtitle> Bus</Subtitle>
+                            </View>
+                        </View>
+                        <FlatList
+                            key={filteredList.length}
+                            data={filteredList}
+                            renderItem={({ item }) => <Item studentid={item.studentid} zone={item.zone} name={item.name} transport={item.transport} />}
+                            keyExtractor={item => item.id}
+                        />
+                    </StyledContainer>
+                </View>
+            </StyledContainer>
+        </SafeAreaView>
+
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-
+        flexDirection: 'row',
+        marginHorizontal: 16,
+        marginVertical: 12,
     },
-    header: {
-        paddingTop: 14,
-        backgroundColor: Colors.primary,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: '700',
-        color: '#1d1d1d',
-        marginBottom: 12,
-    },
-    picker: {
-        flex: 1,
-        maxHeight: 74,
-        paddingVertical: 12,
+    check: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    subtitle: {
-        fontSize: 17,
-        fontWeight: '600',
-        color: '#999999',
-        marginBottom: 12,
+        marginHorizontal: 5,
     },
     footer: {
         marginTop: 'auto',
@@ -128,4 +226,4 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
 });
-export default Example;
+export default StudentListScreen;

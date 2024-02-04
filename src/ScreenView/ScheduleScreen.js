@@ -17,7 +17,7 @@ import {
 import TripSheet from '../components/TripSheet';
 
 const { width } = Dimensions.get('window');
-
+//need to get data of the date chosen only.
 const DATA = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -95,7 +95,7 @@ const ScheduleScreen = ({ navigation }) => {
                 <ProfileTop name="Your Schedule" navigation={navigation} />
                 <View style={styles.picker}>{daysOfWeek}</View>
                 <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 5 }}>
-                    <Text style={styles.subtitle}>{value.toDateString()}</Text>
+                    <Subtitle>{value.toDateString()}</Subtitle>
                     <View style={styles.placeholder}>
                         <TripSheet
                             school="Methodist Primary"
@@ -129,12 +129,6 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    subtitle: {
-        fontSize: 17,
-        fontWeight: '600',
-        color: '#999999',
-        marginBottom: 12,
     },
     footer: {
         marginTop: 'auto',

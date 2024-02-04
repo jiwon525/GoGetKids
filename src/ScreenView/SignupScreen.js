@@ -19,8 +19,7 @@ SignUpScreen = ({ navigation }) => {
         <StyledContainer>
             <StatusBar style="dark" />
             <ProfileTop
-                name="Sign Up"
-            />
+                name="Sign Up" />
             <ScrollView
                 showsVerticalScrollIndicator={false}>
                 <InnerContainer>

@@ -5,7 +5,6 @@ import TabNavigator from './TabNavigator';
 //screens
 import LoginScreen from '../ScreenView/LoginScreen';
 import SignupScreen from '../ScreenView/SignupScreen';
-import { Colors } from '../components/styles'
 
 const Stack = createStackNavigator();
 

@@ -154,6 +154,12 @@ export const StyledInputLabel = styled.Text`
     text-align: left;
 `;
 
+export const Subtitle = styled.Text`
+    color: ${night};
+    font-size:17px;
+    font-weight: 600;
+`;
+
 export const RightIcon = styled.TouchableOpacity`
     right:15px;
     top:38px;

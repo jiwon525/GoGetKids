@@ -2,12 +2,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import AccountScreen from '../ScreenView/AccountScreen';
-import ScheduleScreen from '../ScreenView/ScheduleScreen';
+import StudentListScreen from '../ScreenView/StudentListScreen';
 import ScanScreen from '../ScreenView/ScanScreen';
+import AccountStackNavigator from './AccountStack';
+
 const Tab = createBottomTabNavigator();
 
-const DriverTab = () => {
+
+const TeacherTab = () => {
     return (
         <Tab.Navigator
             screenOptions={{
@@ -19,13 +21,13 @@ const DriverTab = () => {
                 headerTitle: '',
                 headerLeftContainerStyle: 20
             }}
-            initialRouteName="Schedule"
+            initialRouteName="StudentList"
         >
             <Tab.Screen
-                name="Schedule"
-                component={ScheduleScreen}
+                name="StudentList"
+                component={StudentListScreen}
                 options={{
-                    tabBarLabel: 'Trip',
+                    tabBarLabel: 'Students',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="calendar-outline" size={size} color={color} />
                     ),
@@ -43,7 +45,7 @@ const DriverTab = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={AccountScreen}
+                component={AccountStackNavigator}
                 options={{
                     tabBarLabel: 'Account',
                     tabBarIcon: ({ color, size }) => (
@@ -55,4 +57,4 @@ const DriverTab = () => {
     );
 };
 
-export default DriverTab;
+export default TeacherTab;

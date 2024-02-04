@@ -3,19 +3,17 @@ import {
     PageTitle, LoginSmallLogo,
     Colors, BackIcon, AlignRow,
 } from '../components/styles';
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
+
+
 const homename = "Home";
+//Button onPress={() => this.props.navigation.goBack(null)}
 
-
-const ProfileTop = ({ name, navigation }) => {
-    const handleGoBack = () => {
-        navigation.navigate("ParentHome");
-        //navigation.navigate.goBack();
-    };
+const ProfileTop = ({ name }) => {
     if (homename === name) {
         return (
             <View style={styles.viewStyle}>
@@ -27,7 +25,7 @@ const ProfileTop = ({ name, navigation }) => {
         );
     } else {
         return (
-            <View style={styles.viewStyle}>
+            <View style={styles.viewStyle2}>
                 <AlignRow>
                     <PageTitle>{name}</PageTitle>
                 </AlignRow>
@@ -37,10 +35,16 @@ const ProfileTop = ({ name, navigation }) => {
 };
 const styles = StyleSheet.create({
     viewStyle: {
-        paddingTop: 15,
+        paddingTop: deviceHeight * 0.035,
         width: deviceWidth,
         height: deviceHeight * 0.1,
-        paddingBottom: 0,
+        backgroundColor: Colors.primary,
+    },
+    viewStyle2: {
+        paddingTop: deviceHeight * 0.035,
+        paddingLeft: 24,
+        width: deviceWidth,
+        height: deviceHeight * 0.1,
         backgroundColor: Colors.primary,
     },
 });

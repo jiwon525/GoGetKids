@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import TabNavigator from './DriverTab';
+import TeacherTab from './TeacherTab';
 //screens
 import LoginScreen from '../ScreenView/LoginScreen';
 import SignupScreen from '../ScreenView/SignupScreen';
 
 const Stack = createStackNavigator();
 
-const DriverStack = () => {
+const TeacherStack = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -27,7 +27,7 @@ const DriverStack = () => {
                     component={LoginScreen} />
                 <Stack.Screen
                     name="Home"
-                    component={TabNavigator}
+                    component={TeacherTab}
                     options={{ headerShown: false }} />
                 <Stack.Screen
                     name="SignUp"
@@ -37,5 +37,5 @@ const DriverStack = () => {
     );
 }
 
-export default DriverStack;
+export default TeacherStack;
 

@@ -1,14 +1,12 @@
 // TabNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../ScreenView/HomeScreen';
-import AccountScreen from '../ScreenView/AccountScreen';
+
 import ScanScreen from '../ScreenView/ScanScreen';
 import ChildScreen from '../ScreenView/ChildScreen';
 import AccountStack from './AccountStack';
-import { Colors } from '../components/styles';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +26,7 @@ const TabNavigator = () => {
             initialRouteName="Home"
         >
             <Tab.Screen
-                name="ParentHome"
+                name="Home"
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',

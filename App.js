@@ -2,7 +2,8 @@ import React from 'react';
 import RootStack from './src/navigators/RootStack';
 import ScheduleScreen from './src/ScreenView/ScheduleScreen'
 import Test from './src/ScreenView/Test';
-import DriverStack from './src/navigators/DriverStack';
+import TeacherStack from './src/navigators/TeacherStack';
+
 
 /*
 import { createPool } from '@vercel/postgres';
@@ -13,7 +14,7 @@ const pool = createPool({
 
 export default function App() {
   return (
-    <ScheduleScreen />
+    <RootStack />
 
   );
 };
