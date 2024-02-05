@@ -8,7 +8,7 @@
             "bsonType": "string"
         },
         "class_id": {
-            "bsonType": "double"
+            "bsonType": "string"
         },
         "dob": {
             "bsonType": "date"
