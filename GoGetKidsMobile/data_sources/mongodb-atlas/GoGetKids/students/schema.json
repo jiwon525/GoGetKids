@@ -1,0 +1,59 @@
+{
+    "title": "student",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "address": {
+            "bsonType": "string"
+        },
+        "class_id": {
+            "bsonType": "double"
+        },
+        "dob": {
+            "bsonType": "string"
+        },
+        "firstname": {
+            "bsonType": "string"
+        },
+        "gender": {
+            "bsonType": "string"
+        },
+        "lastname": {
+            "bsonType": "string"
+        },
+        "parent_id": {
+            "bsonType": "string"
+        },
+        "postcode": {
+            "bsonType": "int"
+        },
+        "schoolid": {
+            "bsonType": "string"
+        },
+        "status": {
+            "bsonType": "string"
+        },
+        "studentid": {
+            "bsonType": "int"
+        },
+        "zone": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "address",
+        "class_id",
+        "dob",
+        "firstname",
+        "gender",
+        "lastname",
+        "parent_id",
+        "postcode",
+        "schoolid",
+        "status",
+        "studentid",
+        "zone"
+    ]
+}

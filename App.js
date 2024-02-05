@@ -5,12 +5,6 @@ import TestS from './src/ScreenView/TestS';
 import TeacherStack from './src/navigators/TeacherStack';
 import DriverStack from './src/navigators/DriverStack'
 
-/*
-import { createPool } from '@vercel/postgres';
-const config = require('./src/components/config');
-const pool = createPool({
-  connectionString: config.POSTGRES_URL
-});*/
 
 export default function App() {
   return (
@@ -18,3 +12,4 @@ export default function App() {
 
   );
 };
+

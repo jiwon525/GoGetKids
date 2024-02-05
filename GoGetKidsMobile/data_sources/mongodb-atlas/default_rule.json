@@ -1,6 +1,4 @@
 {
-    "database": "GoGetKids",
-    "collection": "students",
     "roles": [
         {
             "name": "readAndWriteAll",
