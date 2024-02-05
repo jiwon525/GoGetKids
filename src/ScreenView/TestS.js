@@ -8,7 +8,7 @@ const StudentListScreen = () => {
 
     // Update the Axios request in your React Native code
     useEffect(() => {
-        axios.get('http://18.139.79.160:27017/api/students')
+        axios.get('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents')
             .then(response => setStudents(response.data))
             .catch(error => console.error(error));
     }, []);
