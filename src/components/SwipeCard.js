@@ -1,7 +1,8 @@
-import React from "react";
+/*import React from "react";
 import { StyleSheet, View } from "react-native";
+import ionicons
 import SwipeableCard from 'react-native-swipeable-cards';
-import { PageTitle, Line, StyledScheduleView, Ionicons, NormText, StyledContainer, ExtraText } from '../components/styles';
+import { PageTitle, Line, StyledScheduleView, NormText, StyledContainer, ExtraText } from '../components/styles';
 
 const SwipeableCardContainer = () => {
     const data = [
@@ -10,7 +11,7 @@ const SwipeableCardContainer = () => {
             date: '12/1/2024',
             name: 'Rachel Yeo',
             school: 'Methodist Primary School',
-            class: 'Class 1',
+            studentclass: 'Class 1',
             status: 'In School',
             studentid: 'S2301234',
             transporttype: 'Bus',
@@ -22,7 +23,7 @@ const SwipeableCardContainer = () => {
             date: '12/1/2024',
             name: 'Chaim Yeo',
             school: 'Methodist Primary School',
-            class: 'Class 2',
+            studentclass: 'Class 2',
             status: 'In School',
             studentid: 'S2301235',
             transporttype: 'Bus',
@@ -40,11 +41,13 @@ const SwipeableCardContainer = () => {
     );
 };
 
-const SwipeCard = ({ date, name, school, class: studentClass, status, studentid, transporttype, pickuptime, dismissaltime }) => {
+const SwipeCard = ({ date, name, school, studentclass, status, studentid, transporttype, pickuptime, dismissaltime }) => {
     return (
         <View style={styles.placeholderInset}>
             <PageTitle>{name}</PageTitle>
             <ExtraText>{date}</ExtraText>
+            <ExtraText>{school}</ExtraText>
+            <ExtraText>{status}</ExtraText>
             <Line></Line>
             <StyledScheduleView>
                 <Ionicons name="bus-outline" size={30} color="black" />
@@ -54,7 +57,7 @@ const SwipeCard = ({ date, name, school, class: studentClass, status, studentid,
             </StyledScheduleView>
             <Line></Line>
             <StyledContainer>
-                <NormText>{studentid} {studentClass} {transporttype}</NormText>
+                <NormText>{studentid} {studentclass} {transporttype}</NormText>
             </StyledContainer>
         </View>
     );
@@ -73,3 +76,4 @@ const styles = StyleSheet.create({
 });
 
 export default SwipeableCardContainer;
+*/

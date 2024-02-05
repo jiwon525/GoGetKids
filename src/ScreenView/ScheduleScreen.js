@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,
-    Colors,
+    Colors, Subtitle,
 } from '../components/styles';
 import TripSheet from '../components/TripSheet';
 

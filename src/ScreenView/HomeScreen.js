@@ -6,27 +6,7 @@ import {
 } from '../components/styles';
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
-/*import { POSTGRES_URL } from '@env';
-import { createPool } from '@vercel/postgres';
-import 'react-native-url-polyfill/auto'
-import { createClient } from '@supabase/supabase-js'
-const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
-const pool = createPool({
-    connectionString: POSTGRES_URL,
-});
-const [students, setStudents] = useState([]);
-useEffect(() => {
-    const fetchStudents = async () => {
-        try {
-            const { rows } = await pool.sql`SELECT id, firstname, lastname FROM students;`;
-            setStudents(rows);
-        } catch (error) {
-            console.error('Error fetching students:', error);
-        }
-    };
 
-    fetchStudents();
-}, []);*/
 
 const HomeScreen = ({ navigation }) => {
 
