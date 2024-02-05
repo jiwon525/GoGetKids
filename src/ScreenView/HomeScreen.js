@@ -2,10 +2,10 @@ import React from 'react';
 import {
     StyledContainer,
     InnerContainer,
-    ProfileTop,
-    Card,
     NormText,
 } from '../components/styles';
+import Card from '../components/Card';
+import ProfileTop from '../components/ProfileTop';
 /*import { POSTGRES_URL } from '@env';
 import { createPool } from '@vercel/postgres';
 import 'react-native-url-polyfill/auto'
@@ -27,8 +27,6 @@ useEffect(() => {
 
     fetchStudents();
 }, []);*/
-
-
 
 const HomeScreen = ({ navigation }) => {
 
@@ -59,6 +57,5 @@ const HomeScreen = ({ navigation }) => {
         </StyledContainer>
     );
 };
-
 
 export default HomeScreen;

@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
     View, FlatList,
-} from 'react-native'; "react-native";
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 import {

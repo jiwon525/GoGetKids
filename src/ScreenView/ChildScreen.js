@@ -4,19 +4,14 @@ import {
     ProfileContainer, BottomContainer,
 } from '../components/styles';
 import ProfileTop from '../components/ProfileTop';
+import SwipeCard from '../components/SwipeCard';
 
 const ChildScreen = ({ navigation }) => {
     return (
         <StyledContainer>
-            <ProfileTop name="My Loved Ones" navigation={navigation} />
+            <ProfileTop name="My Loved Ones" />
 
-            <NormText>Name: Rachel Yeo</NormText>
-            <NormText>School: Methodist Primary School</NormText>
-            <NormText>Class 1</NormText>
-            <NormText>ID: S2301234</NormText>
-            <NormText>Status: In School</NormText>
-            <NormText>Pick Up Time for (Bus): 7: 45 AM</NormText>
-            <NormText>Dismissal Time: 2:00 PM</NormText>
+            <SwipeCard></SwipeCard>
 
         </StyledContainer>
     );
