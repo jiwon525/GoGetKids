@@ -8,5 +8,15 @@
     {
         "name": "resetFunc",
         "private": true
+    },
+    {
+        "name": "signUp",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "bcryptHash",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
