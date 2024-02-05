@@ -6,9 +6,8 @@ import axios from 'axios';
 const StudentListScreen = () => {
     const [students, setStudents] = useState([]);
 
-    // Update the Axios request in your React Native code
     useEffect(() => {
-        axios.get('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents')
+        axios.curl('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents')
             .then(response => setStudents(response.data))
             .catch(error => console.error(error));
     }, []);
