@@ -1,17 +1,24 @@
-
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const StudentListScreen = () => {
+const Testscreens = () => {
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        axios.curl('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents')
-            .then(response => setStudents(response.data))
-            .catch(error => console.error(error));
-    }, []);
+        // Replace 'YOUR_FUNCTION_ENDPOINT' with the actual endpoint URL
+        const functionEndpoint = 'https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents';
 
+        // Make a request to the MongoDB Realm function
+        fetch(functionEndpoint)
+            .then((response) => response.json())
+            .then((data) => {
+                // Update state with the received data
+                setStudents(data.result || []);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, []); // Empty dependency array to run the effect only once on component mount
 
     return (
         <View style={styles.container}>
@@ -46,5 +53,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default StudentListScreen;
-
+export default Testscreens;
