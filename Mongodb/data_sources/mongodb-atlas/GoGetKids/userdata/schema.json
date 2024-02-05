@@ -1,17 +1,17 @@
 {
-    "title": "student",
+    "title": "userdatum",
     "properties": {
         "_id": {
             "bsonType": "objectId"
         },
-        "address": {
-            "bsonType": "string"
-        },
-        "class_id": {
+        "companyid": {
             "bsonType": "string"
         },
         "dob": {
             "bsonType": "date"
+        },
+        "email": {
+            "bsonType": "string"
         },
         "firstname": {
             "bsonType": "string"
@@ -22,38 +22,28 @@
         "lastname": {
             "bsonType": "string"
         },
-        "parent_id": {
-            "bsonType": "string"
-        },
-        "postcode": {
+        "phonenum": {
             "bsonType": "int"
+        },
+        "rolename": {
+            "bsonType": "string"
         },
         "schoolid": {
             "bsonType": "string"
         },
-        "status": {
-            "bsonType": "string"
-        },
         "studentid": {
-            "bsonType": "int"
-        },
-        "zone": {
-            "bsonType": "string"
+            "bsonType": "array",
+            "items": {
+                "bsonType": "int"
+            }
         }
     },
     "required": [
         "_id",
-        "address",
-        "class_id",
         "dob",
         "firstname",
         "gender",
         "lastname",
-        "parent_id",
-        "postcode",
-        "schoolid",
-        "status",
-        "studentid",
-        "zone"
+        "rolename"
     ]
 }
