@@ -1,6 +1,5 @@
-exports = async function(payload) {
+exports = async function(email, password) {
   try {
-    const { email, password } = payload;
     // Fetch user from the database based on email
     const user = await context.services
       .get("mongodb-atlas")
