@@ -7,8 +7,8 @@ exports = async function(payload) {
       password,
       phoneNum,
       role,
-      schoolID,
-      companyID
+      school_name,
+      company_name
     } = payload;
 
     // Hash the password
@@ -32,8 +32,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      schoolID: (role === "teacher" || "schooladmin") ? schoolID : undefined,
-      companyID: (role === "driver" || "transportadmin") ? companyID : undefined
+      school_name: (role === "teacher" || "schooladmin") ? school_name : undefined,
+      company_name: (role === "driver" || "transportadmin") ? company_name : undefined
     };
 
     // Connect to MongoDB and insert the user
