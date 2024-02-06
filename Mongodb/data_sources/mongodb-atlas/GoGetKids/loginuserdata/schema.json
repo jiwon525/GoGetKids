@@ -1,0 +1,27 @@
+{
+    "title": "loginuserdatum",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "firstname": {
+            "bsonType": "string"
+        },
+        "lastname": {
+            "bsonType": "string"
+        },
+        "role": {
+            "bsonType": "string"
+        },
+        "userid": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "firstname",
+        "lastname",
+        "role",
+        "userid"
+    ]
+}
