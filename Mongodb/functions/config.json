@@ -18,5 +18,15 @@
         "name": "bcryptHash",
         "private": true,
         "disable_arg_logs": true
+    },
+    {
+        "name": "signIn",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "bycryptCompare",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
