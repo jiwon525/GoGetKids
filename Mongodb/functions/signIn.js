@@ -8,12 +8,16 @@ exports = async function(payload) {
       .db("GoGetKids")
       .collection("users")
       .findOne({ email });
-
     // If user not found, return an error
     if (!user) {
       return { error: "User not found" };
     }
-
+    console.log(user.email);
+    console.log(email);
+    console.log(user.password);
+    console.log(password);
+    console.log(user.firstname);
+    console.log(user.lastname);
     // Compare provided password with stored hashed password
     const passwordMatch = await context.functions.execute(
       "bcryptCompare",
