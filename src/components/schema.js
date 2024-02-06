@@ -1,5 +1,6 @@
 export default async function signUp(userData, navigation) {
     try {
+        console.log(userData);
         const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/signUp', {
             method: 'POST',
             headers: {
@@ -9,7 +10,7 @@ export default async function signUp(userData, navigation) {
         });
 
         const data = await response.json();
-
+        console.log(response);
         if (response.ok) {
             if (typeof data === 'boolean' && data === true) {
                 // Handle successful registration
