@@ -3,7 +3,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AccountScreen from '../ScreenView/AccountScreen';
-import ScheduleScreen from '../ScreenView/ScheduleScreen';
+import TripScreen from '../ScreenView/TripScreen';
 import ScanScreen from '../ScreenView/ScanScreen';
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ const DriverTab = () => {
         >
             <Tab.Screen
                 name="Schedule"
-                component={ScheduleScreen}
+                component={TripScreen}
                 options={{
                     tabBarLabel: 'Trip',
                     tabBarIcon: ({ color, size }) => (

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../ScreenView/HomeScreen';
 
 import ScanScreen from '../ScreenView/ScanScreen';
-import ChildScreen from '../ScreenView/ChildScreen';
+import ScheduleScreen from '../ScreenView/ScheduleScreen';
 import AccountStack from './AccountStack';
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +37,7 @@ const TabNavigator = () => {
             />
             <Tab.Screen
                 name="Child"
-                component={ChildScreen}
+                component={ScheduleScreen}
                 options={{
                     tabBarLabel: 'Child',
                     tabBarIcon: ({ color, size }) => (

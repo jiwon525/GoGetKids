@@ -7,12 +7,7 @@ import {
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
 
-
 const HomeScreen = ({ navigation }) => {
-
-    const navigateToChildScreen = () => {
-        navigation.navigate('Child');
-    };
     const cardData = {
         name: 'Rachel Yeo',
         status: 'In School',
@@ -31,8 +26,8 @@ const HomeScreen = ({ navigation }) => {
         <StyledContainer>
             <ProfileTop name="Home" />
             <InnerContainer>
-                <Card {...cardData} onPress={navigateToChildScreen}></Card>
-                <Card {...cardData2} onPress={navigateToChildScreen}></Card>
+                <Card {...cardData} onPress={() => navigation.navigate("Child")}></Card>
+                <Card {...cardData2} onPress={() => navigation.navigate("Child")}></Card>
             </InnerContainer>
         </StyledContainer>
     );

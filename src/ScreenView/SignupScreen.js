@@ -11,32 +11,34 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import signUp from '../components/schema'
 
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
-    const signUp = async (userData) => {
+
+    const handleSignUp = async (values) => {
         try {
-            const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/signUp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                navigation.navigate("Login");
+            if (values.password !== values.confirmPassword) {
+                setFieldError('confirmPassword', 'Passwords do not match');
             } else {
-                console.error('Error registering user', data);
+                const userData = {
+                    email: values.email,
+                    firstName: values.FName,
+                    lastName: values.LName,
+                    password: values.password,
+                    phoneNum: values.phoneNum,
+                    role: "parent"
+                };
+                await signUp(userData, navigation);
             }
         } catch (error) {
             console.error('Error:', error);
-            // Handle network or other errors
+            // Handle error
         }
     };
+
+
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -47,14 +49,7 @@ SignUpScreen = ({ navigation }) => {
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
-                        onSubmit={(values, { setFieldError }) => {
-                            if (values.password !== values.confirmPassword) {
-                                setFieldError('confirmPassword', 'Passwords do not match');
-                            } else {
-                                const userData = [values.email, values.FName, values.LName, values.password, values.phoneNum]
-                                signUp * (userData)
-                            }
-                        }}
+                        onSubmit={handleSignUp}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
                             <StyledFormArea>
@@ -118,13 +113,14 @@ SignUpScreen = ({ navigation }) => {
                                     setHidePassword={setHideConfirmPassword} f
                                 />
                                 <MyTextInput
-                                    label="Phone Number"
+                                    label="Phone Number (no spacing)"
                                     icon="number"
-                                    placeholder="1234 1234"
+                                    placeholder="12341234"
                                     placeholderTextColor={Colors.darkLight}
                                     onChangeText={handleChange('phoneNum')}
                                     onBlur={handleBlur('phoneNum')}
                                     value={values.phoneNum}
+                                    keyboardType="numeric"
                                 />
                                 <MsgBox>...</MsgBox>
                                 <StyledButton onPress={handleSubmit}>
@@ -168,18 +164,6 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
     );
 };
 
-const SignUpTop = () => {
-    return (
-        <View style={styles.viewStyle}>
-            <AlignRow>
-                <BackIcon>
-                    <AntDesign name="arrowleft" size={24} color="black" />
-                </BackIcon>
-                <PageTitle>Home</PageTitle>
-            </AlignRow>
-        </View>
-    );
-};
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
