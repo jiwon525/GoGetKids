@@ -2,6 +2,6 @@
     "enabled": false,
     "mongo_service_name": "mongodb-atlas",
     "database_name": "GoGetKids",
-    "collection_name": "userdata",
+    "collection_name": "users",
     "user_id_field": "_id"
 }
