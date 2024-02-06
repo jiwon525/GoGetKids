@@ -8,7 +8,7 @@ import DriverStack from './src/navigators/DriverStack'
 
 export default function App() {
   return (
-    <TestS />
+    <RootStack />
 
   );
 };
