@@ -1,3 +1,5 @@
+
+
 export default async function signUp(userData, navigation) {
     try {
         const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/signUp', {
@@ -11,9 +13,13 @@ export default async function signUp(userData, navigation) {
         const data = await response.json();
 
         if (response.ok) {
-            navigation.navigate("Login");
+            if (data.error) {
+                console.error('Error registering user:', data.error);
+            } else {
+                navigation.navigate("Login");
+            }
         } else {
-            console.error('Error registering user', data);
+            console.error('Error registering user:', data);
         }
     } catch (error) {
         console.error('Error:', error);
