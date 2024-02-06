@@ -10,15 +10,7 @@ exports = async function(payload) {
       school_name,
       company_name
     } = payload;
-
-    // Call the email/password authentication function
-    const authenticationResult = await context.functions.execute("authentication", { email, password });
     
-    // Check if authentication was successful
-    if (!authenticationResult) {
-      return { error: "Error registering user: Email/password authentication failed" };
-    }
-
     // Hash the password
     const saltRounds = 10;
     const hashedPassword = await context.functions.execute(
