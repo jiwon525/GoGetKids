@@ -1,0 +1,26 @@
+{
+    "title": "class",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "class_level": {
+            "bsonType": "string"
+        },
+        "class_name": {
+            "bsonType": "string"
+        },
+        "school_name": {
+            "bsonType": "string"
+        },
+        "teacherid": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "class_name",
+        "school_name",
+        "teacherid"
+    ]
+}

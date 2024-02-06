@@ -1,0 +1,41 @@
+{
+    "title": "user",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "company_name": {
+            "bsonType": "string"
+        },
+        "email": {
+            "bsonType": "string"
+        },
+        "firstName": {
+            "bsonType": "string"
+        },
+        "lastName": {
+            "bsonType": "string"
+        },
+        "password": {
+            "bsonType": "string"
+        },
+        "phoneNum": {
+            "bsonType": "string"
+        },
+        "role": {
+            "bsonType": "string"
+        },
+        "school_name": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "email",
+        "firstName",
+        "lastName",
+        "password",
+        "phoneNum",
+        "role"
+    ]
+}
