@@ -28,5 +28,10 @@
         "name": "bcryptCompare",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "authentication",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]

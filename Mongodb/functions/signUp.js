@@ -11,6 +11,14 @@ exports = async function(payload) {
       company_name
     } = payload;
 
+    // Call the email/password authentication function
+    const authenticationResult = await context.functions.execute("authentication", { email, password });
+    
+    // Check if authentication was successful
+    if (!authenticationResult) {
+      return { error: "Error registering user: Email/password authentication failed" };
+    }
+
     // Hash the password
     const saltRounds = 10;
     const hashedPassword = await context.functions.execute(
@@ -32,8 +40,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      school_name: (role === "teacher" || "schooladmin") ? school_name : undefined,
-      company_name: (role === "driver" || "transportadmin") ? company_name : undefined
+      school_name: (role === "teacher" || role === "schooladmin") ? school_name : undefined,
+      company_name: (role === "driver" || role === "transportadmin") ? company_name : undefined
     };
 
     // Connect to MongoDB and insert the user
