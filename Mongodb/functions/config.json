@@ -12,6 +12,7 @@
     {
         "name": "signUp",
         "private": false,
+        "run_as_system": true,
         "disable_arg_logs": true
     },
     {
@@ -26,11 +27,6 @@
     },
     {
         "name": "bcryptCompare",
-        "private": false,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "addData",
         "private": false,
         "disable_arg_logs": true
     }
