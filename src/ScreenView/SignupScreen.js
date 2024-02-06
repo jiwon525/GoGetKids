@@ -13,6 +13,7 @@ import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import signUp from '../components/schema'
 
+
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
