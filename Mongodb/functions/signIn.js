@@ -1,4 +1,4 @@
-exports = async function(payload) {
+exports = async function (payload) {
   try {
     const {
       email,
@@ -23,9 +23,10 @@ exports = async function(payload) {
     );
 
     if (passwordMatch) {
+
       // Passwords match, user is successfully signed in
-      const uid = await context.user.id;
-      return { uid };
+      //returns the external user id which is email.
+      return user.email;
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
