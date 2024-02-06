@@ -32,8 +32,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      schoolID: role === "teacher" ? schoolID : undefined,
-      companyID: role === "driver" ? companyID : undefined
+      schoolID: (role === "teacher" || "schooladmin") ? schoolID : undefined,
+      companyID: (role === "driver" || "transportadmin") ? companyID : undefined
     };
 
     // Connect to MongoDB and insert the user
@@ -43,10 +43,10 @@ exports = async function(payload) {
       .collection("users")
       .insertOne(user);
 
-    // Respond with success or any other relevant information
-    return { message: "User registered successfully", user };
+    // Return true if user is successfully inserted, false if not
+    return result.insertedId ? true : false;
   } catch (error) {
     console.error("Error registering user:", error);
-    return { error: "Internal server error" };
+    return false; // Return false in case of any errors
   }
 };
