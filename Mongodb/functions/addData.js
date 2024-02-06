@@ -1,21 +1,51 @@
 exports = async function(payload) {
-  const { email, password } = payload;
-  
-  const mongodb = context.services.get("mongodb-atlas");
-  await app.emailPasswordAuth.registerUser({ email, password });
-  
   try {
-    // Register user
-    const registrationResult = await auth.register({ email, password });
+    const {
+      email,
+      firstName,
+      lastName,
+      password,
+      phoneNum,
+      role,
+      school_name,
+      company_name
+    } = payload;
     
-    // Log in the user if registration is successful
-    if (registrationResult.success) {
-      await auth.login(email, password);
+    // Hash the password
+    const saltRounds = 10;
+    const hashedPassword = await context.functions.execute(
+      "bcryptHash",
+      password,
+      saltRounds
+    );
+
+    // Check if hashing was successful
+    if (!hashedPassword) {
+      return { error: "Error hashing password" };
     }
-    
-    return registrationResult.success;
+
+    // Construct user object based on role
+    const user = {
+      email,
+      firstName,
+      lastName,
+      password: hashedPassword,
+      phoneNum,
+      role,
+      school_name: (role === "teacher" || role === "schooladmin") ? school_name : undefined,
+      company_name: (role === "driver" || role === "transportadmin") ? company_name : undefined
+    };
+
+    // Connect to MongoDB and insert the user
+    const result = await context.services
+      .get("mongodb-atlas")
+      .db("GoGetKids")
+      .collection("users")
+      .insertOne(user);
+
+    return result.insertedId ? true : false;
   } catch (error) {
-    console.error("Error registering or logging in user:", error);
-    return false;
+    console.error("Error registering user:", error);
+    return false; // Return false in case of any errors
   }
 };
