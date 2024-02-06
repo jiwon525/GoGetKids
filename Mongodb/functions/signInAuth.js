@@ -20,7 +20,8 @@ exports = async function(email, password) {
 
     if (passwordMatch) {
       // Passwords match, user is successfully signed in
-      return { userId: user._id.toString() };
+      const uid = await context.user.id
+      return { uid };
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };

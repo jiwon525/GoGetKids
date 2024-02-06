@@ -21,7 +21,7 @@
         "disable_arg_logs": true
     },
     {
-        "name": "signIn",
+        "name": "signInAuth",
         "private": false,
         "disable_arg_logs": true
     },
