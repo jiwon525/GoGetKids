@@ -1,7 +1,8 @@
 exports = async function(payload) {
   try {
     const { email, password } = payload;
-
+    console.log(email);
+    console.log(password);
     // Fetch user from the database based on email
     const user = await context.services
       .get("mongodb-atlas")
@@ -13,6 +14,7 @@ exports = async function(payload) {
       return { error: "User not found" };
     }
     // Compare provided password with stored hashed password
+
     const passwordMatch = await context.functions.execute(
       "bcryptCompare",
       password,
@@ -21,7 +23,7 @@ exports = async function(payload) {
 
     if (passwordMatch) {
       // Passwords match, user is successfully signed in
-      return { message: "User signed in successfully", user };
+      return user._id;
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
