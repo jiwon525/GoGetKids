@@ -49,8 +49,7 @@
     "react-native-url-polyfill": "^2.0.0",
     "realm": "^12.6.0",
     "styled-components": "^6.1.8",
-    "uuid": "^7.0.3",
-    "vercel": "^32.3.0"
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

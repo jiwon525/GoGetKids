@@ -25,9 +25,13 @@ SignUpScreen = ({ navigation }) => {
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
-                        onSubmit={(values) => {
-                            console.log(values);
-                            navigation.navigate("Home")
+                        onSubmit={(values, { setFieldError }) => {
+                            if (values.password !== values.confirmPassword) {
+                                setFieldError('confirmPassword', 'Passwords do not match');
+                            } else {
+                                console.log(values);
+                                navigation.navigate("Home");
+                            }
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
