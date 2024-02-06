@@ -14,7 +14,7 @@
         "type": "custom-function",
         "disabled": false,
         "config": {
-            "authFunctionName": "signUp"
+            "authFunctionName": "signIn"
         }
     },
     "local-userpass": {
