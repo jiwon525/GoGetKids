@@ -1,4 +1,3 @@
-// MongoDB Stitch function for user registration
 exports = async function(payload) {
   try {
     const {
@@ -19,6 +18,11 @@ exports = async function(payload) {
       password,
       saltRounds
     );
+
+    // Check if hashing was successful
+    if (!hashedPassword) {
+      return { error: "Error hashing password" };
+    }
 
     // Construct user object based on role
     const user = {

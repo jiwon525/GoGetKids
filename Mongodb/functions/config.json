@@ -16,6 +16,16 @@
     },
     {
         "name": "bcryptHash",
+        "private": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "signIn",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "bcryptCompare",
         "private": false,
         "disable_arg_logs": true
     }
