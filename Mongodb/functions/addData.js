@@ -1,14 +1,16 @@
 exports = async function(payload) {
   const { email, password } = payload;
-  const { logIn, register } = context.services.get("mongodb-atlas").app("gogetkidsmobile-csapx").useEmailPasswordAuth();
+  
+  const mongodb = context.services.get("mongodb-atlas");
+  await app.emailPasswordAuth.registerUser({ email, password });
   
   try {
     // Register user
-    const registrationResult = await register({ email, password });
+    const registrationResult = await auth.register({ email, password });
     
     // Log in the user if registration is successful
     if (registrationResult.success) {
-      await logIn({ email, password });
+      await auth.login(email, password);
     }
     
     return registrationResult.success;

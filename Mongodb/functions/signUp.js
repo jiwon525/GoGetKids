@@ -10,14 +10,11 @@ exports = async function(payload) {
       school_name,
       company_name
     } = payload;
-
-    // Call the email/password authentication function
-    const authenticationResult = await context.functions.execute("authentication", { email, password });
     
-    // Check if authentication was successful
-    if (!authenticationResult) {
-      return { error: "Error registering user: Email/password authentication failed" };
-    }
+    
+      const app = await context.services.get("gogetkidsmobile-csapx");
+      await app.emailPasswordAuth.registerUser({ email, password });
+      app.emailPasswordAuth.logIn({email, password})
 
     // Hash the password
     const saltRounds = 10;
