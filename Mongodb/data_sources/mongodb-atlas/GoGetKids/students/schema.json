@@ -7,7 +7,7 @@
         "address": {
             "bsonType": "string"
         },
-        "class_id": {
+        "class_name": {
             "bsonType": "string"
         },
         "dob": {
@@ -28,7 +28,7 @@
         "postcode": {
             "bsonType": "int"
         },
-        "schoolid": {
+        "school_name": {
             "bsonType": "string"
         },
         "status": {
@@ -44,14 +44,14 @@
     "required": [
         "_id",
         "address",
-        "class_id",
+        "class_name",
         "dob",
         "firstname",
         "gender",
         "lastname",
         "parent_id",
         "postcode",
-        "schoolid",
+        "school_name",
         "status",
         "studentid",
         "zone"

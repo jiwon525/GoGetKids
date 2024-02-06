@@ -1,0 +1,30 @@
+{
+    "title": "schedule",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "date": {
+            "bsonType": "date"
+        },
+        "dismissal_time": {
+            "bsonType": "date"
+        },
+        "pickup_time": {
+            "bsonType": "date"
+        },
+        "studentid": {
+            "bsonType": "string"
+        },
+        "transport_type": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "date",
+        "dismissal_time",
+        "studentid",
+        "transport_type"
+    ]
+}
