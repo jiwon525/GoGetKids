@@ -43,10 +43,9 @@ exports = async function(payload) {
       .collection("users")
       .insertOne(user);
 
-    // Return true if user is successfully inserted, false if not
-    return result.insertedId ? true : false;
+    return result.insertedId.toString();
   } catch (error) {
     console.error("Error registering user:", error);
-    return false; // Return false in case of any errors
+    return ""; // Return false in case of any errors
   }
 };

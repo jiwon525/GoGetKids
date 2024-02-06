@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "mongo_service_name": "mongodb-atlas",
     "database_name": "GoGetKids",
     "collection_name": "loginuserdata",
