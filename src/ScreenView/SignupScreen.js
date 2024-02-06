@@ -11,8 +11,8 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import signUp from '../components/schema'
-
+import { signUp, Register } from '../components/schema'
+import { AppProvider } from '@realm/react';
 
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -47,102 +47,104 @@ SignUpScreen = ({ navigation }) => {
                 name="Sign Up" />
             <ScrollView
                 showsVerticalScrollIndicator={false}>
-                <InnerContainer>
-                    <Formik
-                        initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
-                        onSubmit={handleSignUp}
-                    >
-                        {({ handleChange, handleBlur, handleSubmit, values }) => (
-                            <StyledFormArea>
-                                <View style={{ flexDirection: 'row' }}>
+                <AppProvider id={gogetkidsmobile - csapx}>
+                    <InnerContainer>
+                        <Formik
+                            initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
+                            onSubmit={handleSignUp}
+                        >
+                            {({ handleChange, handleBlur, handleSubmit, values }) => (
+                                <StyledFormArea>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <MyTextInput
+                                            label="First Name"
+                                            icon="person"
+                                            placeholder="John"
+                                            placeholderTextColor={Colors.darkLight}
+                                            onChangeText={handleChange('FName')}
+                                            onBlur={handleBlur('FName')}
+                                            value={values.FName}
+                                            style={{ flex: 1, marginRight: 10 }}
+                                        />
+                                        <MyTextInput
+                                            label="Last Name"
+                                            icon="person"
+                                            placeholder="Doe"
+                                            placeholderTextColor={Colors.darkLight}
+                                            onChangeText={handleChange('LName')}
+                                            onBlur={handleBlur('LName')}
+                                            value={values.LName}
+                                            style={{ flex: 1, marginLeft: 10 }}
+                                        />
+                                    </View>
                                     <MyTextInput
-                                        label="First Name"
-                                        icon="person"
-                                        placeholder="John"
+                                        label="Email address"
+                                        icon="mail"
+                                        placeholder="example@gmail.com"
                                         placeholderTextColor={Colors.darkLight}
-                                        onChangeText={handleChange('FName')}
-                                        onBlur={handleBlur('FName')}
-                                        value={values.FName}
-                                        style={{ flex: 1, marginRight: 10 }}
+                                        onChangeText={handleChange('email')}
+                                        onBlur={handleBlur('email')}
+                                        value={values.email}
+                                        keyboardType="email-address"
+                                    />
+
+                                    <MyTextInput
+                                        label="Password"
+                                        icon="lock"
+                                        placeholder="****"
+                                        placeholderTextColor={Colors.darkLight}
+                                        onChangeText={handleChange('password')}
+                                        onBlur={handleBlur('password')}
+                                        value={values.password}
+                                        secureTextEntry={hidePassword}
+                                        isPassword={true}
+                                        hidePassword={hidePassword}
+                                        setHidePassword={setHidePassword}
                                     />
                                     <MyTextInput
-                                        label="Last Name"
-                                        icon="person"
-                                        placeholder="Doe"
+                                        label="Confirm Password"
+                                        icon="lock"
+                                        placeholder="****"
                                         placeholderTextColor={Colors.darkLight}
-                                        onChangeText={handleChange('LName')}
-                                        onBlur={handleBlur('LName')}
-                                        value={values.LName}
-                                        style={{ flex: 1, marginLeft: 10 }}
+                                        onChangeText={handleChange('confirmPassword')}
+                                        onBlur={handleBlur('confirmPassword')}
+                                        value={values.confirmPassword}
+                                        secureTextEntry={hideConfirmPassword}
+                                        isPassword={true}
+                                        hidePassword={hideConfirmPassword}
+                                        setHidePassword={setHideConfirmPassword} f
                                     />
-                                </View>
-                                <MyTextInput
-                                    label="Email address"
-                                    icon="mail"
-                                    placeholder="example@gmail.com"
-                                    placeholderTextColor={Colors.darkLight}
-                                    onChangeText={handleChange('email')}
-                                    onBlur={handleBlur('email')}
-                                    value={values.email}
-                                    keyboardType="email-address"
-                                />
+                                    <MyTextInput
+                                        label="Phone Number (no spacing)"
+                                        icon="number"
+                                        placeholder="12341234"
+                                        placeholderTextColor={Colors.darkLight}
+                                        onChangeText={handleChange('phoneNum')}
+                                        onBlur={handleBlur('phoneNum')}
+                                        value={values.phoneNum}
+                                        keyboardType="numeric"
+                                    />
+                                    <MsgBox>...</MsgBox>
+                                    <StyledButton onPress={handleSubmit}>
+                                        <ButtonText>
+                                            Sign Up
+                                        </ButtonText>
+                                    </StyledButton>
+                                    <Line />
+                                    <ExtraView>
+                                        <ExtraText>Already have an account? </ExtraText>
+                                        <TextLink onPress={() => navigation.navigate("Login")}>
+                                            <TextLinkContent>
+                                                Login
+                                            </TextLinkContent>
+                                        </TextLink>
+                                    </ExtraView>
 
-                                <MyTextInput
-                                    label="Password"
-                                    icon="lock"
-                                    placeholder="****"
-                                    placeholderTextColor={Colors.darkLight}
-                                    onChangeText={handleChange('password')}
-                                    onBlur={handleBlur('password')}
-                                    value={values.password}
-                                    secureTextEntry={hidePassword}
-                                    isPassword={true}
-                                    hidePassword={hidePassword}
-                                    setHidePassword={setHidePassword}
-                                />
-                                <MyTextInput
-                                    label="Confirm Password"
-                                    icon="lock"
-                                    placeholder="****"
-                                    placeholderTextColor={Colors.darkLight}
-                                    onChangeText={handleChange('confirmPassword')}
-                                    onBlur={handleBlur('confirmPassword')}
-                                    value={values.confirmPassword}
-                                    secureTextEntry={hideConfirmPassword}
-                                    isPassword={true}
-                                    hidePassword={hideConfirmPassword}
-                                    setHidePassword={setHideConfirmPassword} f
-                                />
-                                <MyTextInput
-                                    label="Phone Number (no spacing)"
-                                    icon="number"
-                                    placeholder="12341234"
-                                    placeholderTextColor={Colors.darkLight}
-                                    onChangeText={handleChange('phoneNum')}
-                                    onBlur={handleBlur('phoneNum')}
-                                    value={values.phoneNum}
-                                    keyboardType="numeric"
-                                />
-                                <MsgBox>...</MsgBox>
-                                <StyledButton onPress={handleSubmit}>
-                                    <ButtonText>
-                                        Sign Up
-                                    </ButtonText>
-                                </StyledButton>
-                                <Line />
-                                <ExtraView>
-                                    <ExtraText>Already have an account? </ExtraText>
-                                    <TextLink onPress={() => navigation.navigate("Login")}>
-                                        <TextLinkContent>
-                                            Login
-                                        </TextLinkContent>
-                                    </TextLink>
-                                </ExtraView>
-
-                            </StyledFormArea>
-                        )}
-                    </Formik>
-                </InnerContainer>
+                                </StyledFormArea>
+                            )}
+                        </Formik>
+                    </InnerContainer>
+                </AppProvider>
             </ScrollView>
         </StyledContainer>
     );
