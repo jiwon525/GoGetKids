@@ -42,8 +42,16 @@ exports = async function(payload) {
       .db("GoGetKids")
       .collection("users")
       .insertOne(user);
-
-    return result.insertedId ? true : false;
+      
+    if (result) {
+      await context.functions.execute(
+      "signIn",
+      email,
+      password
+      );
+    }
+    
+    return;
   } catch (error) {
     console.error("Error registering user:", error);
     return false; // Return false in case of any errors
