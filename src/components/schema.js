@@ -1,4 +1,4 @@
-export default async function signUp(userData, navigation) {
+export async function signUp(userData, navigation) {
     try {
         console.log(userData);
         Register(userData.email, userData.password);
@@ -29,7 +29,7 @@ export default async function signUp(userData, navigation) {
 };
 
 
-export default async function Register({ email, password }) {
+export async function Register({ email, password }) {
     const { result, register } = useEmailPasswordAuth();
     register({ email, password });
     // Log in the user after successful registration
@@ -39,7 +39,7 @@ export default async function Register({ email, password }) {
     }
 };
 
-export default async function Login({ email, password }) {
+export async function Login({ email, password }) {
     const { logIn } = useEmailPasswordAuth();
     logIn({ email, password });
 }
