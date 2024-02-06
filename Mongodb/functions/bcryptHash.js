@@ -1,17 +1,17 @@
-// MongoDB Stitch function for scrypt hashing
+// MongoDB Stitch function for bcryptjs hashing
 exports = async function(password) {
   try {
-    const scrypt = require('scrypt');
+    const bcrypt = require('bcryptjs');
 
-    // Parameters for scrypt hashing
-    const scryptParams = scrypt.paramsSync(0.1);
+    // Generate a salt
+    const salt = bcrypt.genSaltSync(10);
 
     // Hash the password
-    const hashedPassword = scrypt.kdfSync(password, scryptParams);
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
-    return hashedPassword.toString('hex');
+    return hashedPassword;
   } catch (error) {
     console.error('Error hashing password:', error);
-    return { error: 'Internal server error - scryptHash' };
+    return { error: 'Internal server error - bcryptjsHash' };
   }
 };

@@ -16,7 +16,7 @@
     },
     {
         "name": "bcryptHash",
-        "private": false,
+        "private": true,
         "disable_arg_logs": true
     }
 ]
