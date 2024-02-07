@@ -21,12 +21,27 @@
         "disable_arg_logs": true
     },
     {
-        "name": "signInAuth",
+        "name": "signIn",
         "private": false,
         "disable_arg_logs": true
     },
     {
         "name": "bcryptCompare",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "signInAuth",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "onNewCustomFuncUser",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "Function_0",
         "private": false,
         "disable_arg_logs": true
     }

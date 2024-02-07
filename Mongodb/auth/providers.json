@@ -20,7 +20,7 @@
     "local-userpass": {
         "name": "local-userpass",
         "type": "local-userpass",
-        "disabled": false,
+        "disabled": true,
         "config": {
             "autoConfirm": true,
             "resetFunctionName": "resetFunc",
