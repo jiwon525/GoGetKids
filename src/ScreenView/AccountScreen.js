@@ -8,7 +8,11 @@ import {
 import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Text } from "react-native";
 
+
+
 const AccountScreen = ({ navigation }) => {
+
+
     return (
         <StyledContainer>
             <LoginTab>
@@ -31,14 +35,12 @@ const AccountScreen = ({ navigation }) => {
                         Change Password
                     </ButtonText>
                 </StyledButton>
-                <StyledButton>
+                <StyledButton onPress={() => navigation.navigate("Login")}>
                     <ButtonText>
                         Log Out
                     </ButtonText>
                 </StyledButton>
             </BottomContainer>
-
-
         </StyledContainer>
     );
 };

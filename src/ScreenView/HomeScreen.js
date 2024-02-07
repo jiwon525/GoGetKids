@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyledContainer,
     InnerContainer,
@@ -7,16 +7,19 @@ import {
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
 
+
 const HomeScreen = ({ navigation }) => {
     const cardData = {
-        name: 'Rachel Yeo',
+        firstname: 'Rachel',
+        lastname: 'Yeo',
         status: 'In School',
         school: 'Methodist Primary School',
         grade: 'Class 1',
         studentID: 'S2301234',
     };
     const cardData2 = {
-        name: 'Testing 2',
+        firstname: 'test',
+        lastname: 'test',
         status: 'In School',
         school: 'Morning Primary School',
         grade: 'Class 2',

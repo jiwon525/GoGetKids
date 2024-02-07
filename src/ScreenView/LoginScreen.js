@@ -13,38 +13,35 @@ import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import axios from 'axios';
 
 
-
 LoginScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
-    /*
-        const handleLogin = async (values) => {
-            try {
-                const url = 'https://gogetkids-dashboard.vercel.app/api/login'
-                const response = await axios.post(url, {
-    
-                    email: values.email,
-                    password: values.password, //need to hash
-                    role: values.role,
-                });
-    
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        // Authentication successful, navigate to the respective screen
-                        navigation.navigate("Home", { role: values.role });
-                    } else {
-                        // Authentication failed, handle error (e.g., show error message)
-                        Alert.alert('Authentication Failed', result.message);
-                    }
-                } else {
-                    // Authentication failed, handle error (e.g., show error message)
-                    Alert.alert('Authentication Failed', 'Please check your credentials.');
-                }
-            } catch (error) {
-                console.error('Error during authentication:', error);
+    /*const [data, setData] = useState({
+        email: "",
+        password: "",
+    });
+    const [error, setError] = useState("");
+    const handleSignIn = async (values) => {
+        try {
+            const userData = {
+                email: values.email,
+                password: values.password,
+            };
+            setData(userData);
+            const url = "http://localhost:8080/api/auth";
+            const { data: res } = await axios.post(url, data);
+            localStorage.setItem("token", res.data);
+            window.location = "/";
+            navigation.navigate("Home");
+        } catch (error) {
+            if (error.response &&
+                error.response.status >= 400
+                && error.response.status <= 500) {
+                setError(error.response.data.message)
             }
-        };*/
-
+            console.error('Error:', error);
+            // Handle error
+        }
+    };*/
     return (
         <StyledContainer>
             <StatusBar style="dark" />

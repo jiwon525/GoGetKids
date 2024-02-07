@@ -43,3 +43,4 @@ export async function Login({ email, password }) {
     const { logIn } = useEmailPasswordAuth();
     logIn({ email, password });
 }
+

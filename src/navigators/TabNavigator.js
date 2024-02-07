@@ -2,10 +2,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import HomeScreen from '../ScreenView/HomeScreen';
-
+import UpdatesScreen from '../ScreenView/UpdatesScreen';
+import ChildStack from './ChildStack';
 import ScanScreen from '../ScreenView/ScanScreen';
-import ScheduleScreen from '../ScreenView/ScheduleScreen';
 import AccountStack from './AccountStack';
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +26,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={HomeScreen}
+                component={ChildStack}
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
@@ -36,8 +35,8 @@ const TabNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name="Child"
-                component={ScheduleScreen}
+                name="Updates"
+                component={UpdatesScreen}
                 options={{
                     tabBarLabel: 'Child',
                     tabBarIcon: ({ color, size }) => (

@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../ScreenView/AccountScreen';
-import ChildScreen from '../ScreenView/ChangePasswordScreen';
+import HomeScreen from '../ScreenView/HomeScreen';
+import ScheduleScreen from '../ScreenView/ScheduleScreen';
 
 const Stack = createStackNavigator();
 
-const AccountStackNavigator = () => (
+const ChildStack = () => (
     <Stack.Navigator
         screenOptions={{
             headerStyle: {
@@ -18,8 +18,8 @@ const AccountStackNavigator = () => (
         }}
     >
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Child" component={ChildScreen} />
+        <Stack.Screen name="Child" component={ScheduleScreen} />
     </Stack.Navigator>
 );
 
-export default AccountStackNavigator;
+export default ChildStack;

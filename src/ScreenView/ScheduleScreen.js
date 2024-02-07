@@ -8,62 +8,45 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import ProfileTop from '../components/ProfileTop';
 
-
-const data = [
-    {
-        id: 1,
-        date: '12/1/2024',
-        name: 'Rachel Yeo',
-        school: 'Methodist Primary School',
-        studentclass: 'Class 1',
-        status: 'In School',
-        studentid: 'S2301234',
-        transporttype: 'Bus',
-        pickuptime: '7:45 AM',
-        dismissaltime: '2:00 PM',
-    },
-    {
-        id: 2,
-        date: '12/1/2024',
-        name: 'Chaim Yeo',
-        school: 'Methodist Primary School',
-        studentclass: 'Class 2',
-        status: 'In School',
-        studentid: 'S2301235',
-        transporttype: 'Bus',
-        pickuptime: '7:45 AM',
-        dismissaltime: '2:00 PM',
-    },
-];
+const data =
+{
+    id: 1,
+    date: '12/1/2024',
+    name: 'Rachel Yeo',
+    school: 'Methodist Primary School',
+    studentclass: 'Class 1',
+    status: 'In School',
+    studentid: 'S2301234',
+    transporttype: 'Bus',
+    pickuptime: '7:45 AM',
+    dismissaltime: '2:00 PM',
+};
 
 
 const ScheduleScreen = ({ }) => {
+
     return (
         <StyledContainer>
-            <ProfileTop name="name of student" />
+            <ProfileTop name="Today's Schedule" />
+            <View style={styles.placeholderInset}>
+                <PageTitle>{data.name}</PageTitle>
+                <ExtraText>{data.date}</ExtraText>
+                <ExtraText>{data.school}</ExtraText>
+                <ExtraText>{data.status}</ExtraText>
+                <Line></Line>
+                <StyledScheduleView>
+                    <Ionicons name="bus-outline" size={30} color="black" />
+                    <StyledContainer>
+                        <NormText>{data.pickuptime} - {data.dismissaltime}</NormText>
+                    </StyledContainer>
+                </StyledScheduleView>
+                <Line></Line>
+                <StyledContainer>
+                    <NormText>{data.studentid} {data.studentclass} {data.transporttype}</NormText>
+                </StyledContainer>
+            </View>
 
         </StyledContainer>
-    );
-};
-const SwipeCard = ({ date, name, school, studentclass, status, studentid, transporttype, pickuptime, dismissaltime }) => {
-    return (
-        <View style={styles.placeholderInset}>
-            <PageTitle>{name}</PageTitle>
-            <ExtraText>{date}</ExtraText>
-            <ExtraText>{school}</ExtraText>
-            <ExtraText>{status}</ExtraText>
-            <Line></Line>
-            <StyledScheduleView>
-                <Ionicons name="bus-outline" size={30} color="black" />
-                <StyledContainer>
-                    <NormText>{pickuptime} - {dismissaltime}</NormText>
-                </StyledContainer>
-            </StyledScheduleView>
-            <Line></Line>
-            <StyledContainer>
-                <NormText>{studentid} {studentclass} {transporttype}</NormText>
-            </StyledContainer>
-        </View>
     );
 };
 

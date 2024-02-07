@@ -5,7 +5,7 @@ const Testscreens = () => {
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        // Replace 'YOUR_FUNCTION_ENDPOINT' with the actual endpoint URL
+
         const functionEndpoint = 'https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents';
 
         // Make a request to the MongoDB Realm function

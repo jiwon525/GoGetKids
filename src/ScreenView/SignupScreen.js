@@ -11,12 +11,22 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import { signUp, Register } from '../components/schema'
+import axios from 'axios';
 
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
-
+    /*
+    const [data, setData] = useState({
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: "",
+        phoneNum: "",
+        role: ""
+    });
+    const [error, setError] = useState("");
+    //onSubmit={handleSignUp}
     const handleSignUp = async (values) => {
         try {
             if (values.password !== values.confirmPassword) {
@@ -30,14 +40,20 @@ SignUpScreen = ({ navigation }) => {
                     phoneNum: values.phoneNum,
                     role: "parent"
                 };
-                await signUp(userData, navigation);
+                setData(userData);
+                const url = "http://localhost:8080/api/users";
+                const { data: res } = await axios.post(url, data);
+                console.log(res.message);
+                navigation.navigate("Login");
             }
         } catch (error) {
-            console.error('Error:', error);
-            // Handle error
+            if (error.response &&
+                error.response.status >= 400
+                && error.response.status <= 500) {
+                setError(error.response.data.message)
+            }
         }
-    };
-
+    };*/
 
     return (
         <StyledContainer>
@@ -49,7 +65,10 @@ SignUpScreen = ({ navigation }) => {
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
-                        onSubmit={handleSignUp}
+
+                        onSubmit={(values) => {
+                            console.log(values);
+                        }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
                             <StyledFormArea>
