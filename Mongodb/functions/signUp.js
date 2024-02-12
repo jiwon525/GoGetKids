@@ -28,8 +28,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      school_name: school_name,
-      company_name: company_name
+      school_name,
+      company_name
     };
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
@@ -39,7 +39,7 @@ exports = async function(payload) {
     findUser = await collection.findOne({email});
     if(findUser === null){
       try {
-        const result = await collection.insertOne(user);
+        collection.insertOne(user);
         return true;
       } catch(error) {
         return { error: "Error inserting user into the database" };
