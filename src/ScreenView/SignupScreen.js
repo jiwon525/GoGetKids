@@ -27,7 +27,6 @@ SignUpScreen = ({ navigation }) => {
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
                         onSubmit={(values) => {
-                            console.log(values);
                             if (values.password === values.confirmPassword) {
                                 const userData = {
                                     email: values.email,
