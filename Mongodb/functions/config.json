@@ -44,5 +44,10 @@
         "name": "getParentStudents",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "getUserDetails",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
