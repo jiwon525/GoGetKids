@@ -6,8 +6,10 @@ exports = async function(payload) {
       // Now you can access the user data properties
       const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
       }
+      else{
+        return{error:"payload"+payload.email+payload.firstName+payload.body.Data+userDataString};
+      }
       
-      return{error:"payload"+payload.email+payload.firstName+payload.body.Data+userDataString};
     } catch (error) {
         // Handle any errors that occur during processing
         console.error("Error:", error.message);
