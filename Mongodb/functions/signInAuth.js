@@ -1,31 +1,18 @@
-exports = async function(email, password) {
+exports = async function (payload) {
   try {
-    // Fetch user from the database based on email
-    const user = await context.services
-      .get("mongodb-atlas")
-      .db("GoGetKids")
-      .collection("users")
-      .findOne({ email });
-    // If user not found, return an error
-    if (!user) {
-      return { error: "User not found" };
-    }
-    // Compare provided password with stored hashed password
-
-    const passwordMatch = await context.functions.execute(
-      "bcryptCompare",
+    var body = JSON.parse(payload.body.text());
+    const {
+      email,
       password,
-      user.password
-    );
-
-    if (passwordMatch) {
-      // Passwords match, user is successfully signed in
-      const uid = await context.user.id
-      return { uid };
-    } else {
-      // Passwords do not match, return an error
-      return { error: "Invalid password" };
-    }
+    } = body;
+    const userFromHttp = await context.http.post({
+    url: "https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login",
+    headers: {
+      Authorization: ["Basic bmlja0BleGFtcGxlLmNvbTpQYTU1dzByZA=="],
+    },
+    body: JSON.stringify({ username, password }),
+  });
+  return user.id;
   } catch (error) {
     console.error("Error signing in user:", error);
     return { error: "Internal server error" };
