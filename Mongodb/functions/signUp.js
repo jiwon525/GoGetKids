@@ -1,18 +1,22 @@
 exports = async function(payload) {
-    try {
-      const test = await Buffer.from(payload.body.Data, 'base64').toString('utf-8');
-      if (test){
-        const userData = JSON.parse(userDataString);
-      // Now you can access the user data properties
-      const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
-      }
-      else{
-        return{error:"payload"+payload.email+payload.firstName+payload.body.Data+userDataString};
-      }
+  try {
+    const body = payload && payload.body;
+
+    if (body) {
+      const userDataString = Buffer.from(body, 'base64').toString('utf-8');
+      const userData = JSON.parse(userDataString);
       
-    } catch (error) {
-        // Handle any errors that occur during processing
-        console.error("Error:", error.message);
-        return { error: "Internal server error" };
+      // Now you can access the user data properties
+      const { email, firstName, lastName, password, phoneNum, role } = userData;
+
+      // Proceed with your function logic here
+
+      return { success: true };
+    } else {
+      return { error: "Invalid payload format" };
     }
+  } catch (error) {
+    console.error("Error:", error.message);
+    return { error: "Internal server error" };
+  }
 };
