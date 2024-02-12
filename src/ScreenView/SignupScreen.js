@@ -28,15 +28,11 @@ SignUpScreen = ({ navigation }) => {
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
                         onSubmit={(values) => {
                             if (values.password === values.confirmPassword) {
-                                const userData = {
-                                    email: values.email,
-                                    firstName: values.FName,
-                                    lastName: values.LName,
-                                    password: values.password,
-                                    phoneNum: values.phoneNum,
-                                    role: "parent"
-                                };
-                                signUp(userData, navigation);
+                                signUp(email = values.email,
+                                    firstName = values.FName,
+                                    lastName = values.LName,
+                                    password = values.password,
+                                    phoneNum = values.phoneNum, navigation);
                             } else {
                                 console.log("please enter in the same password");
                             }
