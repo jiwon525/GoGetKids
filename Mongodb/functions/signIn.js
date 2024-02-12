@@ -1,8 +1,5 @@
 exports = async function (payload) {
   try {
-    if (request.body === undefined) {
-      throw new Error(`Request body was not defined.`);
-    }
     const body = JSON.parse(request.body.text());
     const {
       email,
