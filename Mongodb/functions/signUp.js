@@ -12,11 +12,9 @@ exports = async function(payload) {
     } = payload;
     
     // Hash the password
-    const saltRounds = 10;
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
       password,
-      saltRounds
     );
     // Check if hashing was successful
     if (typeof hashedPassword !== 'string' || hashedPassword.length < 30) {
