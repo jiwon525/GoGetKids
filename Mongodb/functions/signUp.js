@@ -31,12 +31,14 @@ exports = async function(payload) {
       school_name,
       company_name
     };
+    console.log(user);
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collName = "users";
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findUser;
     findUser = await collection.findOne({email});
+    console.log(findUser);
     if(!findUser){
       try {
         collection.insertOne(user);
