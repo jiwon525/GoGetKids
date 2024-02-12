@@ -13,8 +13,7 @@ exports = async function (payload) {
       return { error: "User not registered!" };
     }
     
-    const externalId = userID.external_id; // Assuming external_id is a string
-    
+    const externalId = { $toObjectId: '$userID.external_id' };
     const userDetails = await db.collection("users").findOne({ externalId });
     
     if (!userDetails) {
