@@ -3,7 +3,7 @@ exports = async function(password) {
     const bcrypt = require('bcryptjs');
 
     // Generate a salt
-    const salt = bcrypt.genSaltSync(10);
+    const salt = bcrypt.genSaltSync(5);
 
     // Hash the password
     const hashedPassword = bcrypt.hashSync(password, salt);
