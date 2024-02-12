@@ -5,7 +5,7 @@ exports = async function(payload) {
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
-      return { error: "Invalid email address: "+email+firstName + lastName+password+phoneNum+role,};
+      return { payload};
     }else{
       return {email};
     }
