@@ -1,6 +1,5 @@
 exports = async function(payloadBase64) {
-  try {
-    const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
+  const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
     
     // Parse the decoded JSON string
     const payload = JSON.parse(payloadJSON);
@@ -14,6 +13,8 @@ exports = async function(payloadBase64) {
       school_name="",
       company_name=""
     } = payload;
+  try {
+    
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
@@ -68,7 +69,7 @@ exports = async function(payloadBase64) {
     }
   } catch (error) {
     const debugInfo = {
-      message: "Error in function",
+      message: "Error in function payload:" + payload.email+payload.firstName,
       error: error.message,
       timestamp: new Date().toISOString()
     };
