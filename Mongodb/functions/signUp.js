@@ -1,10 +1,12 @@
 exports = async function(payloadBase64) {
-  const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
+ 
+  try {
+    const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
     
-    // Parse the decoded JSON string
+    // Parse the decoded JSON string into a JavaScript object
     const payload = JSON.parse(payloadJSON);
     
-  try {
+    // Destructure properties from the payload object
     const {
       email,
       firstName,
@@ -49,11 +51,12 @@ exports = async function(payloadBase64) {
     const collName = "users";
     const collection = context.services.get(serviceName).db(dbName).collection(collName);
 
-    // Check if user already exists
+     // Check if user already exists
     const existingUser = await collection.findOne({ email });
     if (existingUser) {
       return { error: "User already exists" };
     }
+
     // Insert user into database
     const insertionResult = await collection.insertOne(user);
     if (insertionResult.insertedId) {
@@ -68,11 +71,6 @@ exports = async function(payloadBase64) {
       return { error: "Error inserting user into the database" };
     }
   } catch (error) {
-    const debugInfo = {
-      message: "Error in function payload:" + payload.email+payload.firstName,
-      error: error.message,
-      timestamp: new Date().toISOString()
-    };
-    return { error: "Internal server error", debug: debugInfo  };
+    return { error: "Internal server error" };
   }
 };
