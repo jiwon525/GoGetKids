@@ -14,7 +14,7 @@ exports = async function(payload) {
     // Hash the password
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
-      password,
+      password
     );
     // Check if hashing was successful
     if (typeof hashedPassword !== 'string' || hashedPassword.length < 30) {
