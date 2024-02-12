@@ -17,8 +17,8 @@ exports = async function(payload) {
       password
     );
     // Check if hashing was successful
-    if (typeof hashedPassword !== 'string' || hashedPassword.length < 30) {
-      return { error: "Error hashing password" };
+    if (!hashedPassword) {
+      return { error: "Error at hash func" };
     }
     // Construct user object based on role
     const user = {
