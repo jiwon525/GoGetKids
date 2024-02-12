@@ -56,7 +56,7 @@ exports = async function(payloadBase64) {
     if (existingUser) {
       return { error: "User already exists" };
     }
-
+    return { payload};
     // Insert user into database
     const insertionResult = await collection.insertOne(user);
     if (insertionResult.insertedId) {
