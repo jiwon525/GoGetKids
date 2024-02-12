@@ -24,7 +24,6 @@ exports = async function (payload) {
     );
 
     if (passwordMatch) {
-
       return {
         id: user._id.toString()
       };
