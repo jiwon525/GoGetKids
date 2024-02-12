@@ -2,6 +2,10 @@ exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
     const { email } = body;
+    if (!email) {
+      return { error: "Email is undefined or null" };
+    }
+    
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collName = "students";
@@ -18,4 +22,3 @@ exports = async function (payload) {
     return { error: "Internal server error" + error };
   }
 };
-
