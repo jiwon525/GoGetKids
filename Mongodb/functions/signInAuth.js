@@ -22,11 +22,9 @@ exports = async function (payload) {
         return { error: "User ID not found in response" };
       }
     } else {
-      console.error("Error signing in user:", userFromHttp.body.text());
-      return { error: "Authentication failed" };
+      return { error: "Authentication failed" + userFromHttp.body.text()};
     }
   } catch (error) {
-    console.error("Error signing in user:", error);
     return { error: "Internal server error" };
   }
 };
