@@ -1,5 +1,4 @@
 exports = async function (payload) {
-
   try {
     const body = JSON.parse(payload.body.text());
     const { _id } = body;
@@ -13,13 +12,18 @@ exports = async function (payload) {
     if (!userID) {
       return { error: "User not registered!" };
     }
-    const userDetails = await db.collection("users").findOne({ _id: userID.external_id });
+    
+    const externalId = userID.external_id; // Assuming external_id is a string
+    
+    const userDetails = await db.collection("users").findOne({ _id: externalId });
     
     if (!userDetails) {
-      return { error: "User not in database!" };
+      return { error: "User not in database!" + externalId };
     }
+    
     return { userDetails };
   } catch (error) {
+    console.error("Error finding user:", error);
     return { error: "Internal server error" };
   }
 };
