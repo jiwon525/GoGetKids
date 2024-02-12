@@ -17,16 +17,10 @@ exports = async function (payload) {
     const pipeline = [
       {
         $match: {
-          _id: externalID // Match external_id with _id field in users collection
-        }
-      },
-      {
-        $project: {
-          externalID: {
-            $convert: {
-              input: "$userID.external_id", // Convert external_id to ObjectId
-              to: "objectId",
-              onError: "Error"
+          _id: {$convert: {
+            input: userID.external_id, // Convert external_id to ObjectId
+            to: "objectId",
+            onError: "Error"
             }
           }
         }
@@ -46,7 +40,6 @@ exports = async function (payload) {
     
     return { userDetails: userDetail };
   } catch (error) {
-    console.error("Error finding user:", error);
-    return { error: "Internal server error" };
+    return { error: "Internal server error" + error };
   }
 };
