@@ -1,10 +1,6 @@
 exports = async function (payload) {
   try {
-    var body = JSON.parse(payload.body.text());
-    const {
-      email,
-      password,
-    } = body;
+    const { email, password } = payload;
     // Fetch user from the database based on email
     const user = await context.services
       .get("mongodb-atlas")
@@ -24,16 +20,12 @@ exports = async function (payload) {
     );
 
     if (passwordMatch) {
-      return {
-        id: user._id.toString(),
-        email: user.email
-      };
+      return { "id": user._id.toString() }
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
     }
-  } catch (error) {
-    console.error("Error signing in user:", error);
-    return { error: "Internal server error" };
+  } catch (err) {
+    throw new Error(`Authentication failed with reason: ${err.message}`);
   }
 };

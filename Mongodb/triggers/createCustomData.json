@@ -1,5 +1,5 @@
 {
-    "name": "Trigger-0",
+    "name": "createCustomData",
     "type": "AUTHENTICATION",
     "disabled": false,
     "config": {
@@ -11,7 +11,7 @@
     "event_processors": {
         "FUNCTION": {
             "config": {
-                "function_name": "onNewCustomFuncUser"
+                "function_name": "insertNewCustData"
             }
         }
     }

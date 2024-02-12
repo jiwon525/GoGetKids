@@ -22,21 +22,10 @@
     {
         "name": "signIn",
         "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "run_as_system": true
     },
     {
         "name": "bcryptCompare",
-        "private": false,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "signInAuth",
-        "private": false,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "onNewCustomFuncUser",
         "private": false,
         "disable_arg_logs": true
     },
@@ -49,5 +38,9 @@
         "name": "getUserDetails",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "insertNewCustData",
+        "private": true
     }
 ]
