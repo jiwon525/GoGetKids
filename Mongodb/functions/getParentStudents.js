@@ -2,7 +2,7 @@ exports = async function (payload) {
   try {
     const email = payload.email;
     if (!email) {
-      return { error: "Email is undefined or null " + email+ body};
+      return { error: "Email is undefined or null " + email};
     }
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
