@@ -1,5 +1,6 @@
-exports = async function (email) {
+exports = async function (payload) {
   try {
+    const email = payload;
     if (!email) {
       return { error: "Email is undefined or null " + email+ body};
     }
