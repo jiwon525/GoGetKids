@@ -18,7 +18,7 @@ exports = async function (payload) {
     const userDetails = await db.collection("users").findOne({ externalId });
     
     if (!userDetails) {
-      return { error: "User not in database!" + externalId };
+      return { error: "User not in database!" + externalId + typeof externalId };
     }
     
     return { userDetails };
