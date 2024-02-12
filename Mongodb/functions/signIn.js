@@ -1,31 +1,27 @@
 exports = async function (payload) {
   try {
-    const { email, password } = payload;
-    // Fetch user from the database based on email
-    const user = await context.services
-      .get("mongodb-atlas")
-      .db("GoGetKids")
-      .collection("users")
-      .findOne({ email });
+    const body = JSON.parse(payload.body.text());
+    const { _id } = body;
+    
+    // Fetch user from the database based on id
+    const collection = context.services.get("mongodb-atlas").db("GoGetKids").collection("customUserData");
+      
+    const userID = await collection.findOne({ user_id: _id });
+    
     // If user not found, return an error
-    if (!user) {
-      return { error: "User not found" };
+    if (!userID) {
+      return { error: "User not registered!" };
     }
-    // Compare provided password with stored hashed password
-
-    const passwordMatch = await context.functions.execute(
-      "bcryptCompare",
-      password,
-      user.password
-    );
-
-    if (passwordMatch) {
-      return { "id": user._id.toString() }
-    } else {
-      // Passwords do not match, return an error
-      return { error: "Invalid password" };
+    
+    const userDetails = await collection.findOne({ _id: userID.external_id });
+    
+    if (!userDetails) {
+      return { error: "User not in database!" };
     }
-  } catch (err) {
-    throw new Error(`Authentication failed with reason: ${err.message}`);
+    
+    return { userDetails };
+  } catch (error) {
+    console.error("Error finding user:", error);
+    return { error: "Internal server error" };
   }
 };
