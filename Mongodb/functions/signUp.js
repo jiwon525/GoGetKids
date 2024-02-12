@@ -28,8 +28,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      school_name: (role === "teacher" || role === "schooladmin") ? (school_name || '') : '',
-      company_name: (role === "driver" || role === "transportadmin") ? (company_name || '') : ''
+      school_name: (role === "teacher" || role === "schooladmin") ? (school_name) : "",
+      company_name: (role === "driver" || role === "transportadmin") ? (company_name) : ""
     };
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
