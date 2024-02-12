@@ -10,7 +10,9 @@ exports = async function(payload) {
       school_name="",
       company_name=""
     } = payload;
-    
+    if (!email || typeof email !== 'string' || email.trim() === '') {
+    return { error: "Invalid email address" };
+}
     // Hash the password
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
