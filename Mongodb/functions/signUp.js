@@ -1,22 +1,19 @@
 exports = async function(payload) {
  
   try {
-    // Extract the body object from the payload
     const body = payload && payload.body;
-
-    // If body exists, decode the Data property
+        // If body exists, decode the Data property
     if (body && body.Data) {
-        // Decode the base64 encoded string to get the user data
-        const userDataString = Buffer.from(body.Data, 'base64').toString('utf-8');
-        const userData = JSON.parse(userDataString);
+      // Decode the base64 encoded string to get the user data
+      const userDataString = Buffer.from(body.Data, 'base64').toString('utf-8');
+      const userData = JSON.parse(userDataString);
 
-        // Now you can access the user data properties
-        const { email, firstName, lastName, password, phoneNum, role} = userData;
+      // Now you can access the user data properties
+      const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
     } else {
-        // Return an error response if the payload body or Data property is missing
-        return { error: "Invalid payload format"+payload.body, payload};
+      // Return an error response if the payload body or Data property is missing
+      return { error: "Invalid payload format" };
     }
-
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
