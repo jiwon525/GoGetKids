@@ -5,9 +5,9 @@ exports = async function(payload) {
     const body = payload && payload.body;
 
     // If body exists, decode the Data property
-    if (body && body.Data) {
+    if (body) {
         // Decode the base64 encoded string to get the user data
-        const userDataString = Buffer.from(body.Data, 'base64').toString('utf-8');
+        const userDataString = Buffer.from(body, 'base64').toString('utf-8');
         const userData = JSON.parse(userDataString);
 
         // Now you can access the user data properties
