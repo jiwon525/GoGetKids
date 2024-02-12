@@ -13,7 +13,7 @@ exports = async function(payload) {
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
-      return { error: "Invalid email address: "+payload};
+      return { error: "Invalid email address: "+payload.email};
     }
 
     // Hash the password
