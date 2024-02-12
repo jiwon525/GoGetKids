@@ -1,9 +1,13 @@
 exports = async function (payload) {
   try {
+    if (request.body === undefined) {
+      throw new Error(`Request body was not defined.`);
+    }
+    const body = JSON.parse(request.body.text());
     const {
       email,
       password,
-    } = payload;
+    } = body;
     // Fetch user from the database based on email
     const user = await context.services
       .get("mongodb-atlas")
