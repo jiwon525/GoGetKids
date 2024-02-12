@@ -14,12 +14,10 @@ exports = async function(payload) {
     } = body;
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
-      return { payload};
-    }else{
-      return {email};
+      return {error: "Invalid email address: "+email};
     }
-/*
-    // Hash the password error: "Invalid email address: "+email+firstName + lastName+password+phoneNum+role,
+    
+    // Hash the password
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
       password
@@ -65,7 +63,7 @@ exports = async function(payload) {
       return { success: true, debug: debugInfo };
     } else {
       return { error: "Error inserting user into the database" };
-    }*/
+    }
   } catch (error) {
     return { error: "Internal server error" };
   }
