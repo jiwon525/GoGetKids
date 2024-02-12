@@ -16,7 +16,7 @@ exports = async function (payload) {
     const aggregationPipeline = [
       {
         $match: {
-          _id: { $toObjectId: userID.external_id } // Convert external_id to ObjectId
+          "_id": { $toObjectId: userID.external_id } // Convert external_id to ObjectId
         }
       }
     ];
