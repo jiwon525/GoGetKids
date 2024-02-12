@@ -10,7 +10,7 @@ exports = async function(payload) {
             const userData = JSON.parse(userDataString);
 
             // Now you can access the user data properties
-            const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
+            const { email, firstName, lastName, password, phoneNum, role} = userData;
             // Additional properties like school_name and company_name can be accessed similarly
 
             // Debugging: Log the extracted user data
