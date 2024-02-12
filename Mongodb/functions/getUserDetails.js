@@ -18,10 +18,8 @@ exports = async function (payload) {
     if (!userDetails) {
       return { error: "User not in database!" };
     }
-    
     return { userDetails };
   } catch (error) {
-    console.error("Error finding user:", error);
     return { error: "Internal server error" };
   }
 };

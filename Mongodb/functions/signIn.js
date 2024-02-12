@@ -1,4 +1,5 @@
 exports = async function (payload) {
+  const { ObjectId } = require('mongodb');
   try {
     const { email, password } = payload;
     // Fetch user from the database based on email
