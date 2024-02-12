@@ -11,10 +11,10 @@ exports = async function(payload) {
         const userData = JSON.parse(userDataString);
 
         // Now you can access the user data properties
-        const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name=""} = userData;
+        const { email, firstName, lastName, password, phoneNum, role} = userData;
     } else {
         // Return an error response if the payload body or Data property is missing
-        return { error: "Invalid payload format" +body};
+        return { error: "Invalid payload format"};
     }
 
     
