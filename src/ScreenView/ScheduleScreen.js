@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, Colors,
@@ -23,8 +23,49 @@ const data =
 };
 
 
-const ScheduleScreen = ({ navigation }) => {
+const ScheduleScreen = ({ navigation, route }) => {
+    const { userId, accessToken, refreshToken, studentId } = route.params;
+    const [schedule, setSchedule] = useState({
+        _id: null,
+        email: '',
+        firstName: '',
+        lastName: '',
+        phoneNum: '',
+    });
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const schedule = await fetchUserData(studentId, accessToken);
+                setSchedule(schedule);
+                const email = schedule.email
+                const parent_id = {
+                    studentid: email,
+                };
+                const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudentSchedule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify(parent_id),
+                });
+                const responseBody = await response.json();
+                if (!response.ok) {
+                    console.error('Error fetching data. Status:', response.status);
+                    // Handle the error here, maybe return a specific error message or throw an error
+                } else {
+                    setStudents(responseBody.result || []);
+                    console.log(responseBody.result);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData(); // Call the fetchData function to fetch data from the backend
+    }, []); // Run once
     return (
         <StyledContainer>
             <ProfileTop name={data.date} />

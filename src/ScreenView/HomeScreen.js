@@ -8,6 +8,7 @@ import {
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
 import { fetchUserData } from '../components/schema';
+import { response } from 'express';
 
 const HomeScreen = ({ navigation, route }) => {
     const { userId, accessToken, refreshToken } = route.params;
@@ -26,7 +27,6 @@ const HomeScreen = ({ navigation, route }) => {
                 const userDetails = await fetchUserData(userId, accessToken);
                 setUserDetail(userDetails);
                 const email = userDetails.email
-                console.log("Userdetails in homescreen", userDetails);
                 const parent_id = {
                     email: email,
                 };
@@ -39,7 +39,6 @@ const HomeScreen = ({ navigation, route }) => {
                     body: JSON.stringify(parent_id),
                 });
                 const responseBody = await response.json();
-                console.log("responseBody: ", responseBody);
                 if (!response.ok) {
                     console.error('Error fetching data. Status:', response.status);
                     // Handle the error here, maybe return a specific error message or throw an error
@@ -69,7 +68,12 @@ const HomeScreen = ({ navigation, route }) => {
                         school={student.school_name}
                         grade={student.class_name}
                         studentID={student.studentid.toString()}
-                        onPress={() => navigation.navigate("Child")}
+                        onPress={() => navigation.navigate("Child", {
+                            userId: userId,
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
+                            studentId: student.studentid
+                        })}
                     />
                 ))}
             </InnerContainer>

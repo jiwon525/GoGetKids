@@ -54,7 +54,6 @@ export async function fetchUserData(userId, accessToken) {
             body: JSON.stringify(userID),
         });
         const responseBody = await response.json();
-        console.log("responseBody: ", responseBody);
         let userDetails = {
             _id: responseBody.userDetails._id,
             email: responseBody.userDetails.email,
@@ -62,7 +61,6 @@ export async function fetchUserData(userId, accessToken) {
             lastName: responseBody.userDetails.lastName,
             phoneNum: responseBody.userDetails.phoneNum,
         };
-        console.log("userDetails: ", userDetails);
         return userDetails;
     } catch (error) {
         console.error('Error fetching data:', error);
