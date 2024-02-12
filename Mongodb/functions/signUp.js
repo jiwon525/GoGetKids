@@ -2,12 +2,23 @@ exports = async function(payload) {
  
   try {
 
-  const userDataString = Buffer.from(payload.body.Data, 'base64').toString('utf-8');
-  const userData = JSON.parse(userDataString);
-  // Now you can access the user data properties
-  const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
-  return { error:"data"+userData+ email};
+    if (payload.body.Data) {
+      // Decode the base64 encoded string to get the user data
+      const userDataString = Buffer.from(payload.body.Data, 'base64').toString('utf-8');
+      const userData = JSON.parse(userDataString);
+      // Now you can access the user data properties
+      const { email, firstName, lastName, password, phoneNum, role } = userData;
+    } else {
+      // Return an error response if the payload body or Data property is missing
+      return { error: "Invalid payload format" + payload.body.Data};
+    }
     
+    // Validate email address
+    if (!email || typeof email !== 'string' || email.trim() === '') {
+      return { payload};
+    }else{
+      return {email};
+    }
 /*
     // Hash the password error: "Invalid email address: "+email+firstName + lastName+password+phoneNum+role,
     const hashedPassword = await context.functions.execute(
@@ -57,6 +68,6 @@ exports = async function(payload) {
       return { error: "Error inserting user into the database" };
     }*/
   } catch (error) {
-    return { error: "Internal server error" + payload};
+    return { error: "Internal server error" };
   }
 };
