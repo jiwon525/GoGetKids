@@ -22,10 +22,10 @@ const TabNavigator = () => {
                 headerTitle: '',
                 headerLeftContainerStyle: 20,
             }}
-            initialRouteName="Home"
+            initialRouteName="ParentHome"
         >
             <Tab.Screen
-                name="Home"
+                name="ParentHome"
                 component={ChildStack}
                 options={{
                     tabBarLabel: 'Home',
@@ -33,6 +33,7 @@ const TabNavigator = () => {
                         <Ionicons name="home" size={size} color={color} />
                     ),
                 }}
+                initialParams={{ userId: "tab", userEmail: "tab", userPW: "" }}
             />
             <Tab.Screen
                 name="Updates"

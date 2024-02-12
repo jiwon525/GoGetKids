@@ -19,7 +19,9 @@ const ChildStack = () => (
             headerLeftContainerStyle: 20,
         }}
     >
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="HomeScreen"
+            component={HomeScreen}
+            initialParams={{ userId: "child", userEmail: "child", userPW: "" }} />
         <Stack.Screen name="Child" component={ScheduleScreen} />
         <Stack.Screen name="Assign" component={AssignGuardian} />
         <Stack.Screen name="GenerateQR" component={GenerateQR} />

@@ -15,6 +15,44 @@ import { signIn } from '../components/schema';
 
 LoginScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
+
+    async function signIn(email, password) {
+        try {
+            const userData = {
+                email: email,
+                password: password
+            };
+            console.log(userData);
+            const response = await fetch('https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            const responseBody = await response.json();
+            if (response.ok) {
+                console.log(responseBody);
+                console.log('User logged in successfully:', responseBody.id, responseBody.access_token, responseBody.refresh_token);
+                navigation.navigate('Home', {
+                    screen: 'ParentHome', // Navigate to ParentHome tab
+                    params: {
+                        screen: 'HomeScreen', // Navigate to HomeScreen inside ParentHome
+                        params: { userId: responseBody.id, userEmail: responseBody.email, userPW: responseBody.pw },
+                    }
+                });
+
+            } else {
+                if (responseBody.error) {
+                    console.error('Error logging in:', responseBody.error);
+                } else {
+                    console.error('Error logging in: Unknown error');
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error.message || "Unknown error");
+        }
+    };
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -28,12 +66,9 @@ LoginScreen = ({ navigation }) => {
                 </View>
                 <InnerContainer>
                     <Formik
-                        initialValues={{ email: '', password: '', role: '' }}
+                        initialValues={{ email: '', password: '' }}
                         onSubmit={(values) => {
-                            console.log(values);
-                            signIn(email = values.email,
-                                password = values.password,
-                                navigation)
+                            signIn(values.email, values.password)
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -63,23 +98,14 @@ LoginScreen = ({ navigation }) => {
                                     setHidePassword={setHidePassword}
                                 />
                                 <MsgBox>...</MsgBox>
-                                <StyledButton onPress={() => { handleSubmit(); values.role = 'parent'; }}>
-                                    <ButtonText>
-                                        Login as Parent
-                                    </ButtonText>
-                                </StyledButton>
+
                                 <Line />
-                                <StyledButton teacher={true} onPress={() => { handleSubmit(); values.role = 'teacher'; }}>
+                                <StyledButton teacher={true} onPress={() => { handleSubmit(); }}>
                                     <ButtonText>
-                                        Login as Teacher
+                                        Login
                                     </ButtonText>
                                 </StyledButton>
-                                <Line />
-                                <StyledButton driver={true} onPress={() => { handleSubmit(); values.role = 'driver'; }}>
-                                    <ButtonText>
-                                        Login as Driver
-                                    </ButtonText>
-                                </StyledButton>
+
                                 <ExtraView>
                                     <ExtraText>Don't have an account?  </ExtraText>
                                     <TextLink onPress={() => navigation.navigate("SignUp")}>

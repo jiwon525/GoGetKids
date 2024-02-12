@@ -40,14 +40,15 @@ export async function signUp(email, firstName, lastName, password, phoneNum, nav
     }
 };
 
-export async function signIn(email, password, navigation) {
+
+
+export async function getParentStudents(id, navigation) {
     try {
         const userData = {
-            email: email,
-            password: password
+            id: id
         };
         console.log(userData);
-        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/signIn', {
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getParentStudents', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,4 +71,5 @@ export async function signIn(email, password, navigation) {
     } catch (error) {
         console.error('Error:', error.message || "Unknown error");
     }
-}
+};
+
