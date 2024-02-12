@@ -56,7 +56,7 @@ exports = async function(payloadBase64) {
     if (existingUser) {
       return { error: "User already exists" };
     }
-    return { user};
+    return { user };
     // Insert user into database
     const insertionResult = await collection.insertOne(user);
     if (insertionResult.insertedId) {
@@ -78,6 +78,6 @@ exports = async function(payloadBase64) {
       error: error.message,
       timestamp: new Date().toISOString()
     };
-    return { error: "Internal server error" + payload, debug: debugInfo  };
+    return { error: "Internal server error", debug: debugInfo  };
   }
 };
