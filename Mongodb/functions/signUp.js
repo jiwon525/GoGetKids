@@ -3,6 +3,8 @@ exports = async function(payloadBase64) {
     
     // Parse the decoded JSON string
     const payload = JSON.parse(payloadJSON);
+    
+  try {
     const {
       email,
       firstName,
@@ -13,8 +15,6 @@ exports = async function(payloadBase64) {
       school_name="",
       company_name=""
     } = payload;
-  try {
-    
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
