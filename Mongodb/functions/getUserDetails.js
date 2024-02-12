@@ -11,22 +11,12 @@ exports = async function (payload) {
       return { error: "User not registered!" };
     }
     
-    // Define aggregation pipeline to convert external_id to ObjectId
-    const pipeline = [
-      {external_id: { 
-        $convert:
-         {
-            input: "$external_id",
-            to: "objectId",
-         } 
-        
-      }}
-    ];
-    const externalId = await db.collection("customUserData").aggregate(pipeline);
-    const userDetails = await db.collection("users").findOne({ _id: externalId.external_id });
+    let id = userID.external_id;
+    const nid = new BSON.ObjectId(id)
+    const userDetails = await db.collection("users").findOne({ _id: nid });
     // If aggregation result is empty, return an error
     if (!userDetails) {
-      return { error: "User not found in database!" + externalId.toString()};
+      return { error: "User not found in database!" + nid};
     }
     return { userDetails };
   } catch (error) {
