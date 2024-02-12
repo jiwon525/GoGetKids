@@ -14,7 +14,7 @@ exports = async function (payload) {
   });
   
   if (userFromHttp.status === 200) {
-      const responseBody = JSON.parse(userFromHttp.body.text());
+    const responseBody = await userFromHttp.json();
       if (responseBody.id) {
         return responseBody.id;
       } else {
