@@ -9,7 +9,7 @@ exports = async function (payload) {
     var findResult;
     try {
       findResult = await collection.find({parent_id: email}).toArray();
-      return { findResult };
+      return { result: findResult };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
