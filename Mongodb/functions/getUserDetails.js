@@ -14,7 +14,6 @@ exports = async function (payload) {
     if (!user) {
       return { error: "User not found" };
     }
-    // Compare provided password with stored hashed password
     return {user};
   } catch (error) {
     console.error("Error finding user:", error);
