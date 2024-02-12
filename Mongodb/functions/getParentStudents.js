@@ -3,7 +3,7 @@ exports = async function (payload) {
     const body = JSON.parse(payload.body.text());
     const { email } = body;
     if (!email) {
-      return { error: "Email is undefined or null" };
+      return { error: "Email is undefined or null" + email};
     }
     
     var serviceName = "mongodb-atlas";
