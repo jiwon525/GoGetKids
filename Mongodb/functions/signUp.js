@@ -40,12 +40,8 @@ exports = async function(payload) {
     findUser = await collection.findOne({email});
     console.log(findUser);
     if(!findUser){
-      try {
-        collection.insertOne(user);
-        return true;
-      } catch(error) {
-        return { error: "Error inserting user into the database" };
-      }
+      collection.insertOne(user);
+      return true;
     } else {
       return { error: "User already exists" };
     }
