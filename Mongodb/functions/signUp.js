@@ -1,22 +1,7 @@
-exports = async function(payloadBase64) {
+exports = async function(payload) {
  
   try {
-    const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
-    
-    // Parse the decoded JSON string into a JavaScript object
-    const payload = JSON.parse(payloadJSON);
-    
-    // Destructure properties from the payload object
-    const {
-      email,
-      firstName,
-      lastName,
-      password,
-      phoneNum,
-      role,
-      school_name="",
-      company_name=""
-    } = payload;
+    const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = payload;
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
