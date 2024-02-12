@@ -33,11 +33,11 @@ exports = async function(payload) {
     };
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
-    var collName = "students";
+    var collName = "users";
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findUser;
     findUser = await collection.findOne({email});
-    if(findUser === null){
+    if(!findUser){
       try {
         collection.insertOne(user);
         return true;
