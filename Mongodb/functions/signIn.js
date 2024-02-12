@@ -22,9 +22,12 @@ exports = async function (payload) {
       password,
       user.password
     );
-
     if (passwordMatch) {
-      return {id: user._id.toString()};
+      const result = {
+        id: user._id.toString(),
+        email: user.email
+      };
+      return {result};
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
