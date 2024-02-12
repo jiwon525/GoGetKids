@@ -1,10 +1,5 @@
-exports = async function (payload) {
+exports = async function (_id) {
   try {
-    var body = JSON.parse(payload.body.text());
-    const {
-      _id
-    } = body;
-    // Fetch user from the database based on id
     const user = await context.services
       .get("mongodb-atlas")
       .db("GoGetKids")
