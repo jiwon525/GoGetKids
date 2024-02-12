@@ -12,7 +12,7 @@ exports = async function (payload) {
     },
     body: JSON.stringify({ username, password }),
   });
-  return user.id;
+  return userFromHttp;
   } catch (error) {
     console.error("Error signing in user:", error);
     return { error: "Internal server error" };
