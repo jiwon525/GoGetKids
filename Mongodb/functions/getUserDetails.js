@@ -5,16 +5,22 @@ exports = async function (payload) {
       _id
     } = body;
     // Fetch user from the database based on id
-    const user = await context.services
+    var collection = context.services
       .get("mongodb-atlas")
       .db("GoGetKids")
-      .collection("users")
-      .findOne({ _id });
+      .collection("customUserData");
+      
+    const userID = await collection.findOne({ external_id: _id })
     // If user not found, return an error
-    if (!user) {
-      return { error: "User not found" };
+    if (!userID) {
+      return { error: "User not registered!" };
     }
-    return {user};
+    
+    const userDetails = await collection.findOne(userID.user_id)
+    if (!userDetails) {
+      return { error: "User not registered!" };
+    }
+    return {userDetails};
   } catch (error) {
     console.error("Error finding user:", error);
     return { error: "Internal server error" };
