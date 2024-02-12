@@ -28,15 +28,20 @@ SignUpScreen = ({ navigation }) => {
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
                         onSubmit={(values) => {
                             console.log(values);
-                            const userData = {
-                                email: values.email,
-                                firstName: values.FName,
-                                lastName: values.LName,
-                                password: values.password,
-                                phoneNum: values.phoneNum,
-                                role: "parent"
-                            };
-                            signUp(userData, navigation);
+                            if (values.password === values.confirmPassword) {
+                                const userData = {
+                                    email: values.email,
+                                    firstName: values.FName,
+                                    lastName: values.LName,
+                                    password: values.password,
+                                    phoneNum: values.phoneNum,
+                                    role: "parent"
+                                };
+                                signUp(userData, navigation);
+                            } else {
+                                console.log("please enter in the same password");
+                            }
+
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
