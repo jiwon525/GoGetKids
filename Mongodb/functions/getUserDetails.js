@@ -13,17 +13,20 @@ exports = async function (payload) {
       return { error: "User not registered!" };
     }
     
-    const conversion = await {$toObjectId: '$userID.external_id'};
-    if (conversion){
-      const userDetails = await db.collection("users").findOne({ externalId });
-      if (!userDetails) {
-      return { error: "User not in database!" + externalId + typeof externalId };
+    const aggregationPipeline = [
+      {
+        $match: {
+          _id: { $toObjectId: userID.external_id } // Convert external_id to ObjectId
+        }
       }
-    }else{
-      return{error:"conversion error"};
+    ];
+
+    const userDetails = await db.collection("users").aggregate(aggregationPipeline).toArray();
+
+    if (userDetails.length === 0) {
+      return { error: "User not in database!" };
     }
-    
-    
+
     return { userDetails };
   } catch (error) {
     console.error("Error finding user:", error);
