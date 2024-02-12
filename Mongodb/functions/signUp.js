@@ -7,8 +7,8 @@ exports = async function(payload) {
       password,
       phoneNum,
       role,
-      school_name,
-      company_name
+      school_name="",
+      company_name=""
     } = payload;
     
     // Hash the password
@@ -28,8 +28,8 @@ exports = async function(payload) {
       password: hashedPassword,
       phoneNum,
       role,
-      school_name: (school_name || ""),
-      company_name: (company_name || "")
+      school_name: school_name,
+      company_name: company_name
     };
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
