@@ -17,14 +17,14 @@ exports = async function (payload) {
     const pipeline = [
       {
         $match: {
-          _id: userID.external_id
+          _id: externalID // Match external_id with _id field in users collection
         }
       },
       {
         $project: {
-          _id: {
+          externalID: {
             $convert: {
-              input: "$_id",
+              input: "$userID.external_id", // Convert external_id to ObjectId
               to: "objectId",
               onError: "Error"
             }
@@ -34,17 +34,17 @@ exports = async function (payload) {
     ];
     
     // Execute aggregation pipeline
-    const aggregationResult = await db.collection("users").aggregate(pipeline).toArray();
+    const userDetails = await db.collection("users").aggregate(pipeline).toArray();
     
     // If aggregation result is empty, return an error
-    if (aggregationResult.length === 0) {
+    if (userDetails.length === 0) {
       return { error: "User not found in database!" };
     }
     
     // Extract user details from aggregation result
-    const userDetails = aggregationResult[0];
+    const userDetail = userDetails[0];
     
-    return { userDetails };
+    return { userDetails: userDetail };
   } catch (error) {
     console.error("Error finding user:", error);
     return { error: "Internal server error" };
