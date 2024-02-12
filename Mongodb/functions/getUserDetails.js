@@ -13,12 +13,16 @@ exports = async function (payload) {
       return { error: "User not registered!" };
     }
     
-    const externalId = { $toObjectId: '$userID.external_id' };
-    const userDetails = await db.collection("users").findOne({ externalId });
-    
-    if (!userDetails) {
+    const conversion = await {$toObjectId: '$userID.external_id'};
+    if (conversion){
+      const userDetails = await db.collection("users").findOne({ externalId });
+      if (!userDetails) {
       return { error: "User not in database!" + externalId + typeof externalId };
+      }
+    }else{
+      return{error:"conversion error"};
     }
+    
     
     return { userDetails };
   } catch (error) {
