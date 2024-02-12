@@ -12,8 +12,8 @@ exports = async function (payload) {
     if (!userID) {
       return { error: "User not registered!" };
     }
-    
-    const userDetails = await db.collection("users").findOne({ _id: userID.external_id });
+    const externalId = new ObjectId(userID.external_id);
+    const userDetails = await db.collection("users").findOne({ _id: externalId });
     
     if (!userDetails) {
       return { error: "User not in database!" };
