@@ -33,6 +33,6 @@ exports = async function (payload) {
     }
   } catch (error) {
     console.error("Error signing in user:", error);
-    return { error: "Internal server error" };
+    return { error: "Internal server signIn error" };
   }
 };
