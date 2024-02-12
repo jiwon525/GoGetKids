@@ -26,7 +26,7 @@ exports = async function (payload) {
     const userDetails = await db.collection("users").findOne({ externalId });
     // If aggregation result is empty, return an error
     if (!userDetails) {
-      return { error: "User not found in database!" };
+      return { error: "User not found in database!" + externalId};
     }
     
     return { userDetails };
