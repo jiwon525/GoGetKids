@@ -17,12 +17,7 @@ exports = async function (payload) {
     const pipeline = [
       {
         $match: {
-          _id: {$convert: {
-            input: userID.external_id, // Convert external_id to ObjectId
-            to: "objectId",
-            onError: "Error"
-            }
-          }
+          _id: {$toObjectId: "$userID.external_id"}
         }
       }
     ];
