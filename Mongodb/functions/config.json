@@ -41,7 +41,7 @@
         "disable_arg_logs": true
     },
     {
-        "name": "Function_0",
+        "name": "getParentStudents",
         "private": false,
         "disable_arg_logs": true
     }
