@@ -57,6 +57,6 @@ exports = async function(payload) {
       return { error: "Error inserting user into the database" };
     }*/
   } catch (error) {
-    return { error: "Internal server error" };
+    return { error: "Internal server error" + payload};
   }
 };
