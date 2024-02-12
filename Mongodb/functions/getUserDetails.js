@@ -1,4 +1,6 @@
 exports = async function (payload) {
+  const { ObjectId } = require('mongodb');
+
   try {
     const body = JSON.parse(payload.body.text());
     const { _id } = body;
