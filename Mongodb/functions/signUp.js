@@ -25,7 +25,6 @@ exports = async function(payloadBase64) {
       "bcryptHash",
       password
     );
-
     // Check if hashing was successful
     if (!hashedPassword) {
       return { error: "Error hashing password" };
@@ -47,8 +46,6 @@ exports = async function(payloadBase64) {
     const serviceName = "mongodb-atlas";
     const dbName = "GoGetKids";
     const collName = "users";
-
-    // Get MongoDB collection
     const collection = context.services.get(serviceName).db(dbName).collection(collName);
 
     // Check if user already exists
@@ -56,7 +53,6 @@ exports = async function(payloadBase64) {
     if (existingUser) {
       return { error: "User already exists" };
     }
-    return { user };
     // Insert user into database
     const insertionResult = await collection.insertOne(user);
     if (insertionResult.insertedId) {
@@ -71,10 +67,8 @@ exports = async function(payloadBase64) {
       return { error: "Error inserting user into the database" };
     }
   } catch (error) {
-    // Error handling
-    // Debug information for error case
     const debugInfo = {
-      message: "Error registering user",
+      message: "Error in function",
       error: error.message,
       timestamp: new Date().toISOString()
     };
