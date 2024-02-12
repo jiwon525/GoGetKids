@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "rea
 import PropTypes from 'prop-types';
 
 import {
-    Colors,
+    Colors, CardTextStatus,
 } from '../components/styles';
 
 export default function Card({ firstname, lastname, status, school, grade, studentID, onPress }) {
@@ -19,11 +19,10 @@ export default function Card({ firstname, lastname, status, school, grade, stude
                 <Text style={styles.textOne} numberOfLines={1}>
                     {firstname} {lastname}
                 </Text>
-                <Text style={styles.cardTextStatus} numberOfLines={1}>
+                <CardTextStatus>
                     {status}
-                </Text>
+                </CardTextStatus>
                 <Text style={styles.textTwo}>{school}</Text>
-
             </View>
             <View style={styles.gradeTextContainer}>
                 <Text style={styles.textTwo}>
@@ -100,22 +99,6 @@ const styles = StyleSheet.create({
         marginTop: 3,
         textTransform: "capitalize",
     },
-    cardContainer: {
-        backgroundColor: Colors.primary,
-        width: Dimensions.get('window').width * 0.9,
-        height: 100,
-        borderRadius: 10,
-        padding: 10,
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 5,
-            height: 5,
-        },
-        shadowOpacity: 0.75,
-        shadowRadius: 5,
-        elevation: 9,
-    },
     iconContainer: {
         backgroundColor: Colors.plain,
         width: 45,
@@ -132,11 +115,6 @@ const styles = StyleSheet.create({
     },
     cardTextSmall: {
         color: Colors.night,
-        fontSize: 16,
-    },
-    cardTextStatus: {
-        fontWeight: "bold",
-        color: Colors.tertiary,
         fontSize: 16,
     },
 });

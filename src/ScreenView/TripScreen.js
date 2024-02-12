@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     SafeAreaView,
@@ -8,7 +8,6 @@ import {
     Dimensions,
 } from 'react-native';
 import ProfileTop from '../components/ProfileTop';
-import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,

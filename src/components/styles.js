@@ -23,7 +23,13 @@ export const StyledContainer = styled.View`
     flex: 1;
     background-color: ${plain};
 `;
+export const TextContainer = styled.View`
+    flex: 1;
+    background-color: ${plain};
+    padding-left: 10px;
+`;
 export const StyledScheduleView = styled.View`
+    width: 100%;
     padding: 10px;
     flex-direction:row;
     ${(props) => props.list == true && `
@@ -35,6 +41,8 @@ export const InnerScheduleView = styled.View`
     padding-right:55px;
     border-radius:5px;
     margin-vertical: 3px;
+    flex-direction: row;
+    align-items: center;
 `;
 export const InnerMidContainer = styled.View`
     flex: 1;
@@ -96,12 +104,16 @@ export const ProfileContainer = styled.View`
 export const BottomContainer = styled.View`
     flex:1;
     justify-content:flex-end;
-
 `;
 
 export const LoginLogo = styled.Image`
     width: ${deviceWidth * 0.3}px;
     height:${deviceHeight * 0.3}px;
+`;
+export const HomeImage = styled.Image`
+    flex:1;
+    justify-content: center;
+    align-items: center;
 `;
 export const LoginSmallLogo = styled.Image`
     width: 45px;
@@ -153,7 +165,11 @@ export const StyledInputLabel = styled.Text`
     font-size:13px;
     text-align: left;
 `;
-
+export const CardTextStatus = styled.Text`
+    color: ${tertiary};
+    font-size:16px;
+    font-weight: bold;
+`;
 export const Subtitle = styled.Text`
     color: ${night};
     font-size:17px;

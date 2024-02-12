@@ -29,7 +29,7 @@ const ScanScreen = ({ navigation }) => {
         setScanData(data);
         console.log(`Data: ${data}`);
         console.log(`Type: ${type}`);
-        navigation.navigate("ParentHome");
+        navigation.navigate("Home");
     };
     return (
         <StyledContainer>

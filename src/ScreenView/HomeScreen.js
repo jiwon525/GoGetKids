@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Image } from "react-native";
 import {
     StyledContainer,
     InnerContainer,
-    NormText,
+    NormText, HomeImage,
 } from '../components/styles';
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
@@ -32,6 +33,9 @@ const HomeScreen = ({ navigation }) => {
                 <Card {...cardData} onPress={() => navigation.navigate("Child")}></Card>
                 <Card {...cardData2} onPress={() => navigation.navigate("Child")}></Card>
             </InnerContainer>
+            <HomeImage
+                resizeMode="center" source={require('../assets/childrenhome.png')}
+            />
         </StyledContainer>
     );
 };
