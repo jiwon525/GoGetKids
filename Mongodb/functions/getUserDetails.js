@@ -15,7 +15,7 @@ exports = async function (payload) {
     
     const externalId = userID.external_id; // Assuming external_id is a string
     
-    const userDetails = await db.collection("users").findOne({ _id: externalId });
+    const userDetails = await db.collection("users").findOne({ externalId });
     
     if (!userDetails) {
       return { error: "User not in database!" + externalId };
