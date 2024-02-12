@@ -1,5 +1,4 @@
 exports = async function (payload) {
-  const { ObjectId } = require('mongodb');
 
   try {
     const body = JSON.parse(payload.body.text());
@@ -14,8 +13,7 @@ exports = async function (payload) {
     if (!userID) {
       return { error: "User not registered!" };
     }
-    const externalId = new ObjectId(userID.external_id);
-    const userDetails = await db.collection("users").findOne({ _id: externalId });
+    const userDetails = await db.collection("users").findOne({ _id: userID.external_id });
     
     if (!userDetails) {
       return { error: "User not in database!" };
