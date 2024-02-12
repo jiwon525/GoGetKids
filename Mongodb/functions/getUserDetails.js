@@ -24,7 +24,7 @@ exports = async function (payload) {
     const userDetails = await db.collection("users").aggregate(aggregationPipeline).toArray();
 
     if (userDetails.length === 0) {
-      return { error: "User not in database!" };
+      return { error: "User not in database!" + userID.external_id + userDetails };
     }
 
     return { userDetails };
