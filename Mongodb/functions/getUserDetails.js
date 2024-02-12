@@ -13,20 +13,37 @@ exports = async function (payload) {
       return { error: "User not registered!" };
     }
     
-    const aggregationPipeline = [
+    // Define aggregation pipeline to convert external_id to ObjectId
+    const pipeline = [
       {
         $match: {
-          "_id": { $toObjectId: userID.external_id } // Convert external_id to ObjectId
+          _id: userID.external_id
+        }
+      },
+      {
+        $project: {
+          _id: {
+            $convert: {
+              input: "$_id",
+              to: "objectId",
+              onError: "Error"
+            }
+          }
         }
       }
     ];
-
-    const userDetails = await db.collection("users").aggregate(aggregationPipeline).toArray();
-
-    if (userDetails.length === 0) {
-      return { error: "User not in database!" + userID.external_id + userDetails };
+    
+    // Execute aggregation pipeline
+    const aggregationResult = await db.collection("users").aggregate(pipeline).toArray();
+    
+    // If aggregation result is empty, return an error
+    if (aggregationResult.length === 0) {
+      return { error: "User not found in database!" };
     }
-
+    
+    // Extract user details from aggregation result
+    const userDetails = aggregationResult[0];
+    
     return { userDetails };
   } catch (error) {
     console.error("Error finding user:", error);
