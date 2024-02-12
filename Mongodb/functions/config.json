@@ -42,5 +42,10 @@
     {
         "name": "insertNewCustData",
         "private": true
+    },
+    {
+        "name": "getStudentSchedule",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
