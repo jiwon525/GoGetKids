@@ -11,7 +11,7 @@ exports = async function (email) {
     var findResult;
     try {
       findResult = await collection.find({parent_id: id}).toArray();
-      return { result: findResult, email };
+      return { result: findResult, id };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
