@@ -13,7 +13,7 @@ exports = async function(payload) {
     
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
-      return { error: "Invalid email address" };
+      return { error: "Invalid email address ${email}" };
     }
 
     // Hash the password
@@ -62,22 +62,18 @@ exports = async function(payload) {
         insertedUserId: insertionResult.insertedId,
         timestamp: new Date().toISOString()
       };
-      console.log('MongoDB function response:', { success: true, debug: debugInfo });
       return { success: true, debug: debugInfo };
     } else {
-      console.log('MongoDB function response:', { error: "Error inserting user into the database" });
       return { error: "Error inserting user into the database" };
     }
   } catch (error) {
     // Error handling
-    console.error("Error registering user:", error);
     // Debug information for error case
     const debugInfo = {
       message: "Error registering user",
       error: error.message,
       timestamp: new Date().toISOString()
     };
-    console.log('MongoDB function response:', { error: "Internal server error", debug: debugInfo });
     return { error: "Internal server error", debug: debugInfo };
   }
 };
