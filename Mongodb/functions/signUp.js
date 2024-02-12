@@ -18,12 +18,10 @@ exports = async function(payload) {
       password,
       saltRounds
     );
-
     // Check if hashing was successful
-    if (!hashedPassword) {
+    if (typeof hashedPassword !== 'string' || hashedPassword.length < 30) {
       return { error: "Error hashing password" };
     }
-
     // Construct user object based on role
     const user = {
       email,
