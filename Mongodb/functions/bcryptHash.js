@@ -1,4 +1,3 @@
-// MongoDB Stitch function for bcryptjs hashing
 exports = async function(password) {
   try {
     const bcrypt = require('bcryptjs');
