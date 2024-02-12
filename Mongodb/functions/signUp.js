@@ -20,7 +20,7 @@ exports = async function(payload) {
             // Ensure to return the appropriate response based on the operation's success or failure
         } else {
             // Return an error response if the payload body or Data property is missing
-            return { error: "Invalid payload format" + payload};
+            return { error: "Invalid payload format" + payload.body+payload+body};
         }
     } catch (error) {
         // Handle any errors that occur during processing
