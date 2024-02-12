@@ -2,7 +2,7 @@ exports = async function (payload) {
   try {
     const {
       email,
-      password
+      password,
     } = payload;
     // Fetch user from the database based on email
     const user = await context.services
@@ -23,10 +23,16 @@ exports = async function (payload) {
     );
 
     if (passwordMatch) {
-
       // Passwords match, user is successfully signed in
-      //returns the external user id which is email.
-      return user.email;
+      //returns the external user for the role of the user.
+      console.log(user.role);
+      if (user.role === "teacher"){
+        return ("65c98d06e9da0e7a09489770");
+      }
+      if (user.role === "driver"){
+        return "65c98d340aa61926e06dc58e";
+      }
+      return "65c98d7c21d6ea1b2021e4b4";
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
