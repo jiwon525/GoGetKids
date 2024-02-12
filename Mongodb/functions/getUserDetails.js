@@ -23,10 +23,10 @@ exports = async function (payload) {
       }}
     ];
     const externalId = await db.collection("customUserData").aggregate(pipeline);
-    const userDetails = await db.collection("users").findOne({ _id: externalId });
+    const userDetails = await db.collection("users").findOne({ _id: externalId.external_id });
     // If aggregation result is empty, return an error
     if (!userDetails) {
-      return { error: "User not found in database!" + externalId};
+      return { error: "User not found in database!" + externalId.toString()};
     }
     return { userDetails };
   } catch (error) {
