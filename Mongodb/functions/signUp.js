@@ -12,7 +12,7 @@ exports = async function(payload) {
       const { email, firstName, lastName, password, phoneNum, role, school_name="", company_name="" } = userData;
     } else {
       // Return an error response if the payload body or Data property is missing
-      return { error: "Invalid payload format" };
+      return { error: "Invalid payload format" + payload + body};
     }
     
     // Validate email address
