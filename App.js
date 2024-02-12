@@ -7,6 +7,7 @@ import DriverStack from './src/navigators/DriverStack'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUpScreen from './src/ScreenView/SignupScreen';
 
+
 export default function App() {
   return (
     <RootStack />

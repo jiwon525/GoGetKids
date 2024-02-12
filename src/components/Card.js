@@ -6,7 +6,7 @@ import {
     Colors, CardTextStatus,
 } from '../components/styles';
 
-export default function Card({ firstname, lastname, status, school, grade, studentID, onPress }) {
+export default function Card({ firstName, lastName, status, school, grade, studentID, onPress }) {
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <TouchableOpacity style={styles.logoContainer}>
@@ -17,7 +17,7 @@ export default function Card({ firstname, lastname, status, school, grade, stude
             </TouchableOpacity>
             <View style={styles.textContainer}>
                 <Text style={styles.textOne} numberOfLines={1}>
-                    {firstname} {lastname}
+                    {firstName} {lastName}
                 </Text>
                 <CardTextStatus>
                     {status}
@@ -37,8 +37,8 @@ export default function Card({ firstname, lastname, status, school, grade, stude
 }
 
 Card.propTypes = {
-    firstname: PropTypes.string.isRequired,
-    lastname: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     school: PropTypes.string.isRequired,
     grade: PropTypes.string.isRequired,

@@ -33,7 +33,7 @@ const TabNavigator = () => {
                         <Ionicons name="home" size={size} color={color} />
                     ),
                 }}
-                initialParams={{ userId: "tab", userEmail: "tab", userPW: "" }}
+                initialParams={{ userId: "tab", accessToken: "root", refreshToken: "" }}
             />
             <Tab.Screen
                 name="Updates"

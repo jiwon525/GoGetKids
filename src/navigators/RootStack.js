@@ -28,7 +28,7 @@ const RootStack = () => {
                 <Stack.Screen
                     name="Home"
                     component={TabNavigator}
-                    initialParams={{ userId: "root", userEmail: "root", userPW: "" }}
+                    initialParams={{ userId: "root", accessToken: "root", refreshToken: "" }}
                     options={{ headerShown: false }} />
                 <Stack.Screen
                     name="SignUp"

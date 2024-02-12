@@ -10,38 +10,29 @@ import {
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import { signIn } from '../components/schema';
 
-
-LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
 
     async function signIn(email, password) {
         try {
-            const userData = {
-                email: email,
-                password: password
-            };
-            console.log(userData);
             const response = await fetch('https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify({ email, password }),
             });
             const responseBody = await response.json();
             if (response.ok) {
-                console.log(responseBody);
-                console.log('User logged in successfully:', responseBody.id, responseBody.access_token, responseBody.refresh_token);
+                console.log('User logged in successfully');
                 navigation.navigate('Home', {
                     screen: 'ParentHome', // Navigate to ParentHome tab
                     params: {
                         screen: 'HomeScreen', // Navigate to HomeScreen inside ParentHome
-                        params: { userId: responseBody.id, userEmail: responseBody.email, userPW: responseBody.pw },
+                        params: { userId: responseBody.user_id, accessToken: responseBody.access_token, refreshToken: responseBody.refresh_token },
                     }
                 });
-
             } else {
                 if (responseBody.error) {
                     console.error('Error logging in:', responseBody.error);
@@ -151,4 +142,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen; 
+export default LoginScreen;

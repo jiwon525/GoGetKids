@@ -40,36 +40,32 @@ export async function signUp(email, firstName, lastName, password, phoneNum, nav
     }
 };
 
-
-
-export async function getParentStudents(id, navigation) {
+export async function fetchUserData(userId, accessToken) {
     try {
-        const userData = {
-            id: id
+        const userID = {
+            _id: userId,
         };
-        console.log(userData);
-        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getParentStudents', {
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getUserDetails', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
             },
-            body: JSON.stringify(userData),
+            body: JSON.stringify(userID),
         });
         const responseBody = await response.json();
-        if (response.ok) {
-            console.log(responseBody);
-            console.log('User logged in successfully:', responseBody.id);
-            navigation.navigate("Home");
-            return responseBody.id
-        } else {
-            if (responseBody.error) {
-                console.error('Error logging in:', responseBody.error);
-            } else {
-                console.error('Error logging in: Unknown error');
-            }
-        }
+        console.log("responseBody: ", responseBody);
+        let userDetails = {
+            _id: responseBody.userDetails._id,
+            email: responseBody.userDetails.email,
+            firstName: responseBody.userDetails.firstName,
+            lastName: responseBody.userDetails.lastName,
+            phoneNum: responseBody.userDetails.phoneNum,
+        };
+        console.log("userDetails: ", userDetails);
+        return userDetails;
     } catch (error) {
-        console.error('Error:', error.message || "Unknown error");
+        console.error('Error fetching data:', error);
+        return null; // Return null or throw an error based on your app's logic
     }
 };
-

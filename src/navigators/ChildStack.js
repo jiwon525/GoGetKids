@@ -21,7 +21,7 @@ const ChildStack = () => (
     >
         <Stack.Screen name="HomeScreen"
             component={HomeScreen}
-            initialParams={{ userId: "child", userEmail: "child", userPW: "" }} />
+            initialParams={{ userId: "child", accessToken: "root", refreshToken: "" }} />
         <Stack.Screen name="Child" component={ScheduleScreen} />
         <Stack.Screen name="Assign" component={AssignGuardian} />
         <Stack.Screen name="GenerateQR" component={GenerateQR} />
