@@ -11,15 +11,22 @@ exports = async function(payload) {
       company_name=""
     } = payload;
     
+    // Validate email address
+    if (!email || typeof email !== 'string' || email.trim() === '') {
+      return { error: "Invalid email address" };
+    }
+
     // Hash the password
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
       password
     );
+
     // Check if hashing was successful
     if (!hashedPassword) {
-      return { error: "Error at hash func" };
+      return { error: "Error hashing password" };
     }
+
     // Construct user object based on role
     const user = {
       email,
@@ -31,22 +38,41 @@ exports = async function(payload) {
       school_name,
       company_name
     };
-    console.log(user);
-    var serviceName = "mongodb-atlas";
-    var dbName = "GoGetKids";
-    var collName = "users";
-    var collection = context.services.get(serviceName).db(dbName).collection(collName);
-    var findUser;
-    findUser = await collection.findOne({email});
-    console.log(findUser);
-    if(!findUser){
-      collection.insertOne(user);
-      return true;
-    } else {
+
+    // MongoDB collection information
+    const serviceName = "mongodb-atlas";
+    const dbName = "GoGetKids";
+    const collName = "users";
+    
+    // Get MongoDB collection
+    const collection = context.services.get(serviceName).db(dbName).collection(collName);
+
+    // Check if user already exists
+    const existingUser = await collection.findOne({ email });
+    if (existingUser) {
       return { error: "User already exists" };
     }
+
+    // Insert user into database
+    const insertionResult = await collection.insertOne(user);
+    if (insertionResult.insertedId) {
+      // Debug information for successful insertion
+      const debugInfo = {
+        message: "User inserted successfully",
+        insertedUserId: insertionResult.insertedId
+      };
+      return { success: true, debug: debugInfo };
+    } else {
+      return { error: "Error inserting user into the database" };
+    }
   } catch (error) {
+    // Error handling
     console.error("Error registering user:", error);
-    return { error: "Internal server error" };
+    // Debug information for error case
+    const debugInfo = {
+      message: "Error registering user",
+      error: error.message
+    };
+    return { error: "Internal server error", debug: debugInfo };
   }
 };
