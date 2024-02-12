@@ -1,7 +1,7 @@
 exports = async function(payload) {
  
   try {
-    var body = JSON.parse(payload.body.text())
+    const body = JSON.parse(payload.body.text())
     const {
       email,
       firstName,
