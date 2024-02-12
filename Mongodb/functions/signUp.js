@@ -59,7 +59,8 @@ exports = async function(payload) {
       // Debug information for successful insertion
       const debugInfo = {
         message: "User inserted successfully",
-        insertedUserId: insertionResult.insertedId
+        insertedUserId: insertionResult.insertedId,
+        timestamp: new Date().toISOString()
       };
       return { success: true, debug: debugInfo };
     } else {
@@ -71,7 +72,8 @@ exports = async function(payload) {
     // Debug information for error case
     const debugInfo = {
       message: "Error registering user",
-      error: error.message
+      error: error.message,
+      timestamp: new Date().toISOString()
     };
     return { error: "Internal server error", debug: debugInfo };
   }
