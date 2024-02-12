@@ -10,9 +10,21 @@ exports = async function (payload) {
     headers: {
       Authorization: ["Basic bmlja0BleGFtcGxlLmNvbTpQYTU1dzByZA=="],
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
-  return userFromHttp;
+  
+  if (userFromHttp.status === 200) {
+      const responseBody = JSON.parse(userFromHttp.body.text());
+      if (responseBody.id) {
+        return responseBody.id;
+      } else {
+        console.error("Response body doesn't contain user ID:", responseBody);
+        return { error: "User ID not found in response" };
+      }
+    } else {
+      console.error("Error signing in user:", userFromHttp.body.text());
+      return { error: "Authentication failed" };
+    }
   } catch (error) {
     console.error("Error signing in user:", error);
     return { error: "Internal server error" };
