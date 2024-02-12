@@ -1,10 +1,9 @@
 exports = async function (payload) {
   try {
-    const email = JSON.parse(payload.body);
+    const email = payload.body.email;
     if (!email) {
       return { error: "Email is undefined or null " + email+ body};
     }
-    return { error: "Email is here or null " + email};
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collName = "students";
