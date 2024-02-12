@@ -1,6 +1,6 @@
 exports = async function (payload) {
   try {
-    const email = payload;
+    const email = JSON.parse(payload.body.text());
     if (!email) {
       return { error: "Email is undefined or null " + email+ body};
     }
