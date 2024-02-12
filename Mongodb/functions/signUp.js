@@ -78,6 +78,6 @@ exports = async function(payloadBase64) {
       error: error.message,
       timestamp: new Date().toISOString()
     };
-    return { error: "Internal server error", debug: debugInfo };
+    return { error: "Internal server error" + user, debug: debugInfo  };
   }
 };
