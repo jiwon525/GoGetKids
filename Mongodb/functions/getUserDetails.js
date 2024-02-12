@@ -18,7 +18,7 @@ exports = async function (payload) {
     
     const userDetails = await collection.findOne(userID.user_id)
     if (!userDetails) {
-      return { error: "User not registered!" };
+      return { error: "User not in database!" };
     }
     return {userDetails};
   } catch (error) {
