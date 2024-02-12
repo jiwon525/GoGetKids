@@ -11,50 +11,11 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import axios from 'axios';
+import { signUp } from '../components/schema';
 
 SignUpScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
-    /*
-    const [data, setData] = useState({
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: "",
-        phoneNum: "",
-        role: ""
-    });
-    const [error, setError] = useState("");
-    //onSubmit={handleSignUp}
-    const handleSignUp = async (values) => {
-        try {
-            if (values.password !== values.confirmPassword) {
-                setFieldError('confirmPassword', 'Passwords do not match');
-            } else {
-                const userData = {
-                    email: values.email,
-                    firstName: values.FName,
-                    lastName: values.LName,
-                    password: values.password,
-                    phoneNum: values.phoneNum,
-                    role: "parent"
-                };
-                setData(userData);
-                const url = "http://localhost:8080/api/users";
-                const { data: res } = await axios.post(url, data);
-                console.log(res.message);
-                navigation.navigate("Login");
-            }
-        } catch (error) {
-            if (error.response &&
-                error.response.status >= 400
-                && error.response.status <= 500) {
-                setError(error.response.data.message)
-            }
-        }
-    };*/
-
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -65,9 +26,17 @@ SignUpScreen = ({ navigation }) => {
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
-
                         onSubmit={(values) => {
                             console.log(values);
+                            const userData = {
+                                email: values.email,
+                                firstName: values.FName,
+                                lastName: values.LName,
+                                password: values.password,
+                                phoneNum: values.phoneNum,
+                                role: "parent"
+                            };
+                            signUp(userData, navigation);
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
