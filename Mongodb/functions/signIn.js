@@ -29,8 +29,7 @@ exports = async function (payload) {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
     }
-  } catch (error) {
-    console.error("Error signing in user:", error);
-    return { error: "Internal server signIn error" };
+  } catch (err) {
+    throw new Error(`Authentication failed with reason: ${err.message}`);
   }
 };
