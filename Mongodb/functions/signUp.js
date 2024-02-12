@@ -1,5 +1,9 @@
-exports = async function(payload) {
+exports = async function(payloadBase64) {
   try {
+    const payloadJSON = Buffer.from(payloadBase64, 'base64').toString('utf-8');
+    
+    // Parse the decoded JSON string
+    const payload = JSON.parse(payloadJSON);
     const {
       email,
       firstName,
