@@ -8,9 +8,16 @@ export async function signUp(userData, navigation) {
             },
             body: JSON.stringify(userData),
         });
-        if (response.ok || response.status === 204) {
-            console.log("success");
-            //navigation.navigate("Login");
+
+        if (response.ok) {
+            const responseBody = await response.json();
+            if (responseBody && responseBody.success && responseBody.debug) {
+                console.log('User inserted successfully:', responseBody.debug);
+                // Optionally, navigate to the login screen
+                // navigation.navigate("Login");
+            } else {
+                console.error('Error registering user: Response format is incorrect');
+            }
         } else {
             const responseBody = await response.json();
             if (responseBody && responseBody.error) {
