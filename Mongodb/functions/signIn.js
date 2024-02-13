@@ -18,9 +18,9 @@ exports = async function (payload) {
       password,
       user.password
     );
-
     if (passwordMatch) {
-      return { id: user._id.toString() };
+      const user_id = user._id.toString();
+      return { "id": user_id }
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
