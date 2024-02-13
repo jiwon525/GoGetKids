@@ -2,9 +2,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import AccountScreen from '../ScreenView/AccountScreen';
-import TripScreen from '../ScreenView/TripScreen';
-import ScanScreen from '../ScreenView/ScanScreen';
+import AccountScreen from '../../app/parent/AccountScreen';
+import TripScreen from '../../app/TripScreen';
+import ScanScreen from '../../app/ScanScreen';
 const Tab = createBottomTabNavigator();
 
 const DriverTab = () => {

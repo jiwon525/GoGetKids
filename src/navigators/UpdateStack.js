@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import UpdatesScreen from '../ScreenView/UpdatesScreen';
-import AssignGuardian from '../ScreenView/AssignGuardian';
+import UpdatesScreen from '../../app/parent/UpdatesScreen';
+import AssignGuardian from '../../app/parent/AssignGuardian';
 
 const Stack = createStackNavigator();
 

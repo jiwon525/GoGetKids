@@ -1,29 +1,45 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, } from 'react';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useUserSession } from '../../UserSessionContext';
 import {
     StyledContainer,
     InnerContainer,
     NormText, HomeImage,
-} from '../components/styles';
-import Card from '../components/Card';
-import ProfileTop from '../components/ProfileTop';
-import { fetchUserData, fetchStudentData } from '../components/schema';
-import StudentDetails from '../components/StudentDetails';
-import UserDetails from '../components/UserDetails';
+} from '../../src/components/styles';
+import Card from '../../src/components/Card';
+import ProfileTop from '../../src/components/ProfileTop';
+import { fetchUserData, fetchStudentData } from '../../src/components/schema';
+import StudentDetails from '../../src/components/StudentDetails';
+import UserDetails from '../../src/components/UserDetails';
 
-const HomeScreen = ({ navigation, route }) => {
-    const { userId, accessToken, refreshToken } = route.params;
-    const { userDetails, setUserDetails, studentDetails, setStudentDetails } = useUserSession();
-    console.log("userdetails EMAIL", userDetails.email);
-    const fetchedUserDetails = useMemo(() => fetchUserData(userId, accessToken, refreshToken), [userId, accessToken, refreshToken]);
-    const fetchedStudentDetails = useMemo(() => fetchStudentData(userDetails.email, accessToken), [userId, accessToken]);
+const HomeScreen = () => {
+    const params = useLocalSearchParams();
+    const { userId, accessToken, refreshToken } = params;
+    const { setUserDetails, studentDetails, setStudentDetails } = useUserSession();
     useEffect(() => {
-        setUserDetails(fetchedUserDetails);
-        setStudentDetails(fetchedStudentDetails);
         const fetchData = async () => {
-            console.log("fetched", fetchedUserDetails.email, "just user", userDetails.email)
-            console.log("fetched students", fetchedStudentDetails);
             try {
+                // Fetch user details
+                console.log("userid", userId);
+                const fetchedUserDetails = await fetchUserData(userId, accessToken, refreshToken);
+                console.log("fetching user details frm function");
+                const userD = new UserDetails(
+                    fetchedUserDetails.accessToken,
+                    fetchedUserDetails.refreshToken,
+                    fetchedUserDetails._id,
+                    fetchedUserDetails.email,
+                    fetchedUserDetails.role,
+                    fetchedUserDetails.firstName,
+                    fetchedUserDetails.lastName,
+                    fetchedUserDetails.company_name,
+                    fetchedUserDetails.school_name,
+                );
+                setUserDetails(userD);
+                console.log("saved user data", userD);
+                // Fetch student details
+                const fetchedStudentDetails = await fetchStudentData(userD.email, accessToken);
+
+                // Check if fetchedStudentDetails is an array
                 if (Array.isArray(fetchedStudentDetails)) {
                     // Map fetchedStudentDetails to StudentDetails objects
                     const studentDetailsArray = fetchedStudentDetails.map(student =>
@@ -57,13 +73,15 @@ const HomeScreen = ({ navigation, route }) => {
 
         fetchData();
     }, []);
+
     return (
         <StyledContainer>
-            <HomeImage resizeMode="contain" source={require('../assets/childrenhome.png')} />
+            <HomeImage resizeMode="contain" source={require('../../src/assets/childrenhome.png')} />
             <ProfileTop name="Home" />
             <InnerContainer>
                 {studentDetails && studentDetails.length > 0 ? (
                     studentDetails.map((student, index) => (
+
                         <Card
                             key={student._id}
                             firstName={student.firstname}
@@ -72,7 +90,7 @@ const HomeScreen = ({ navigation, route }) => {
                             school={student.school_name}
                             grade={student.class_name}
                             studentID={student.studentid.toString()}
-                            onPress={() => navigation.navigate("Child")}
+                            accessToken={accessToken}
                         />
                     ))
                 ) : (

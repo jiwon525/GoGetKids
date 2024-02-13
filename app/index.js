@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab,
@@ -6,7 +7,7 @@ import {
     StyledFormArea, LeftIcon, StyledButton, ButtonText,
     StyledInputLabel, StyledTextInput, RightIcon,
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
-} from '../components/styles';
+} from '../src/components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import { StyleSheet, View, Dimensions, ScrollView, Alert } from "react-native";
@@ -21,7 +22,7 @@ const showAlert = (errMsg) =>
             },
         ],
     );
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     async function signIn(email, password) {
         try {
@@ -35,13 +36,7 @@ const LoginScreen = ({ navigation }) => {
             const responseBody = await response.json();
             if (response.ok) {
                 console.log('User logged in successfully');
-                navigation.navigate('Home', {
-                    screen: 'ParentHome', // Navigate to ParentHome tab
-                    params: {
-                        screen: 'HomeScreen', // Navigate to HomeScreen inside ParentHome
-                        params: { userId: responseBody.user_id, accessToken: responseBody.access_token, refreshToken: responseBody.refresh_token },
-                    }
-                });
+                router.replace({ pathname: "/parent/HomeScreen", params: { userId: responseBody.user_id, accessToken: responseBody.access_token, refreshToken: responseBody.refresh_token } });
             } else {
                 if (responseBody.error) {
                     console.error('Error logging in:', responseBody.error);
@@ -63,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
                 <View style={styles.viewStyle}>
                     <LoginTitle>Welcome to GoGetKids!</LoginTitle>
                     <InnerMidContainer>
-                        <LoginLogo resizeMode="contain" source={require('../assets/children.png')} />
+                        <LoginLogo resizeMode="contain" source={require('../src/assets/children.png')} />
                     </InnerMidContainer>
                 </View>
                 <InnerContainer>
@@ -110,9 +105,11 @@ const LoginScreen = ({ navigation }) => {
 
                                 <ExtraView>
                                     <ExtraText>Don't have an account?  </ExtraText>
-                                    <TextLink onPress={() => navigation.navigate("SignUp")}>
-                                        <TextLinkContent>Sign up</TextLinkContent>
-                                    </TextLink>
+                                    <Link href="/SignupScreen" asChild>
+                                        <TextLink>
+                                            <TextLinkContent>Sign up</TextLinkContent>
+                                        </TextLink>
+                                    </Link>
                                 </ExtraView>
                             </StyledFormArea>
                         )}

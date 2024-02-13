@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import TabNavigator from './DriverTab';
 //screens
-import LoginScreen from '../ScreenView/LoginScreen';
-import SignupScreen from '../ScreenView/SignupScreen';
+import LoginScreen from '../../app';
+import SignupScreen from '../../app/SignupScreen';
 
 const Stack = createStackNavigator();
 

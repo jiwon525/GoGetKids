@@ -2,8 +2,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import StudentListScreen from '../ScreenView/StudentListScreen';
-import ScanScreen from '../ScreenView/ScanScreen';
+import StudentListScreen from '../../app/StudentListScreen';
+import ScanScreen from '../../app/ScanScreen';
 import AccountStackNavigator from './AccountStack';
 
 const Tab = createBottomTabNavigator();

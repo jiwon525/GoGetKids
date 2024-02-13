@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab,
@@ -6,10 +7,10 @@ import {
     StyledFormArea, LeftIcon, StyledButton, ButtonText,
     StyledInputLabel, StyledTextInput, RightIcon,
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
-} from '../components/styles';
+} from '../src/components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons';
-import ProfileTop from '../components/ProfileTop';
+import ProfileTop from '../src/components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
 ChangePasswordScreen = ({ navigation }) => {

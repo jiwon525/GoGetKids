@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Checkbox from 'expo-checkbox';
+import { Link } from 'expo-router';
 import {
     StyleSheet, View, SafeAreaView,
     Dimensions, ScrollView,
@@ -12,8 +13,8 @@ import {
     Colors, BackIcon, AlignRow, StyledContainer, InnerContainer, StyledFormArea, ExtraText,
     Subtitle,
     StyledInputLabel,
-} from '../components/styles';
-import ProfileTop from '../components/ProfileTop';
+} from '../src/components/styles';
+import ProfileTop from '../src/components/ProfileTop';
 
 const { width } = Dimensions.get('window');
 
@@ -66,7 +67,7 @@ const Item = ({ studentid, transport, zone, name }) => (
     <StyledContainer>
         <StyledScheduleView list={true}>
             <MostSmallLogo
-                resizeMode="contain" source={require('../assets/student.png')} />
+                resizeMode="contain" source={require('../src/assets/student.png')} />
             <InnerScheduleView>
                 <ExtraText>{name} - {studentid}</ExtraText>
             </InnerScheduleView>

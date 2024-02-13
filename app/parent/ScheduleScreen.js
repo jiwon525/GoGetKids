@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useUserSession } from '../../UserSessionContext';
 import { StyleSheet, View, Dimensions } from "react-native";
 import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, Colors,
     ProfileContainer, BottomContainer, PageTitle, ExtraText, InnerContainer,
     StyledScheduleView, MostSmallLogo, InnerScheduleView, Subtitle, CardTextStatus, TextContainer,
-} from '../components/styles';
+} from '../../src/components/styles';
 import { Ionicons } from '@expo/vector-icons';
-import ProfileTop from '../components/ProfileTop';
-import { fetchSchedule } from '../components/schema';
+import ProfileTop from '../../src/components/ProfileTop';
+import { fetchSchedule } from '../../src/components/schema';
 
-const ScheduleScreen = ({ navigation }) => {
+const ScheduleScreen = () => {
+    const params = useLocalSearchParams();
+    const { studentid, accessToken } = params;
+    console.log("params: ", params);
     const [schedule, setSchedule] = useState({
         _id: null,
         date: Date,
@@ -29,33 +33,30 @@ const ScheduleScreen = ({ navigation }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (studentDetails && studentDetails.length > 0 && accessToken) {
-                    const studentId = studentDetails[0].studentid;
-                    const s = await fetchSchedule(studentDetails.studentid, accessToken);
-                    const schedule = {
-                        _id: s._id,
-                        date: s.date,
-                        firstName: studentDetails.firstname,
-                        lastName: studentDetails.lastname,
-                        school: studentDetails.school_name,
-                        studentclass: studentDetails.class_name,
-                        status: studentDetails.status,
-                        studentid: studentId,
-                        transporttype: s.transport_type,
-                        pickuptime: s.pickup_time,
-                        dismissaltime: s.dismissal_time,
-                    }
+                console.log(studentid);
+                const s = await fetchSchedule(studentid, accessToken);
+                console.log("from fetchschedule", s);
+                const schedule = {
+                    _id: s._id,
+                    date: s.date,
+                    firstName: studentDetails.firstname,
+                    lastName: studentDetails.lastname,
+                    school: studentDetails.school_name,
+                    studentclass: studentDetails.class_name,
+                    status: studentDetails.status,
+                    studentid: studentDetails.studentid,
+                    transporttype: s.transport_type,
+                    pickuptime: s.pickup_time,
+                    dismissaltime: s.dismissal_time,
                 }
+                console.log("schedule: ", schedule)
+                setSchedule(schedule);
             } catch (error) {
                 console.error('Error fetching schedule:', error);
             }
         };
-
-        // Fetch data only if both studentDetails and accessToken are available and have changed
-        if (studentDetails !== null && accessToken !== null) {
-            fetchData();
-        }
-    }, [studentDetails]); // Run once
+        fetchData();
+    }, []);
     return (
         <StyledContainer>
             <ProfileTop name={schedule.date} />
@@ -65,7 +66,7 @@ const ScheduleScreen = ({ navigation }) => {
                 <View style={styles.TopContainer}>
                     <StyledScheduleView>
                         <MostSmallLogo
-                            resizeMode="contain" source={require('../assets/student.png')} />
+                            resizeMode="contain" source={require('../../src/assets/student.png')} />
                         <InnerScheduleView>
                             <Subtitle>{schedule.firstName} {schedule.lastName}</Subtitle>
                             <ExtraText> - {schedule.studentid}</ExtraText>

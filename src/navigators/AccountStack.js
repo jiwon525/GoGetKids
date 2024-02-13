@@ -1,8 +1,8 @@
 // AccountStackNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AccountScreen from '../ScreenView/AccountScreen';
-import ChangePasswordScreen from '../ScreenView/ChangePasswordScreen';
+import AccountScreen from '../../app/parent/AccountScreen';
+import ChangePasswordScreen from '../../app/ChangePasswordScreen';
 
 const Stack = createStackNavigator();
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'expo-router';
 import {
     StyleSheet,
     SafeAreaView,
@@ -7,13 +8,13 @@ import {
     Text,
     Dimensions,
 } from 'react-native';
-import ProfileTop from '../components/ProfileTop';
+import ProfileTop from '../src/components/ProfileTop';
 import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,
     Colors, Subtitle,
-} from '../components/styles';
-import TripSheet from '../components/TripSheet';
+} from '../src/components/styles';
+import TripSheet from '../src/components/TripSheet';
 
 const { width } = Dimensions.get('window');
 //need to get data of the date chosen only.

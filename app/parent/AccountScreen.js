@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'expo-router';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab, LoginTitle,
     Colors, BackIcon, AlignRow, InnerMidContainer, LoginLogo,
     StyledFormArea, LeftIcon, StyledButton, ButtonText, NormText,
     ProfileContainer, BottomContainer,
-} from '../components/styles';
-import ProfileTop from '../components/ProfileTop';
+} from '../../src/components/styles';
+import ProfileTop from '../../src/components/ProfileTop';
 import { StyleSheet, View, Text } from "react-native";
 
 
@@ -17,7 +18,7 @@ const AccountScreen = ({ navigation }) => {
                 <ProfileTop name="My Account" navigation={navigation} />
 
                 <ProfileContainer>
-                    <LoginLogo resizeMode="contain" source={require('../assets/profile.png')} />
+                    <LoginLogo resizeMode="contain" source={require('../../src/assets/profile.png')} />
                 </ProfileContainer>
             </LoginTab>
             <View style={styles.textContainer}>

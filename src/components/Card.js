@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "react-native";
 import PropTypes from 'prop-types';
 
@@ -6,33 +7,41 @@ import {
     Colors, CardTextStatus,
 } from '../components/styles';
 
-export default function Card({ firstName, lastName, status, school, grade, studentID, onPress }) {
+export default function Card({ firstName, lastName, status, school, grade, studentID, accessToken }) {
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <TouchableOpacity style={styles.logoContainer}>
-                <Image
-                    resizeMode="contain" source={require('../assets/student.png')}
-                    style={styles.logImage}
-                />
+        <Link key={studentID} push href={{
+            pathname: "/parent/ScheduleScreen",
+            params: {
+                studentid: studentID,
+                accessToken: accessToken
+            }
+        }} asChild>
+            <TouchableOpacity style={styles.container}>
+                <TouchableOpacity style={styles.logoContainer}>
+                    <Image
+                        resizeMode="contain" source={require('../assets/student.png')}
+                        style={styles.logImage}
+                    />
+                </TouchableOpacity>
+                <View style={styles.textContainer}>
+                    <Text style={styles.textOne} numberOfLines={1}>
+                        {firstName} {lastName}
+                    </Text>
+                    <CardTextStatus>
+                        {status}
+                    </CardTextStatus>
+                    <Text style={styles.textTwo}>{school}</Text>
+                </View>
+                <View style={styles.gradeTextContainer}>
+                    <Text style={styles.textTwo}>
+                        {grade}
+                    </Text>
+                    <Text style={styles.textTwo}>
+                        {studentID}
+                    </Text>
+                </View>
             </TouchableOpacity>
-            <View style={styles.textContainer}>
-                <Text style={styles.textOne} numberOfLines={1}>
-                    {firstName} {lastName}
-                </Text>
-                <CardTextStatus>
-                    {status}
-                </CardTextStatus>
-                <Text style={styles.textTwo}>{school}</Text>
-            </View>
-            <View style={styles.gradeTextContainer}>
-                <Text style={styles.textTwo}>
-                    {grade}
-                </Text>
-                <Text style={styles.textTwo}>
-                    {studentID}
-                </Text>
-            </View>
-        </TouchableOpacity>
+        </Link>
     );
 }
 

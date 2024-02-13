@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'expo-router';
 import {
     StyleSheet,
     SafeAreaView,
@@ -11,9 +12,9 @@ import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, TextContainer,
     ProfileContainer, BottomContainer, PageTitle, ExtraText, InnerScheduleView,
     StyledScheduleView, Subtitle, Colors, MostSmallLogo, CardTextStatus,
-} from '../components/styles';
+} from '../../src/components/styles';
 import { Ionicons } from '@expo/vector-icons';
-import ProfileTop from '../components/ProfileTop';
+import ProfileTop from '../../src/components/ProfileTop';
 import Swiper from 'react-native-swiper';
 import moment from 'moment';
 
@@ -92,7 +93,7 @@ const ScheduleScreen = ({ navigation, route }) => {
                             <View style={styles.TopContainer}>
                                 <StyledScheduleView>
                                     <MostSmallLogo
-                                        resizeMode="contain" source={require('../assets/student.png')} />
+                                        resizeMode="contain" source={require('../../src/assets/student.png')} />
                                     <InnerScheduleView>
                                         <Subtitle>{item.name}</Subtitle>
                                         <ExtraText> - {item.studentid}</ExtraText>

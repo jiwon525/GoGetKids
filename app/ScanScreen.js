@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'expo-router';
 import { Text, View, StyleSheet, Button, Dimensions } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import ProfileTop from '../components/ProfileTop';
+import ProfileTop from '../src/components/ProfileTop';
 import {
     StyledContainer, Colors, InnerContainer,
-} from '../components/styles';
+} from '../src/components/styles';
 
 const ScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = React.useState(false);

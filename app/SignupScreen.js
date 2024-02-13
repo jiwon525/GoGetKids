@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab,
@@ -6,14 +7,14 @@ import {
     StyledFormArea, LeftIcon, StyledButton, ButtonText,
     StyledInputLabel, StyledTextInput, RightIcon,
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
-} from '../components/styles';
+} from '../src/components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
-import ProfileTop from '../components/ProfileTop';
+import ProfileTop from '../src/components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import { signUp } from '../components/schema';
+import { signUp } from '../src/components/schema';
 
-SignUpScreen = ({ navigation }) => {
+SignUpScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
     return (
@@ -32,7 +33,7 @@ SignUpScreen = ({ navigation }) => {
                                     firstName = values.FName,
                                     lastName = values.LName,
                                     password = values.password,
-                                    phoneNum = values.phoneNum, navigation);
+                                    phoneNum = values.phoneNum,)
                             } else {
                                 console.log("please enter in the same password");
                             }
@@ -119,11 +120,13 @@ SignUpScreen = ({ navigation }) => {
                                 <Line />
                                 <ExtraView>
                                     <ExtraText>Already have an account? </ExtraText>
-                                    <TextLink onPress={() => navigation.navigate("Login")}>
+
+                                    <TextLink onPress={() => router.replace("/")}>
                                         <TextLinkContent>
                                             Login
                                         </TextLinkContent>
                                     </TextLink>
+
                                 </ExtraView>
 
                             </StyledFormArea>

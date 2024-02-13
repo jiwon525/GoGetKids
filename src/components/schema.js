@@ -1,5 +1,5 @@
-
-export async function signUp(email, firstName, lastName, password, phoneNum, navigation) {
+import { router } from 'expo-router';
+export async function signUp(email, firstName, lastName, password, phoneNum) {
     try {
         const userData = {
             email: email,
@@ -22,7 +22,7 @@ export async function signUp(email, firstName, lastName, password, phoneNum, nav
             console.log(responseBody);
             if (responseBody.success && responseBody.debug) {
                 console.log('User inserted successfully:', responseBody.debug);
-                navigation.navigate("Login");
+                router.replace("/");
             } else {
                 console.error('Error registering user: Response format is incorrect');
             }
@@ -42,7 +42,6 @@ export async function signUp(email, firstName, lastName, password, phoneNum, nav
 
 
 export async function fetchUserData(userId, accessToken, refreshToken) {
-
     try {
         const userID = {
             _id: userId,
@@ -78,6 +77,7 @@ export async function fetchUserData(userId, accessToken, refreshToken) {
 
 
 export async function fetchSchedule(studentId, accessToken) {
+    console.log("studentId", studentId)
     try {
         const studentID = {
             studentid: studentId,
@@ -90,7 +90,9 @@ export async function fetchSchedule(studentId, accessToken) {
             },
             body: JSON.stringify(studentID),
         });
+
         const responseBody = await response.json();
+        console.log(responseBody);
         let scheduleDetails = {
             _id: responseBody.scheduleDetails._id,
             studentid: responseBody.scheduleDetails.studentid,
