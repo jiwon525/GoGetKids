@@ -12,7 +12,7 @@ exports = async function (payload) {
     var findResult;
     try {
       findResult = await collection.findOne({studentid});
-      return { findResult };
+      return { findResult, studentid };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };

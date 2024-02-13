@@ -45,6 +45,7 @@
     },
     {
         "name": "getStudentSchedule",
-        "private": false
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
