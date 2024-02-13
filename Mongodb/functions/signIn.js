@@ -12,7 +12,6 @@ exports = async function (payload) {
       return { error: "User not found" };
     }
     // Compare provided password with stored hashed password
-
     const passwordMatch = await context.functions.execute(
       "bcryptCompare",
       password,
@@ -20,7 +19,7 @@ exports = async function (payload) {
     );
     if (passwordMatch) {
       const user_id = user._id.toString();
-      return { "id": user_id }
+      return user_id;
     } else {
       // Passwords do not match, return an error
       return { error: "Invalid password" };
