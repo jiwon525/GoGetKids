@@ -3,5 +3,5 @@
     "mongo_service_name": "mongodb-atlas",
     "database_name": "GoGetKids",
     "collection_name": "customUserData",
-    "user_id_field": "external_id"
+    "user_id_field": "user_id"
 }
