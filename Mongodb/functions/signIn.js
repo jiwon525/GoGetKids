@@ -12,13 +12,11 @@ exports = async function (payload) {
       return { error: "User not found" };
     }
     // Compare provided password with stored hashed password
-
     const passwordMatch = await context.functions.execute(
       "bcryptCompare",
       password,
       user.password
     );
-
     if (passwordMatch) {
       return { "id": user._id.toString() }
     } else {
