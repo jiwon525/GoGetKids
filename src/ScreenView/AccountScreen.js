@@ -11,8 +11,6 @@ import { StyleSheet, View, Text } from "react-native";
 
 
 const AccountScreen = ({ navigation }) => {
-
-
     return (
         <StyledContainer>
             <LoginTab>
@@ -22,7 +20,6 @@ const AccountScreen = ({ navigation }) => {
                     <LoginLogo resizeMode="contain" source={require('../assets/profile.png')} />
                 </ProfileContainer>
             </LoginTab>
-
             <View style={styles.textContainer}>
                 <LoginTitle>Name</LoginTitle>
                 <NormText>Jiwon Jung</NormText>

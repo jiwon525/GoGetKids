@@ -111,7 +111,12 @@ export const LoginLogo = styled.Image`
     height:${deviceHeight * 0.3}px;
 `;
 export const HomeImage = styled.Image`
-    flex:1;
+    position: absolute;
+    bottom: 0;
+    margin: 5px;
+    width: 90%;
+    height: 50%;
+    opacity: 0.3;
     justify-content: center;
     align-items: center;
 `;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Image } from "react-native";
+import React, { useEffect, useMemo } from 'react';
+import { useUserSession } from '../../UserSessionContext';
 import {
     StyledContainer,
     InnerContainer,
@@ -7,79 +7,79 @@ import {
 } from '../components/styles';
 import Card from '../components/Card';
 import ProfileTop from '../components/ProfileTop';
-import { fetchUserData } from '../components/schema';
-import { response } from 'express';
+import { fetchUserData, fetchStudentData } from '../components/schema';
+import StudentDetails from '../components/StudentDetails';
+import UserDetails from '../components/UserDetails';
 
 const HomeScreen = ({ navigation, route }) => {
     const { userId, accessToken, refreshToken } = route.params;
-    const [students, setStudents] = useState([]);
-    const [userDetail, setUserDetail] = useState({
-        _id: null,
-        email: '',
-        firstName: '',
-        lastName: '',
-        phoneNum: '',
-    });
-
+    const { userDetails, setUserDetails, studentDetails, setStudentDetails } = useUserSession();
+    console.log("userdetails EMAIL", userDetails.email);
+    const fetchedUserDetails = useMemo(() => fetchUserData(userId, accessToken, refreshToken), [userId, accessToken, refreshToken]);
+    const fetchedStudentDetails = useMemo(() => fetchStudentData(userDetails.email, accessToken), [userId, accessToken]);
     useEffect(() => {
+        setUserDetails(fetchedUserDetails);
+        setStudentDetails(fetchedStudentDetails);
         const fetchData = async () => {
+            console.log("fetched", fetchedUserDetails.email, "just user", userDetails.email)
+            console.log("fetched students", fetchedStudentDetails);
             try {
-                const userDetails = await fetchUserData(userId, accessToken);
-                setUserDetail(userDetails);
-                const email = userDetails.email
-                const parent_id = {
-                    email: email,
-                };
-                const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getParentStudents', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
-                    },
-                    body: JSON.stringify(parent_id),
-                });
-                const responseBody = await response.json();
-                if (!response.ok) {
-                    console.error('Error fetching data. Status:', response.status);
-                    // Handle the error here, maybe return a specific error message or throw an error
+                if (Array.isArray(fetchedStudentDetails)) {
+                    // Map fetchedStudentDetails to StudentDetails objects
+                    const studentDetailsArray = fetchedStudentDetails.map(student =>
+                        new StudentDetails(
+                            student._id,
+                            student.address,
+                            student.class_name,
+                            student.dob,
+                            student.firstname,
+                            student.gender,
+                            student.lastname,
+                            student.parent_id,
+                            student.postcode,
+                            student.school_name,
+                            student.status,
+                            student.studentid,
+                            student.zone
+                        )
+                    );
+                    // Set studentDetails
+                    setStudentDetails(studentDetailsArray);
                 } else {
-                    setStudents(responseBody.result || []);
-                    console.log(responseBody.result);
+                    // Handle the case when fetchedStudentDetails is not an array
+                    console.error('Error fetching student details:', fetchedStudentDetails);
                 }
-
             } catch (error) {
+                // Handle any errors that occur during the fetching process
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchData(); // Call the fetchData function to fetch data from the backend
-    }, []); // Run once
-
+        fetchData();
+    }, []);
     return (
         <StyledContainer>
+            <HomeImage resizeMode="contain" source={require('../assets/childrenhome.png')} />
             <ProfileTop name="Home" />
             <InnerContainer>
-                {students.map((student, index) => (
-                    <Card
-                        key={index}
-                        firstName={student.firstname}
-                        lastName={student.lastname}
-                        status={student.status}
-                        school={student.school_name}
-                        grade={student.class_name}
-                        studentID={student.studentid.toString()}
-                        onPress={() => navigation.navigate("Child", {
-                            userId: userId,
-                            accessToken: accessToken,
-                            refreshToken: refreshToken,
-                            studentId: student.studentid
-                        })}
-                    />
-                ))}
+                {studentDetails && studentDetails.length > 0 ? (
+                    studentDetails.map((student, index) => (
+                        <Card
+                            key={student._id}
+                            firstName={student.firstname}
+                            lastName={student.lastname}
+                            status={student.status}
+                            school={student.school_name}
+                            grade={student.class_name}
+                            studentID={student.studentid.toString()}
+                            onPress={() => navigation.navigate("Child")}
+                        />
+                    ))
+                ) : (
+                    <NormText>No students linked yet</NormText>
+                )}
             </InnerContainer>
-            <HomeImage
-                resizeMode="center" source={require('../assets/childrenhome.png')}
-            />
+
         </StyledContainer>
     );
 };

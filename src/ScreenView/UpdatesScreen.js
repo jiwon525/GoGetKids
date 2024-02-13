@@ -1,6 +1,3 @@
-//for parents to update schedule.transport_type to parents (cannot from parents to bus but can bus to parents)
-//for parents to put in 3rd party email so that a guardian can help them pick up 
-
 import React, { useState } from 'react';
 import {
     StyleSheet,
@@ -48,7 +45,8 @@ const data = [
 ];
 
 
-const ScheduleScreen = ({ }) => {
+const ScheduleScreen = ({ navigation, route }) => {
+    const { userId, accessToken, refreshToken } = route.params;
     const [value, setValue] = useState(new Date());
 
     const startOfWeek = moment().startOf('week');
@@ -140,9 +138,9 @@ const ScheduleScreen = ({ }) => {
                         Change transport type from bus to parent
                     </ButtonText>
                 </StyledButton>
-                <StyledButton>
+                <StyledButton onPress={() => navigation.navigate("Assign")}>
                     <ButtonText>
-                        assign guardian to pickup
+                        assign guardian to pickup on this day
                     </ButtonText>
                 </StyledButton>
             </ScrollView>

@@ -1,12 +1,11 @@
-// AccountStackNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import AccountScreen from '../ScreenView/AccountScreen';
-import ChangePasswordScreen from '../ScreenView/ChangePasswordScreen';
+import UpdatesScreen from '../ScreenView/UpdatesScreen';
+import AssignGuardian from '../ScreenView/AssignGuardian';
 
 const Stack = createStackNavigator();
 
-const AccountStackNavigator = () => (
+const UpdateStack = () => (
     <Stack.Navigator
         screenOptions={{
             headerStyle: {
@@ -18,9 +17,10 @@ const AccountStackNavigator = () => (
             headerLeftContainerStyle: 20,
         }}
     >
-        <Stack.Screen name="AccountScreen" component={AccountScreen} />
-        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="Schedule"
+            component={UpdatesScreen} />
+        <Stack.Screen name="Assign" component={AssignGuardian} />
     </Stack.Navigator>
 );
 
-export default AccountStackNavigator;
+export default UpdateStack;

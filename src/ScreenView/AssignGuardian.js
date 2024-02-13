@@ -14,7 +14,13 @@ import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
 
 const AssignGuardian = ({ navigation }) => {
-
+    const [qrSize, setQrSize] = useState(0);
+    useEffect(() => {
+        // Calculate the size of the QR code to fit the screen
+        const screenDimensions = Dimensions.get('window');
+        const maxSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.9; // Adjust this factor as needed
+        setQrSize(maxSize);
+    }, []);
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -49,17 +55,24 @@ const AssignGuardian = ({ navigation }) => {
                                 <MsgBox>...</MsgBox>
                                 <StyledButton onPress={handleSubmit}>
                                     <ButtonText>
-                                        Send QR code
+                                        Send Email with QR
                                     </ButtonText>
                                 </StyledButton>
                                 <Line />
                                 <ExtraView>
-                                    <ExtraText>Generate a QR code? </ExtraText>
-                                    <StyledButton onPress={() => navigation.navigate("GenerateQR")}>
-                                        <ButtonText>
-                                            Generate
-                                        </ButtonText>
-                                    </StyledButton>
+                                    <View style={styles.placeholderInset}>
+                                        <PageTitle>Today's PickUp QR</PageTitle>
+                                        <Line></Line>
+                                        <View style={styles.qrCodeContainer}>
+                                            <QRCode
+                                                value={"random"} //need 2 change
+                                                color={'#2C8DDB'}
+                                                backgroundColor={'white'}
+                                                size={qrSize}
+                                            // Add more props as needed
+                                            />
+                                        </View>
+                                    </View>
                                 </ExtraView>
 
                             </StyledFormArea>
@@ -92,6 +105,20 @@ const styles = StyleSheet.create({
         height: deviceHeight * 0.1,
         paddingBottom: 0,
         backgroundColor: Colors.primary,
+    },
+    placeholderInset: {
+        borderWidth: 4,
+        borderColor: '#e5e7eb',
+        borderStyle: 'dashed',
+        borderRadius: 9,
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
+    },
+    qrCodeContainer: {
+        marginTop: 20, // Adjust spacing as needed
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

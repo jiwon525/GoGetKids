@@ -2,11 +2,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import UpdatesScreen from '../ScreenView/UpdatesScreen';
+import UpdateStack from './UpdateStack';
 import ChildStack from './ChildStack';
 import ScanScreen from '../ScreenView/ScanScreen';
 import AccountStack from './AccountStack';
-
+import { UserSessionProvider } from '../../UserSessionContext';
 const Tab = createBottomTabNavigator();
 
 
@@ -26,7 +26,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen
                 name="ParentHome"
-                component={ChildStack}
+                component={WrapWithUserSessionProvider(ChildStack)}
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
@@ -37,11 +37,11 @@ const TabNavigator = () => {
             />
             <Tab.Screen
                 name="Updates"
-                component={UpdatesScreen}
+                component={WrapWithUserSessionProvider(UpdateStack)}
                 options={{
-                    tabBarLabel: 'Child',
+                    tabBarLabel: 'Schedule',
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="people" size={size} color={color} />
+                        <Ionicons name="calendar-outline" size={size} color={color} />
                     ),
                 }}
             />
@@ -57,7 +57,7 @@ const TabNavigator = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={AccountStack}
+                component={WrapWithUserSessionProvider(AccountStack)}
                 options={{
                     tabBarLabel: 'Account',
                     tabBarIcon: ({ color, size }) => (
@@ -66,6 +66,14 @@ const TabNavigator = () => {
                 }}
             />
         </Tab.Navigator>
+    );
+};
+// Function to wrap a component with UserSessionProvider
+const WrapWithUserSessionProvider = (Component) => {
+    return () => (
+        <UserSessionProvider>
+            <Component />
+        </UserSessionProvider>
     );
 };
 

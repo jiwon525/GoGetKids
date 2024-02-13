@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useUserSession } from '../../UserSessionContext';
 import { StyleSheet, View, Dimensions } from "react-native";
 import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, Colors,
@@ -7,68 +8,57 @@ import {
 } from '../components/styles';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileTop from '../components/ProfileTop';
+import { fetchSchedule } from '../components/schema';
 
-const data =
-{
-    id: 1,
-    date: '12/1/2024',
-    name: 'Rachel Yeo',
-    school: 'Methodist Primary School',
-    studentclass: 'Class 1',
-    status: 'In School',
-    studentid: 'S2301234',
-    transporttype: 'Bus',
-    pickuptime: '7:45 AM',
-    dismissaltime: '2:00 PM',
-};
-
-
-const ScheduleScreen = ({ navigation, route }) => {
-    const { userId, accessToken, refreshToken, studentId } = route.params;
+const ScheduleScreen = ({ navigation }) => {
     const [schedule, setSchedule] = useState({
         _id: null,
-        email: '',
+        date: Date,
         firstName: '',
         lastName: '',
-        phoneNum: '',
+        school: '',
+        studentclass: '',
+        status: '',
+        studentid: '',
+        transporttype: '',
+        pickuptime: null,
+        dismissaltime: null,
     });
-
+    const { studentDetails } = useUserSession();
+    console.log(studentDetails)
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const schedule = await fetchUserData(studentId, accessToken);
-                setSchedule(schedule);
-                const email = schedule.email
-                const parent_id = {
-                    studentid: email,
-                };
-                const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudentSchedule', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
-                    },
-                    body: JSON.stringify(parent_id),
-                });
-                const responseBody = await response.json();
-                if (!response.ok) {
-                    console.error('Error fetching data. Status:', response.status);
-                    // Handle the error here, maybe return a specific error message or throw an error
-                } else {
-                    setStudents(responseBody.result || []);
-                    console.log(responseBody.result);
+                if (studentDetails && studentDetails.length > 0 && accessToken) {
+                    const studentId = studentDetails[0].studentid;
+                    const s = await fetchSchedule(studentDetails.studentid, accessToken);
+                    const schedule = {
+                        _id: s._id,
+                        date: s.date,
+                        firstName: studentDetails.firstname,
+                        lastName: studentDetails.lastname,
+                        school: studentDetails.school_name,
+                        studentclass: studentDetails.class_name,
+                        status: studentDetails.status,
+                        studentid: studentId,
+                        transporttype: s.transport_type,
+                        pickuptime: s.pickup_time,
+                        dismissaltime: s.dismissal_time,
+                    }
                 }
-
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching schedule:', error);
             }
         };
 
-        fetchData(); // Call the fetchData function to fetch data from the backend
-    }, []); // Run once
+        // Fetch data only if both studentDetails and accessToken are available and have changed
+        if (studentDetails !== null && accessToken !== null) {
+            fetchData();
+        }
+    }, [studentDetails]); // Run once
     return (
         <StyledContainer>
-            <ProfileTop name={data.date} />
+            <ProfileTop name={schedule.date} />
             <View style={styles.placeholderInset}>
                 <PageTitle>Today's Schedule</PageTitle>
                 <Line></Line>
@@ -77,40 +67,40 @@ const ScheduleScreen = ({ navigation, route }) => {
                         <MostSmallLogo
                             resizeMode="contain" source={require('../assets/student.png')} />
                         <InnerScheduleView>
-                            <Subtitle>{data.name}</Subtitle>
-                            <ExtraText> - {data.studentid}</ExtraText>
+                            <Subtitle>{schedule.firstName} {schedule.lastName}</Subtitle>
+                            <ExtraText> - {schedule.studentid}</ExtraText>
                         </InnerScheduleView>
                     </StyledScheduleView>
                     <View style={styles.cardContainer}>
-                        <CardTextStatus>{data.status} - {data.studentclass}</CardTextStatus>
+                        <CardTextStatus>{schedule.status} - {schedule.studentclass}</CardTextStatus>
                     </View>
                 </View>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="school-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>{data.school}</NormText>
+                        <NormText>{schedule.school}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="sunny-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>Morning pick up Time: {data.pickuptime}</NormText>
+                        <NormText>Morning pick up Time: {schedule.pickuptime}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="moon-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>School dismissal Time: {data.dismissaltime}</NormText>
+                        <NormText>School dismissal Time: {schedule.dismissaltime}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="location-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>Transport type: {data.transporttype}</NormText>
+                        <NormText>Transport type: {schedule.transporttype}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
             </View>

@@ -11,7 +11,6 @@ const deviceWidth = Dimensions.get('window').width;
 
 
 const homename = "Home";
-//Button onPress={() => this.props.navigation.goBack(null)}
 
 const ProfileTop = ({ name }) => {
     if (homename === name) {
@@ -35,7 +34,7 @@ const ProfileTop = ({ name }) => {
 };
 const styles = StyleSheet.create({
     viewStyle: {
-        paddingTop: deviceHeight * 0.035,
+        paddingTop: deviceHeight * 0.04,
         width: deviceWidth,
         height: deviceHeight * 0.1,
         backgroundColor: Colors.primary,

@@ -6,11 +6,16 @@ import TeacherStack from './src/navigators/TeacherStack';
 import DriverStack from './src/navigators/DriverStack'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUpScreen from './src/ScreenView/SignupScreen';
+import { UserSessionProvider } from './UserSessionContext';
+import TabNavigator from './src/navigators/TabNavigator';
+import ChildStack from './src/navigators/ChildStack';
 
-
-export default function App() {
+const App = () => {
   return (
-    <RootStack />
+    <UserSessionProvider>
+      <RootStack />
+    </UserSessionProvider>
   );
 };
 
+export default App;

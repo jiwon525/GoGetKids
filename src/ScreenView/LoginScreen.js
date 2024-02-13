@@ -9,11 +9,20 @@ import {
 } from '../components/styles';
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-
+import { StyleSheet, View, Dimensions, ScrollView, Alert } from "react-native";
+const showAlert = (errMsg) =>
+    Alert.alert(
+        'Unable to Log In',
+        errMsg,
+        [
+            {
+                cancelable: true,
+                text: 'Try again',
+            },
+        ],
+    );
 const LoginScreen = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
-
     async function signIn(email, password) {
         try {
             const response = await fetch('https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login', {
@@ -36,8 +45,10 @@ const LoginScreen = ({ navigation }) => {
             } else {
                 if (responseBody.error) {
                     console.error('Error logging in:', responseBody.error);
+                    showAlert("You dont have an existing account or your password is incorrect");
                 } else {
                     console.error('Error logging in: Unknown error');
+                    showAlert('Error logging in: Unknown error');
                 }
             }
         } catch (error) {
@@ -134,7 +145,7 @@ const deviceWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
     viewStyle: {
-        paddingTop: 20,
+        paddingTop: deviceHeight * 0.04,
         width: deviceWidth,
         height: deviceHeight * 0.3,
         paddingBottom: 10,
