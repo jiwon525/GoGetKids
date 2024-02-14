@@ -24,8 +24,9 @@
         "config": {
             "autoConfirm": true,
             "resetFunctionName": "resetFunc",
+            "resetPasswordUrl": "https://asda",
             "runConfirmationFunction": false,
-            "runResetFunction": true
+            "runResetFunction": false
         }
     }
 }
