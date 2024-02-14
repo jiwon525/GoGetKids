@@ -52,5 +52,10 @@
         "name": "getTeacherStudents",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "getDriverTrip",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
