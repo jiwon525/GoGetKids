@@ -5,9 +5,7 @@ exports = async function (payload) {
     if (!_id) {
       return { error: "schedule id does not exist. id:  " + _id};
     }
-    
-    let id = userID.external_id;
-    const nid = new BSON.ObjectId(id)
+    const nid = new BSON.ObjectId(_id)
     
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
@@ -15,13 +13,28 @@ exports = async function (payload) {
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findResult;
     try {
-      findResult = await collection.findOne({_id: nid});
+      // Find the document by _id
+      findResult = await collection.findOne({ _id: nid });
+      if (!findResult) {
+        return { error: "Document not found for _id: " + _id };
+      }
+
+      // Define the update operation
       const update = { $set: { transport_type: 'Parent' } };
-    } catch(err) {
-      console.log("Error occurred while executing find or update:", err.message);
+      
+      // Execute the update operation
+      const updateResult = await collection.updateOne({ _id: nid }, update);
+      if (updateResult.modifiedCount === 1) {
+        return { message: "Document updated successfully" };
+      } else {
+        return { error: "Failed to update document" };
+      }
+    } catch (err) {
+      console.error("Error occurred while executing find or update:", err.message);
       return { error: err.message };
     }
   } catch (error) {
-    return { error: "Internal server error" + error };
+    console.error("Internal server error:", error);
+    return { error: "Internal server error" };
   }
 };
