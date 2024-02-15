@@ -26,6 +26,7 @@ SignUpScreen = () => {
             // Navigate to loading screen
             router.push("/loading");
             try {
+                //the function for signUp
                 await signUp({
                     email: values.email,
                     firstName: values.FName,

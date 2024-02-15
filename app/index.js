@@ -48,7 +48,7 @@ const LoginScreen = () => {
         }
 
     };
-
+    //saving user inside UserDetails entity and inside User Session
     const saveUser = async (userId, accessToken) => {
         try {
             const fetchedUserDetails = await fetchUserData(userId, accessToken);

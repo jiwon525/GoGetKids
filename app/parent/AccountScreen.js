@@ -17,7 +17,6 @@ const AccountScreen = () => {
         <StyledContainer>
             <LoginTab>
                 <ProfileTop name="My Account" />
-
                 <ProfileContainer>
                     <LoginLogo resizeMode="contain" source={require('../../src/assets/profile.png')} />
                 </ProfileContainer>
@@ -27,7 +26,6 @@ const AccountScreen = () => {
                     <LoginTitle>Name: {userDetails.firstName} {userDetails.lastName}</LoginTitle>
                     <LoginTitle>Username: {userDetails.email}</LoginTitle>
                     <LoginTitle>Role: {userDetails.role}</LoginTitle>
-
                 </View>
             </View>
             <StyledButton onPress={() => router.push("/parent/ChangePasswordScreen")}>
