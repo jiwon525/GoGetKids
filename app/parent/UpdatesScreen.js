@@ -46,8 +46,7 @@ const data = [
 ];
 
 
-const ScheduleScreen = ({ navigation, route }) => {
-    const { userId, accessToken, refreshToken } = route.params;
+const ScheduleScreen = () => {
     const [value, setValue] = useState(new Date());
 
     const startOfWeek = moment().startOf('week');

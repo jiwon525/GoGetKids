@@ -7,10 +7,10 @@ import {
     StyledFormArea, LeftIcon, StyledButton, ButtonText,
     StyledInputLabel, StyledTextInput, RightIcon,
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
-} from '../src/components/styles';
+} from '../../src/components/styles'
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons';
-import ProfileTop from '../src/components/ProfileTop';
+import ProfileTop from '../../src/components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 
 ChangePasswordScreen = ({ navigation }) => {

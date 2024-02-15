@@ -8,36 +8,16 @@ import {
 } from '../../src/components/styles';
 import Card from '../../src/components/Card';
 import ProfileTop from '../../src/components/ProfileTop';
-import { fetchUserData, fetchStudentData } from '../../src/components/schema';
+import { fetchStudentData } from '../../src/components/schema';
 import StudentDetails from '../../src/components/StudentDetails';
-import UserDetails from '../../src/components/UserDetails';
+
 
 const HomeScreen = () => {
-    const params = useLocalSearchParams();
-    const { userId, accessToken, refreshToken } = params;
-    const { setUserDetails, studentDetails, setStudentDetails } = useUserSession();
+    const { userDetails, studentDetails, setStudentDetails } = useUserSession();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch user details
-                console.log("userid", userId);
-                const fetchedUserDetails = await fetchUserData(userId, accessToken, refreshToken);
-                console.log("fetching user details frm function");
-                const userD = new UserDetails(
-                    fetchedUserDetails.accessToken,
-                    fetchedUserDetails.refreshToken,
-                    fetchedUserDetails._id,
-                    fetchedUserDetails.email,
-                    fetchedUserDetails.role,
-                    fetchedUserDetails.firstName,
-                    fetchedUserDetails.lastName,
-                    fetchedUserDetails.company_name,
-                    fetchedUserDetails.school_name,
-                );
-                setUserDetails(userD);
-                console.log("saved user data", userD);
-                // Fetch student details
-                const fetchedStudentDetails = await fetchStudentData(userD.email, accessToken);
+                const fetchedStudentDetails = await fetchStudentData(userDetails.email, userDetails.accessToken);
 
                 // Check if fetchedStudentDetails is an array
                 if (Array.isArray(fetchedStudentDetails)) {
@@ -81,7 +61,6 @@ const HomeScreen = () => {
             <InnerContainer>
                 {studentDetails && studentDetails.length > 0 ? (
                     studentDetails.map((student, index) => (
-
                         <Card
                             key={student._id}
                             firstName={student.firstname}
@@ -90,7 +69,7 @@ const HomeScreen = () => {
                             school={student.school_name}
                             grade={student.class_name}
                             studentID={student.studentid.toString()}
-                            accessToken={accessToken}
+                            accessToken={userDetails.accessToken}
                         />
                     ))
                 ) : (

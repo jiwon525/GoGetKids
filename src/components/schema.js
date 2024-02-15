@@ -1,4 +1,6 @@
 import { router } from 'expo-router';
+import * as MailComposer from 'expo-mail-composer';
+//signing user up at mongodb atlas function
 export async function signUp(email, firstName, lastName, password, phoneNum) {
     try {
         const userData = {
@@ -19,7 +21,7 @@ export async function signUp(email, firstName, lastName, password, phoneNum) {
 
         if (response.ok) {
             const responseBody = await response.json();
-            console.log(responseBody);
+            //console.log(responseBody);
             if (responseBody.success && responseBody.debug) {
                 console.log('User inserted successfully:', responseBody.debug);
                 router.replace("/");
@@ -40,7 +42,7 @@ export async function signUp(email, firstName, lastName, password, phoneNum) {
     }
 };
 
-
+//fetching user data using external user id
 export async function fetchUserData(userId, accessToken, refreshToken) {
     try {
         const userID = {
@@ -75,9 +77,9 @@ export async function fetchUserData(userId, accessToken, refreshToken) {
     }
 };
 
-
+//fetching student schedules using student id
 export async function fetchSchedule(studentId, accessToken) {
-    console.log("studentId", studentId)
+    console.log("inside fetch schedule");
     try {
         const studentID = {
             studentid: studentId,
@@ -90,16 +92,22 @@ export async function fetchSchedule(studentId, accessToken) {
             },
             body: JSON.stringify(studentID),
         });
-
         const responseBody = await response.json();
-        console.log(responseBody);
+        let date = new Date(responseBody.findResult.date);
+        //extracting data from the json $date
+        let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        let pickupTime = new Date(responseBody.findResult.pickup_time);
+        let dismissalTime = new Date(responseBody.findResult.dismissal_time);
+        let formattedPickupTime = pickupTime.toTimeString().split(' ')[0]; // Extracting time part
+        let formattedDismissalTime = dismissalTime.toTimeString().split(' ')[0]; // Extracting time part
+
         let scheduleDetails = {
-            _id: responseBody.scheduleDetails._id,
-            studentid: responseBody.scheduleDetails.studentid,
-            date: responseBody.scheduleDetails.date.$date,
-            transport_type: responseBody.scheduleDetails.transport_type,
-            pickup_time: responseBody.scheduleDetails.pickup_time.$date,
-            dismissal_time: responseBody.scheduleDetails.dismissal_time.$date
+            _id: responseBody.findResult._id,
+            studentid: responseBody.findResult.studentid,
+            date: formattedDate,
+            transport_type: responseBody.findResult.transport_type,
+            pickup_time: formattedPickupTime,
+            dismissal_time: formattedDismissalTime
         };
         return scheduleDetails;
     } catch (error) {
@@ -108,9 +116,8 @@ export async function fetchSchedule(studentId, accessToken) {
     }
 };
 
-
+//fetching student data using parent email
 export async function fetchStudentData(email, accessToken) {
-    console.log("the email passed into function", email)
     try {
         const parent_id = {
             email: email,
@@ -128,7 +135,7 @@ export async function fetchStudentData(email, accessToken) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
             const studentData = responseBody.result || []; // Assigning the result array to studentData
-            console.log("fetch student data", studentData);
+            //console.log("fetch student data", studentData);
             return studentData;
         };
     } catch (error) {
@@ -136,18 +143,47 @@ export async function fetchStudentData(email, accessToken) {
         return null;
     }
 };
-/*
-return responseBody.result.map(student => new StudentDetails(
-    student._id,
-    student.address,
-    student.class_name,
-    student.dob,
-    student.firstname,
-    student.gender,
-    student.lastname,
-    student.parent_id,
-    student.postcode,
-    student.school_name,
-    student.status,
-    student.studentid,
-    student.zone*/
+
+export async function changeTransportType(transport, accessToken) {
+    console.log("inside change transport type");
+    try {
+        const t = {
+            _id: transport._id,
+
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changeTransportType', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(t),
+        });
+
+        const responseBody = await response.json();
+        console.log(responseBody);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        } else {
+            let date = new Date(responseBody.findResult.date);
+            //extracting data from the json $date
+            let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+            let pickupTime = new Date(responseBody.findResult.pickup_time);
+            let dismissalTime = new Date(responseBody.findResult.dismissal_time);
+            let formattedPickupTime = pickupTime.toTimeString().split(' ')[0]; // Extracting time part
+            let formattedDismissalTime = dismissalTime.toTimeString().split(' ')[0];
+            let updatedSchedule = {
+                _id: responseBody.findResult._id,
+                studentid: responseBody.findResult.studentid,
+                date: formattedDate,
+                transport_type: responseBody.findResult.transport_type,
+                pickup_time: formattedPickupTime,
+                dismissal_time: formattedDismissalTime
+            };
+            return updatedSchedule;
+        };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};

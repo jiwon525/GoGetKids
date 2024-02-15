@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Link, router } from 'expo-router';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab, LoginTitle,
     Colors, BackIcon, AlignRow, InnerMidContainer, LoginLogo,
@@ -9,13 +9,14 @@ import {
 import ProfileTop from '../../src/components/ProfileTop';
 import { StyleSheet, View, Text } from "react-native";
 
+//check if account sch name is null and show accordingly
 
+const AccountScreen = () => {
 
-const AccountScreen = ({ navigation }) => {
     return (
         <StyledContainer>
             <LoginTab>
-                <ProfileTop name="My Account" navigation={navigation} />
+                <ProfileTop name="My Account" />
 
                 <ProfileContainer>
                     <LoginLogo resizeMode="contain" source={require('../../src/assets/profile.png')} />
@@ -28,12 +29,12 @@ const AccountScreen = ({ navigation }) => {
                 <NormText>hello@gmail.com</NormText>
             </View>
             <BottomContainer>
-                <StyledButton onPress={() => navigation.navigate("ChangePassword")}>
+                <StyledButton onPress={() => router.push("/ChangePasswordScreen")}>
                     <ButtonText>
                         Change Password
                     </ButtonText>
                 </StyledButton>
-                <StyledButton onPress={() => navigation.navigate("Login")}>
+                <StyledButton onPress={() => router.replace("/")}>
                     <ButtonText>
                         Log Out
                     </ButtonText>

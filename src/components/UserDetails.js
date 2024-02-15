@@ -1,7 +1,6 @@
 class UserDetails {
-    constructor(accessToken, refreshToken, _id, email, role, firstName, lastName, company_name, school_name) {
+    constructor(accessToken, _id, email, role, firstName, lastName, company_name, school_name) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
         this._id = _id;
         this.email = email;
         this.role = role;

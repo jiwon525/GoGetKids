@@ -13,8 +13,8 @@ import {
     Colors, BackIcon, AlignRow, StyledContainer, InnerContainer, StyledFormArea, ExtraText,
     Subtitle,
     StyledInputLabel,
-} from '../src/components/styles';
-import ProfileTop from '../src/components/ProfileTop';
+} from '../../src/components/styles';
+import ProfileTop from '../../src/components/ProfileTop';
 
 const { width } = Dimensions.get('window');
 
@@ -67,7 +67,7 @@ const Item = ({ studentid, transport, zone, name }) => (
     <StyledContainer>
         <StyledScheduleView list={true}>
             <MostSmallLogo
-                resizeMode="contain" source={require('../src/assets/student.png')} />
+                resizeMode="contain" source={require('../../src/assets/student.png')} />
             <InnerScheduleView>
                 <ExtraText>{name} - {studentid}</ExtraText>
             </InnerScheduleView>

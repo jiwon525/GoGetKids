@@ -8,13 +8,13 @@ import {
     Text,
     Dimensions,
 } from 'react-native';
-import ProfileTop from '../src/components/ProfileTop';
+import ProfileTop from '../../src/components/ProfileTop';
 import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,
     Colors, Subtitle,
-} from '../src/components/styles';
-import TripSheet from '../src/components/TripSheet';
+} from '../../src/components/styles';
+import TripSheet from '../../src/components/TripSheet';
 
 const { width } = Dimensions.get('window');
 //need to get data of the date chosen only.
@@ -67,7 +67,7 @@ const TripScreen = ({ navigation }) => {
     const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
         const date = moment(startOfWeek).add(index, 'days');
         const isActive = value.toDateString() === date.toDate().toDateString();
-
+        console.log("current date", date);
         return (
             <TouchableWithoutFeedback
                 key={index}
@@ -92,7 +92,7 @@ const TripScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
-                <ProfileTop name="Your Schedule" navigation={navigation} />
+                <ProfileTop name="Your Schedule" />
                 <View style={styles.picker}>{daysOfWeek}</View>
                 <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 5 }}>
                     <Subtitle>{value.toDateString()}</Subtitle>

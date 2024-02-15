@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Link, router } from 'expo-router';
+import { Link, router, Redirect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Formik } from 'formik';
+import { Octicons, Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Dimensions, ScrollView, Alert } from 'react-native';
+import UserDetails from '../src/components/UserDetails';
+import { fetchUserData } from '../src/components/schema';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab,
     Colors, LoginLogo, LoginTitle, InnerMidContainer,
@@ -8,23 +13,13 @@ import {
     StyledInputLabel, StyledTextInput, RightIcon,
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
 } from '../src/components/styles';
-import { Formik } from 'formik';
-import { Octicons, Ionicons } from '@expo/vector-icons'
-import { StyleSheet, View, Dimensions, ScrollView, Alert } from "react-native";
-const showAlert = (errMsg) =>
-    Alert.alert(
-        'Unable to Log In',
-        errMsg,
-        [
-            {
-                cancelable: true,
-                text: 'Try again',
-            },
-        ],
-    );
+import { useUserSession } from '../UserSessionContext';
+import { redirect } from 'react-router-dom';
+
 const LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
-    async function signIn(email, password) {
+    const { userDetails, setUserDetails } = useUserSession();
+    const logIn = async ({ email, password }) => {
         try {
             const response = await fetch('https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login', {
                 method: 'POST',
@@ -36,20 +31,56 @@ const LoginScreen = () => {
             const responseBody = await response.json();
             if (response.ok) {
                 console.log('User logged in successfully');
-                router.replace({ pathname: "/parent/HomeScreen", params: { userId: responseBody.user_id, accessToken: responseBody.access_token, refreshToken: responseBody.refresh_token } });
+                const userDetails = await saveUser(responseBody.user_id, responseBody.access_token);
+                setUserDetails(userDetails);
+                console.log(userDetails);
+                router.replace({
+                    pathname: `/${userDetails.role}`,
+                });
+
             } else {
                 if (responseBody.error) {
                     console.error('Error logging in:', responseBody.error);
-                    showAlert("You dont have an existing account or your password is incorrect");
+                    showAlert("You don't have an existing account or your password is incorrect");
                 } else {
                     console.error('Error logging in: Unknown error');
                     showAlert('Error logging in: Unknown error');
                 }
             }
         } catch (error) {
-            console.error('Error:', error.message || "Unknown error");
+            console.error('Error:', error.message || 'Unknown error');
         }
     };
+
+    const saveUser = async (userId, accessToken) => {
+        try {
+            const fetchedUserDetails = await fetchUserData(userId, accessToken);
+            const userD = new UserDetails(
+                fetchedUserDetails.accessToken,
+                fetchedUserDetails._id,
+                fetchedUserDetails.email,
+                fetchedUserDetails.role,
+                fetchedUserDetails.firstName,
+                fetchedUserDetails.lastName,
+                fetchedUserDetails.company_name,
+                fetchedUserDetails.school_name
+            );
+            console.log('User data userD logged into session');
+            return userD;
+        } catch (error) {
+            // Handle any errors that occur during the fetching process
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    };
+
+    const showAlert = (errMsg) =>
+        Alert.alert('Unable to Log In', errMsg, [
+            {
+                cancelable: true,
+                text: 'Try again',
+            },
+        ]);
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -64,10 +95,10 @@ const LoginScreen = () => {
                 <InnerContainer>
                     <Formik
                         initialValues={{ email: '', password: '' }}
-                        onSubmit={(values) => {
-                            signIn(values.email, values.password)
-                        }}
-                    >
+                        onSubmit={(values, { resetForm }) => {
+                            logIn(values);
+                            resetForm();
+                        }}>
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
                             <StyledFormArea>
                                 <MyTextInput
@@ -136,9 +167,8 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
         </View>
     );
 };
-
-const deviceHeight = Dimensions.get('window').height
-const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     viewStyle: {

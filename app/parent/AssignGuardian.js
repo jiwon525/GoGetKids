@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'expo-router';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import {
     StyledContainer, InnerContainer, PageTitle, LoginTab,
@@ -12,16 +12,27 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../../src/components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import QRCode from 'react-native-qrcode-svg';
 
-
-const AssignGuardian = ({ navigation }) => {
+const AssignGuardian = () => {
+    const params = useLocalSearchParams();
+    const { scheduleid, studentid } = params;
+    const [showQR, setShowQR] = useState(false);
     const [qrSize, setQrSize] = useState(0);
+    let logoFromFile = require('../../src/assets/children.png');
     useEffect(() => {
         // Calculate the size of the QR code to fit the screen
         const screenDimensions = Dimensions.get('window');
-        const maxSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.9; // Adjust this factor as needed
+        const maxSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.8; // Adjust this factor as needed
         setQrSize(maxSize);
     }, []);
+    const handleSubmit = async (values) => {
+        try {
+            setShowQR(true); // Set the state to show QR code
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -31,51 +42,51 @@ const AssignGuardian = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}>
                 <InnerContainer>
                     <Formik
-                        initialValues={{ email: '' }}
-
+                        initialValues={{ guardianName: '' }}
                         onSubmit={(values) => {
-                            console.log(values);
+                            handleSubmit(values);
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
                             <StyledFormArea>
 
-                                <Subtitle>Enter in Guardian's email</Subtitle>
+                                <Subtitle>Name of guardian for pickup</Subtitle>
                                 <ExtraText> </ExtraText>
                                 <MyTextInput
-                                    label="Email address"
-                                    icon="mail"
-                                    placeholder="example@gmail.com"
+                                    label="Name"
+                                    icon="person"
+                                    placeholder="John Doe"
                                     placeholderTextColor={Colors.darkLight}
-                                    onChangeText={handleChange('email')}
-                                    onBlur={handleBlur('email')}
-                                    value={values.email}
-                                    keyboardType="email-address"
+                                    onChangeText={handleChange('guardianName')}
+                                    onBlur={handleBlur('guardianName')}
+                                    value={values.guardianName}
                                 />
 
                                 <MsgBox>...</MsgBox>
                                 <StyledButton onPress={handleSubmit}>
                                     <ButtonText>
-                                        Send Email with QR
+                                        Generate QR Code
                                     </ButtonText>
                                 </StyledButton>
                                 <Line />
-                                <ExtraView>
-                                    <View style={styles.placeholderInset}>
-                                        <PageTitle>Today's PickUp QR</PageTitle>
-                                        <Line></Line>
-                                        <View style={styles.qrCodeContainer}>
-                                            <QRCode
-                                                value={"random"} //need 2 change
-                                                color={'#2C8DDB'}
-                                                backgroundColor={'white'}
-                                                size={qrSize}
-                                            // Add more props as needed
-                                            />
+                                {showQR && (
+                                    <ExtraView>
+                                        <View style={styles.placeholderInset}>
+                                            <PageTitle>Today's PickUp QR</PageTitle>
+                                            <Line></Line>
+                                            <View style={styles.qrCodeContainer}>
+                                                <QRCode
+                                                    value={JSON.stringify({ id: scheduleid, studentid: studentid, guardianName: values.guardianName })}
+                                                    color={'#2C8DDB'}
+                                                    logo={logoFromFile}
+                                                    logoBackgroundColor='white'
+                                                    backgroundColor={'white'}
+                                                    size={qrSize}
+                                                />
+                                            </View>
                                         </View>
-                                    </View>
-                                </ExtraView>
-
+                                    </ExtraView>
+                                )}
                             </StyledFormArea>
                         )}
                     </Formik>

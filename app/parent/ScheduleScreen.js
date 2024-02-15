@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useUserSession } from '../../UserSessionContext';
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Alert } from "react-native";
 import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, Colors,
     ProfileContainer, BottomContainer, PageTitle, ExtraText, InnerContainer,
@@ -9,12 +9,11 @@ import {
 } from '../../src/components/styles';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileTop from '../../src/components/ProfileTop';
-import { fetchSchedule } from '../../src/components/schema';
+import { fetchSchedule, changeTransportType } from '../../src/components/schema';
 
 const ScheduleScreen = () => {
     const params = useLocalSearchParams();
     const { studentid, accessToken } = params;
-    console.log("params: ", params);
     const [schedule, setSchedule] = useState({
         _id: null,
         date: Date,
@@ -29,22 +28,28 @@ const ScheduleScreen = () => {
         dismissaltime: null,
     });
     const { studentDetails } = useUserSession();
-    console.log(studentDetails)
     useEffect(() => {
         const fetchData = async () => {
             try {
+                var id = parseInt(studentid);
+                // Filter studentDetails array based on the provided studentID
+                const selectedStudent = studentDetails.find(student => student.studentid === id);
+                if (!selectedStudent) {
+                    console.error('Error: Student not found');
+                    return;
+                }
                 console.log(studentid);
                 const s = await fetchSchedule(studentid, accessToken);
                 console.log("from fetchschedule", s);
                 const schedule = {
                     _id: s._id,
                     date: s.date,
-                    firstName: studentDetails.firstname,
-                    lastName: studentDetails.lastname,
-                    school: studentDetails.school_name,
-                    studentclass: studentDetails.class_name,
-                    status: studentDetails.status,
-                    studentid: studentDetails.studentid,
+                    firstName: selectedStudent.firstname,
+                    lastName: selectedStudent.lastname,
+                    school: selectedStudent.school_name,
+                    studentclass: selectedStudent.class_name,
+                    status: selectedStudent.status,
+                    studentid: selectedStudent.studentid,
                     transporttype: s.transport_type,
                     pickuptime: s.pickup_time,
                     dismissaltime: s.dismissal_time,
@@ -57,6 +62,42 @@ const ScheduleScreen = () => {
         };
         fetchData();
     }, []);
+    const handleChangeTransportType = async () => {
+        try {
+            Alert.alert(
+                "Confirm",
+                "Are you sure you want to change the transport type to self pick up?",
+                [
+                    {
+                        text: "Cancel",
+                        style: "cancel"
+                    },
+                    {
+                        text: "OK", onPress: async () => {
+                            // Call changeTransportType function to change transport type
+                            const us = await changeTransportType(schedule, accessToken);
+                            const uschedule = {
+                                _id: us._id,
+                                date: us.date,
+                                firstName: selectedStudent.firstname,
+                                lastName: selectedStudent.lastname,
+                                school: selectedStudent.school_name,
+                                studentclass: selectedStudent.class_name,
+                                status: selectedStudent.status,
+                                studentid: selectedStudent.studentid,
+                                transporttype: us.transport_type,
+                                pickuptime: us.pickup_time,
+                                dismissaltime: us.dismissal_time,
+                            }
+                            setSchedule(uschedule);
+                        }
+                    }
+                ]
+            );
+        } catch (error) {
+            console.error('Error changing transport type:', error);
+        }
+    };
     return (
         <StyledContainer>
             <ProfileTop name={schedule.date} />
@@ -73,9 +114,16 @@ const ScheduleScreen = () => {
                         </InnerScheduleView>
                     </StyledScheduleView>
                     <View style={styles.cardContainer}>
-                        <CardTextStatus>{schedule.status} - {schedule.studentclass}</CardTextStatus>
+                        <CardTextStatus>Status : {schedule.status} </CardTextStatus>
                     </View>
                 </View>
+                <Line></Line>
+                <StyledScheduleView>
+                    <Ionicons name="ribbon-outline" size={30} color="black" />
+                    <TextContainer>
+                        <NormText>Class: {schedule.studentclass}</NormText>
+                    </TextContainer>
+                </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="school-outline" size={30} color="black" />
@@ -87,7 +135,11 @@ const ScheduleScreen = () => {
                 <StyledScheduleView>
                     <Ionicons name="sunny-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>Morning pick up Time: {schedule.pickuptime}</NormText>
+                        {schedule.pickuptime === "Invalid" || !schedule.pickuptime ? (
+                            <NormText>Parents Car to School!</NormText>
+                        ) : (
+                            <NormText>Morning pick up Time: {schedule.pickuptime}</NormText>
+                        )}
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
@@ -105,16 +157,26 @@ const ScheduleScreen = () => {
                     </TextContainer>
                 </StyledScheduleView>
             </View>
-            <StyledButton>
-                <ButtonText>
-                    Change transport type from bus to parent
-                </ButtonText>
-            </StyledButton>
-            <StyledButton onPress={() => navigation.navigate("Assign")}>
-                <ButtonText>
-                    assign guardian to pickup
-                </ButtonText>
-            </StyledButton>
+            {schedule.transporttype === 'Bus' && (
+                <StyledButton onPress={handleChangeTransportType}>
+                    <ButtonText>
+                        Self PickUp
+                    </ButtonText>
+                </StyledButton>
+            )}
+            <Link href={{
+                pathname: "/parent/AssignGuardian",
+                params: {
+                    scheduleid: schedule._id,
+                    studentid: schedule.studentid
+                }
+            }} asChild>
+                <StyledButton>
+                    <ButtonText>
+                        assign guardian to pickup
+                    </ButtonText>
+                </StyledButton>
+            </Link>
         </StyledContainer>
     );
 };
