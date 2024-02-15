@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import {
     StyleSheet,
@@ -15,7 +15,8 @@ import {
     Colors, Subtitle,
 } from '../../src/components/styles';
 import TripSheet from '../../src/components/TripSheet';
-
+import { useUserSession } from '../../UserSessionContext';
+import { fetchDriverTrips } from '../../src/components/schema';
 const { width } = Dimensions.get('window');
 //need to get data of the date chosen only.
 const DATA = [
@@ -58,12 +59,10 @@ const DATA = [
 ];
 
 
-const TripScreen = ({ navigation }) => {
-
+const TripScreen = () => {
+    //for the dates
     const [value, setValue] = useState(new Date());
-
     const startOfWeek = moment().startOf('week');
-
     const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
         const date = moment(startOfWeek).add(index, 'days');
         const isActive = value.toDateString() === date.toDate().toDateString();
@@ -88,6 +87,48 @@ const TripScreen = ({ navigation }) => {
             </TouchableWithoutFeedback>
         );
     });
+
+    //to retrieve data
+    const { userDetails, studentDetails, setStudentDetails } = useUserSession();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const fetchedStudentDetails = await fetchStudentData(userDetails.email, userDetails.accessToken);
+
+                // Check if fetchedStudentDetails is an array
+                if (Array.isArray(fetchedStudentDetails)) {
+                    // Map fetchedStudentDetails to StudentDetails objects
+                    const studentDetailsArray = fetchedStudentDetails.map(student =>
+                        new StudentDetails(
+                            student._id,
+                            student.address,
+                            student.class_name,
+                            student.dob,
+                            student.firstname,
+                            student.gender,
+                            student.lastname,
+                            student.parent_id,
+                            student.postcode,
+                            student.school_name,
+                            student.status,
+                            student.studentid,
+                            student.zone
+                        )
+                    );
+                    // Set studentDetails
+                    setStudentDetails(studentDetailsArray);
+                } else {
+                    // Handle the case when fetchedStudentDetails is not an array
+                    console.error('Error fetching student details:', fetchedStudentDetails);
+                }
+            } catch (error) {
+                // Handle any errors that occur during the fetching process
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

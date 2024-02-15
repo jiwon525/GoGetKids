@@ -54,7 +54,6 @@ const ScheduleScreen = () => {
     const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
         const date = moment(startOfWeek).add(index, 'days');
         const isActive = value.toDateString() === date.toDate().toDateString();
-
         return (
             <TouchableWithoutFeedback
                 key={index}
@@ -77,83 +76,77 @@ const ScheduleScreen = () => {
     });
     return (
         <StyledContainer>
-            <ProfileTop name="Updates" />
-            <ScrollView
-                showsVerticalScrollIndicator={false}>
-                <View style={styles.picker}>{daysOfWeek}</View>
-                <View style={{ paddingHorizontal: 16, paddingVertical: 5 }}>
-                    <Subtitle>{value.toDateString()}</Subtitle>
-                </View>
-                <Swiper>
-                    {data.map((item, index) => (
-                        <View key={index} style={styles.placeholderInset}>
-                            <PageTitle>Today's Schedule</PageTitle>
-                            <Line></Line>
-                            <View style={styles.TopContainer}>
-                                <StyledScheduleView>
-                                    <MostSmallLogo
-                                        resizeMode="contain" source={require('../../src/assets/student.png')} />
-                                    <InnerScheduleView>
-                                        <Subtitle>{item.name}</Subtitle>
-                                        <ExtraText> - {item.studentid}</ExtraText>
-                                    </InnerScheduleView>
-                                </StyledScheduleView>
-                                <View style={styles.cardContainer}>
-                                    <CardTextStatus>{item.status} - {item.studentclass}</CardTextStatus>
-                                </View>
+            <ProfileTop name="Weekly Schedule" />
+
+            <View style={styles.picker}>{daysOfWeek}</View>
+            <View style={{ paddingHorizontal: 16, paddingVertical: 5 }}>
+                <Subtitle>{value.toDateString()}</Subtitle>
+            </View>
+            <Swiper>
+                {data.map((item, index) => (
+                    <View key={index} style={styles.placeholderInset}>
+                        <PageTitle>Schedule Details</PageTitle>
+                        <Line></Line>
+                        <View style={styles.TopContainer}>
+                            <StyledScheduleView>
+                                <MostSmallLogo
+                                    resizeMode="contain" source={require('../../src/assets/student.png')} />
+                                <InnerScheduleView>
+                                    <Subtitle>{item.name}</Subtitle>
+                                    <ExtraText> - {item.studentid}</ExtraText>
+                                </InnerScheduleView>
+                            </StyledScheduleView>
+                            <View style={styles.cardContainer}>
+                                <CardTextStatus>{item.status} - {item.studentclass}</CardTextStatus>
                             </View>
-                            <Line></Line>
-                            <StyledScheduleView>
-                                <Ionicons name="school-outline" size={30} color="black" />
-                                <TextContainer>
-                                    <NormText>{item.school}</NormText>
-                                </TextContainer>
-                            </StyledScheduleView>
-                            <Line></Line>
-                            <StyledScheduleView>
-                                <Ionicons name="sunny-outline" size={30} color="black" />
-                                <TextContainer>
-                                    <NormText>Morning pick up Time: {item.pickuptime}</NormText>
-                                </TextContainer>
-                            </StyledScheduleView>
-                            <Line></Line>
-                            <StyledScheduleView>
-                                <Ionicons name="moon-outline" size={30} color="black" />
-                                <TextContainer>
-                                    <NormText>School dismissal Time: {item.dismissaltime}</NormText>
-                                </TextContainer>
-                            </StyledScheduleView>
-                            <Line></Line>
-                            <StyledScheduleView>
-                                <Ionicons name="location-outline" size={30} color="black" />
-                                <TextContainer>
-                                    <NormText>Transport type: {item.transporttype}</NormText>
-                                </TextContainer>
-                            </StyledScheduleView>
                         </View>
-                    ))}
-                </Swiper>
-                <StyledButton>
-                    <ButtonText>
-                        Change transport type from bus to parent
-                    </ButtonText>
-                </StyledButton>
-                <StyledButton onPress={() => navigation.navigate("Assign")}>
-                    <ButtonText>
-                        assign guardian to pickup on this day
-                    </ButtonText>
-                </StyledButton>
-            </ScrollView>
+
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="school-outline" size={30} color="black" />
+                            <TextContainer>
+                                <NormText>{item.school}</NormText>
+                            </TextContainer>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="sunny-outline" size={30} color="black" />
+                            <TextContainer>
+                                <NormText>Morning pick up Time: {item.pickuptime}</NormText>
+                            </TextContainer>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="moon-outline" size={30} color="black" />
+                            <TextContainer>
+                                <NormText>School dismissal Time: {item.dismissaltime}</NormText>
+                            </TextContainer>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="location-outline" size={30} color="black" />
+                            <TextContainer>
+                                <NormText>Transport type: {item.transporttype}</NormText>
+                            </TextContainer>
+                        </StyledScheduleView>
+                    </View>
+                ))}
+
+            </Swiper>
         </StyledContainer>
     );
 };
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 const styles = StyleSheet.create({
     placeholderInset: {
         borderWidth: 4,
         borderColor: '#e5e7eb',
         borderStyle: 'dashed',
         borderRadius: 9,
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
     },
     cardContainer: {
         width: width * 0.9,
@@ -173,26 +166,12 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
     },
-    header: {
-        paddingTop: 14,
-        backgroundColor: Colors.primary,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: '700',
-        color: '#1d1d1d',
-        marginBottom: 12,
-    },
     picker: {
         flex: 1,
         maxHeight: 74,
         paddingVertical: 12,
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    footer: {
-        marginTop: 'auto',
-        paddingHorizontal: 16,
     },
     /** Item */
     item: {
@@ -235,17 +214,8 @@ const styles = StyleSheet.create({
         padding: 0,
         backgroundColor: 'transparent',
     },
-    placeholderInset: {
-        borderWidth: 4,
-        borderColor: '#e5e7eb',
-        borderStyle: 'dashed',
-        borderRadius: 9,
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 0,
-    },
     TopContainer: {
-        width: width,
+        width: width - 8,
         paddingTop: 10,
         paddingBottom: 10,
         alignItems: 'center',

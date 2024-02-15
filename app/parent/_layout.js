@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 export default () => {
     return (
         <Tabs>
-
             <Tabs.Screen
                 name="index"
                 options={{
@@ -28,7 +27,7 @@ export default () => {
             />
 
             <Tabs.Screen
-                name="Scan"
+                name="ScanScreen"
                 options={{
                     tabBarLabel: 'Scan',
                     headerShown: false,
@@ -38,13 +37,34 @@ export default () => {
                 }}
             />
             <Tabs.Screen
-                name="Account"
+                name="AccountScreen"
                 options={{
                     tabBarLabel: 'Account',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="person" size={size} color={color} />
                     ),
+                }}
+            />
+            <Tabs.Screen
+                name="AssignGuardian"
+                options={{
+                    headerShown: false,
+                    href: null,
+                }}
+            />
+            <Tabs.Screen
+                name="ScheduleScreen"
+                options={{
+                    headerShown: false,
+                    href: null,
+                }}
+            />
+            <Tabs.Screen
+                name="ChangePasswordScreen"
+                options={{
+                    headerShown: false,
+                    href: null,
                 }}
             />
         </Tabs>

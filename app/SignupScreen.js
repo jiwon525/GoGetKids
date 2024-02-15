@@ -13,10 +13,32 @@ import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../src/components/ProfileTop';
 import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import { signUp } from '../src/components/schema';
-
+import LoadingScreen from './loading';
 SignUpScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
+
+    const handleSubmit = async (values) => {
+        if (values.password === values.confirmPassword) {
+            // Navigate to loading screen
+            router.push("/loading");
+            try {
+                await signUp({
+                    email: values.email,
+                    firstName: values.FName,
+                    lastName: values.LName,
+                    password: values.password,
+                    phoneNum: values.phoneNum,
+                });
+                router.replace("/");
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            console.log("please enter the same password");
+        }
+    };
+
     return (
         <StyledContainer>
             <StatusBar style="dark" />
@@ -28,16 +50,7 @@ SignUpScreen = () => {
                     <Formik
                         initialValues={{ email: '', FName: '', LName: '', password: '', confirmPassword: '', phoneNum: '' }}
                         onSubmit={(values) => {
-                            if (values.password === values.confirmPassword) {
-                                signUp(email = values.email,
-                                    firstName = values.FName,
-                                    lastName = values.LName,
-                                    password = values.password,
-                                    phoneNum = values.phoneNum,)
-                            } else {
-                                console.log("please enter in the same password");
-                            }
-
+                            handleSubmit(values)
                         }}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (

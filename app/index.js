@@ -14,12 +14,13 @@ import {
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
 } from '../src/components/styles';
 import { useUserSession } from '../UserSessionContext';
-import { redirect } from 'react-router-dom';
+import LoadingScreen from './loading';
 
 const LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const { userDetails, setUserDetails } = useUserSession();
     const logIn = async ({ email, password }) => {
+        router.push("/loading");
         try {
             const response = await fetch('https://services.cloud.mongodb.com/api/client/v2.0/app/gogetkidsmobile-csapx/auth/providers/custom-function/login', {
                 method: 'POST',
