@@ -11,6 +11,7 @@ import ProfileTop from '../../src/components/ProfileTop';
 import { fetchStudentData, fetchSchedule } from '../../src/components/schema';
 import StudentDetails from '../../src/components/StudentDetails';
 import ScheduleDetails from '../../src/components/ScheduleDetails';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const HomeScreen = () => {
     const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
@@ -68,25 +69,26 @@ const HomeScreen = () => {
         <StyledContainer>
             <HomeImage resizeMode="contain" source={require('../../src/assets/childrenhome.png')} />
             <ProfileTop name="Home" />
-            <InnerContainer>
-                {studentDetails && studentDetails.length > 0 ? (
-                    studentDetails.map((student, index) => (
-                        <Card
-                            key={student._id}
-                            firstName={student.firstname}
-                            lastName={student.lastname}
-                            status={student.status}
-                            school={student.school_name}
-                            grade={student.class_name}
-                            studentID={student.studentid.toString()}
-                            accessToken={userDetails.accessToken}
-                        />
-                    ))
-                ) : (
-                    <NormText>No students linked yet</NormText>
-                )}
-            </InnerContainer>
-
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <InnerContainer>
+                    {studentDetails && studentDetails.length > 0 ? (
+                        studentDetails.map((student, index) => (
+                            <Card
+                                key={student._id}
+                                firstName={student.firstname}
+                                lastName={student.lastname}
+                                status={student.status}
+                                school={student.school_name}
+                                grade={student.class_name}
+                                studentID={student.studentid.toString()}
+                                accessToken={userDetails.accessToken}
+                            />
+                        ))
+                    ) : (
+                        <NormText>No students linked yet</NormText>
+                    )}
+                </InnerContainer>
+            </ScrollView>
         </StyledContainer>
     );
 };

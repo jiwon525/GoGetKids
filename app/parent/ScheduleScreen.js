@@ -14,7 +14,7 @@ import ScheduleDetails from '../../src/components/ScheduleDetails';
 const ScheduleScreen = () => {
     const params = useLocalSearchParams();
     const { studentid, accessToken } = params;
-    const [oneSchedule, setOneSchedule] = useState(ScheduleDetails);
+    const [oneSchedule, setOneSchedule] = useState({});
     const { studentDetails, scheduleDetails } = useUserSession();
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +28,20 @@ const ScheduleScreen = () => {
                 console.log(studentid);
                 const studentSchedule = scheduleDetails.filter(schedule => schedule.studentid === selectedStudent.studentid);
                 console.log("Schedule for student", studentSchedule);
-                setOneSchedule(studentSchedule);
+                setOneSchedule(new ScheduleDetails(
+                    studentSchedule._id,
+                    studentSchedule.date,
+                    studentSchedule.firstname,
+                    studentSchedule.lastname,
+                    studentSchedule.school_name,
+                    studentSchedule.class_name,
+                    studentSchedule.status,
+                    studentSchedule.studentid,
+                    s.transport_type,
+                    s.pickup_time,
+                    s.dismissal_time
+                ));
+
             } catch (error) {
                 console.error('Error fetching schedule:', error);
             }
