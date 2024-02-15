@@ -25,7 +25,7 @@ exports = async function (payload) {
       // Execute the update operation
       const updateResult = await collection.updateOne({ _id: nid }, update);
       if (updateResult.modifiedCount === 1) {
-        return { message: "Document updated successfully" };
+        return { updateResult };
       } else {
         return { error: "Failed to update document" };
       }
