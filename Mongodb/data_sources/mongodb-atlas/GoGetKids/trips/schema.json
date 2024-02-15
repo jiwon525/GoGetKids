@@ -1,0 +1,40 @@
+{
+    "title": "trip",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "company_name": {
+            "bsonType": "string",
+            "default": "defaultCompany"
+        },
+        "date": {
+            "bsonType": "date"
+        },
+        "driver_email": {
+            "bsonType": "string"
+        },
+        "school_name": {
+            "bsonType": "string",
+            "default": "defaultSchool"
+        },
+        "start_time": {
+            "bsonType": "date"
+        },
+        "vehicle_number": {
+            "bsonType": "string"
+        },
+        "vehicle_type": {
+            "bsonType": "string"
+        },
+        "zone": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "company_name",
+        "date",
+        "school_name"
+    ]
+}

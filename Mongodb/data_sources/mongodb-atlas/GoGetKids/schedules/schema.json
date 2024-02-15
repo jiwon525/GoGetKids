@@ -14,7 +14,7 @@
             "bsonType": "date"
         },
         "studentid": {
-            "bsonType": "string"
+            "bsonType": "int"
         },
         "transport_type": {
             "bsonType": "string"
