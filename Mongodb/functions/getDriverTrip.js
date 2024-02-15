@@ -9,11 +9,11 @@ exports = async function (payload) {
     var dbName = "GoGetKids";
     var collName = "trips";
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
-    var findResult;
+    var findTrip;
     try {
       //later need to edit this part to find and set into array.
-      findResult = await collection.findOne({driver_email: driver_email});
-      return { findResult }; 
+      findTrip = await collection.findOne({driver_email: driver_email});
+      return { findTrip }; 
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
