@@ -14,10 +14,11 @@ export const Colors = {
     darkLight: "#9CA3AF",
     night: "#000000",
     blue: "#66B2FF",
+    darkblue: "#284766",
     bgrey: "#928E85",
 };
 
-const { lightprimary, primary, plain, secondary, tertiary, darkLight, night, blue, bgrey } = Colors;
+const { lightprimary, primary, plain, secondary, tertiary, darkLight, night, blue, bgrey, darkblue } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;

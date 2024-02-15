@@ -11,7 +11,7 @@ import {
 import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons'
 import ProfileTop from '../src/components/ProfileTop';
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Alert } from "react-native";
 import { signUp } from '../src/components/schema';
 import LoadingScreen from './loading';
 SignUpScreen = () => {
@@ -19,6 +19,9 @@ SignUpScreen = () => {
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
     const handleSubmit = async (values) => {
+        if ((values.email || values.firstName || values.lastName || values.password || values.phoneNum) === '') {
+            showAlert("Please make sure there is no empty values");
+        }
         if (values.password === values.confirmPassword) {
             // Navigate to loading screen
             router.push("/loading");
@@ -36,9 +39,16 @@ SignUpScreen = () => {
             }
         } else {
             console.log("please enter the same password");
+            showAlert("please enter the same password");
         }
     };
-
+    const showAlert = (errMsg) =>
+        Alert.alert('Unable to Sign Up', errMsg, [
+            {
+                cancelable: true,
+                text: 'Try again',
+            },
+        ]);
     return (
         <StyledContainer>
             <StatusBar style="dark" />

@@ -8,43 +8,53 @@ import {
 } from '../../src/components/styles';
 import Card from '../../src/components/Card';
 import ProfileTop from '../../src/components/ProfileTop';
-import { fetchStudentData } from '../../src/components/schema';
+import { fetchStudentData, fetchSchedule } from '../../src/components/schema';
 import StudentDetails from '../../src/components/StudentDetails';
-
+import ScheduleDetails from '../../src/components/ScheduleDetails';
 
 const HomeScreen = () => {
-    const { userDetails, studentDetails, setStudentDetails } = useUserSession();
+    const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const fetchedStudentDetails = await fetchStudentData(userDetails.email, userDetails.accessToken);
-
-                // Check if fetchedStudentDetails is an array
-                if (Array.isArray(fetchedStudentDetails)) {
-                    // Map fetchedStudentDetails to StudentDetails objects
-                    const studentDetailsArray = fetchedStudentDetails.map(student =>
-                        new StudentDetails(
-                            student._id,
-                            student.address,
-                            student.class_name,
-                            student.dob,
-                            student.firstname,
-                            student.gender,
-                            student.lastname,
-                            student.parent_id,
-                            student.postcode,
-                            student.school_name,
-                            student.status,
-                            student.studentid,
-                            student.zone
-                        )
+                const studentDetailsArray = fetchedStudentDetails.map(student =>
+                    new StudentDetails(
+                        student._id,
+                        student.address,
+                        student.class_name,
+                        student.dob,
+                        student.firstname,
+                        student.gender,
+                        student.lastname,
+                        student.parent_id,
+                        student.postcode,
+                        student.school_name,
+                        student.status,
+                        student.studentid,
+                        student.zone
+                    )
+                );
+                setStudentDetails(studentDetailsArray);
+                const schedules = studentDetailsArray.map(async (student) => {
+                    const s = await fetchSchedule(student.studentid, userDetails.accessToken);
+                    return new ScheduleDetails(
+                        s._id,
+                        s.date,
+                        student.firstname,
+                        student.lastname,
+                        student.school_name,
+                        student.class_name,
+                        student.status,
+                        student.studentid,
+                        s.transport_type,
+                        s.pickup_time,
+                        s.dismissal_time
                     );
-                    // Set studentDetails
-                    setStudentDetails(studentDetailsArray);
-                } else {
-                    // Handle the case when fetchedStudentDetails is not an array
-                    console.error('Error fetching student details:', fetchedStudentDetails);
-                }
+                });
+                const resolvedSchedules = await Promise.all(schedules);
+                console.log("Schedules for all students: ", resolvedSchedules);
+                setScheduleDetails(resolvedSchedules);
             } catch (error) {
                 // Handle any errors that occur during the fetching process
                 console.error('Error fetching data:', error);

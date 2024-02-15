@@ -209,7 +209,6 @@ export async function fetchDriverTrips(driver_email, accessToken) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
             const tripData = responseBody.findTrip || [];
-            //console.log("fetch student data", studentData);
             return tripData;
         };
     } catch (error) {

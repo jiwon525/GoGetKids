@@ -38,19 +38,15 @@ const LoginScreen = () => {
                 router.replace({
                     pathname: `/${userDetails.role}`,
                 });
-
             } else {
-                if (responseBody.error) {
-                    console.error('Error logging in:', responseBody.error);
-                    showAlert("You don't have an existing account or your password is incorrect");
-                } else {
-                    console.error('Error logging in: Unknown error');
-                    showAlert('Error logging in: Unknown error');
-                }
+                console.log('Error logging in:', responseBody.error)
+                router.push("/");
+                showAlert("You don't have an existing account or your password is incorrect")
             }
         } catch (error) {
             console.error('Error:', error.message || 'Unknown error');
         }
+
     };
 
     const saveUser = async (userId, accessToken) => {
@@ -78,7 +74,6 @@ const LoginScreen = () => {
     const showAlert = (errMsg) =>
         Alert.alert('Unable to Log In', errMsg, [
             {
-                cancelable: true,
                 text: 'Try again',
             },
         ]);

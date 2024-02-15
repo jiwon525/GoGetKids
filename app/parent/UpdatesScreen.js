@@ -6,7 +6,7 @@ import {
     View, FlatList,
     TouchableWithoutFeedback,
     Text, ScrollView,
-    Dimensions,
+    Dimensions, Alert,
 } from "react-native";
 import {
     StyledContainer, StyledButton, ButtonText, NormText, Line, TextContainer,
@@ -17,73 +17,57 @@ import { Ionicons } from '@expo/vector-icons';
 import ProfileTop from '../../src/components/ProfileTop';
 import Swiper from 'react-native-swiper';
 import moment from 'moment';
+import { useUserSession } from '../../UserSessionContext';
+import { changeTransportType } from '../../src/components/schema'
 
-const data = [
-    {
-        id: 1,
-        date: '12/1/2024',
-        name: 'Rachel Yeo',
-        school: 'Methodist Primary School',
-        studentclass: 'Class 1',
-        status: 'In School',
-        studentid: 'S2301234',
-        transporttype: 'Bus',
-        pickuptime: '7:45 AM',
-        dismissaltime: '2:00 PM',
-    },
-    {
-        id: 2,
-        date: '12/1/2024',
-        name: 'Chaim Yeo',
-        school: 'Methodist Primary School',
-        studentclass: 'Class 2',
-        status: 'In School',
-        studentid: 'S2301235',
-        transporttype: 'Bus',
-        pickuptime: '7:45 AM',
-        dismissaltime: '2:00 PM',
-    },
-];
-
-
-const ScheduleScreen = () => {
-    const [value, setValue] = useState(new Date());
-
-    const startOfWeek = moment().startOf('week');
-
-    const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
-        const date = moment(startOfWeek).add(index, 'days');
-        const isActive = value.toDateString() === date.toDate().toDateString();
-        return (
-            <TouchableWithoutFeedback
-                key={index}
-                onPress={() => setValue(date.toDate())}
-            >
-                <View
-                    style={[
-                        styles.item,
-                        isActive && { backgroundColor: '#111', borderColor: '#111' },
-                    ]}>
-                    <Text style={[styles.itemWeekday, isActive && { color: '#fff' }]}>
-                        {date.format('ddd')}
-                    </Text>
-                    <Text style={[styles.itemDate, isActive && { color: '#fff' }]}>
-                        {date.date()}
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    });
+const UpdatesScreen = () => {
+    const { userDetails, setScheduleDetails, scheduleDetails } = useUserSession();
+    const today = moment().format('YYYY-MM-DD');
+    const handleChangeTransportType = async ({ studentSchedule }) => {
+        try {
+            Alert.alert(
+                "Confirm",
+                "Are you sure you want to change the transport type to self pick up?",
+                [
+                    {
+                        text: "Cancel",
+                        style: "cancel"
+                    },
+                    {
+                        text: "OK", onPress: async () => {
+                            // Call changeTransportType function to change transport type
+                            const us = await changeTransportType(studentSchedule._id, accessToken);
+                            const updatedTransportType = us.transport_type;
+                            const updatedScheduleDetails = {
+                                ...studentSchedule,
+                                transporttype: updatedTransportType
+                            };
+                            await setScheduleDetails(updatedScheduleDetails);
+                        }
+                    }
+                ]
+            );
+        } catch (error) {
+            Alert.alert(
+                "Error!",
+                "Unable to update transport type",
+                [
+                    {
+                        text: "Ok",
+                        style: "cancel"
+                    }
+                ]
+            )
+        }
+    };
     return (
         <StyledContainer>
-            <ProfileTop name="Weekly Schedule" />
-
-            <View style={styles.picker}>{daysOfWeek}</View>
+            <ProfileTop name="Student Schedule" />
             <View style={{ paddingHorizontal: 16, paddingVertical: 5 }}>
-                <Subtitle>{value.toDateString()}</Subtitle>
+                <Subtitle>{today}</Subtitle>
             </View>
             <Swiper>
-                {data.map((item, index) => (
+                {scheduleDetails.map((item, index) => (
                     <View key={index} style={styles.placeholderInset}>
                         <PageTitle>Schedule Details</PageTitle>
                         <Line></Line>
@@ -92,7 +76,7 @@ const ScheduleScreen = () => {
                                 <MostSmallLogo
                                     resizeMode="contain" source={require('../../src/assets/student.png')} />
                                 <InnerScheduleView>
-                                    <Subtitle>{item.name}</Subtitle>
+                                    <Subtitle>{item.firstName} {item.lastName}</Subtitle>
                                     <ExtraText> - {item.studentid}</ExtraText>
                                 </InnerScheduleView>
                             </StyledScheduleView>
@@ -100,7 +84,6 @@ const ScheduleScreen = () => {
                                 <CardTextStatus>{item.status} - {item.studentclass}</CardTextStatus>
                             </View>
                         </View>
-
                         <Line></Line>
                         <StyledScheduleView>
                             <Ionicons name="school-outline" size={30} color="black" />
@@ -112,7 +95,11 @@ const ScheduleScreen = () => {
                         <StyledScheduleView>
                             <Ionicons name="sunny-outline" size={30} color="black" />
                             <TextContainer>
-                                <NormText>Morning pick up Time: {item.pickuptime}</NormText>
+                                {item.pickuptime === "Invalid" || !item.pickuptime ? (
+                                    <NormText>Parents Car to School!</NormText>
+                                ) : (
+                                    <NormText>Morning pick up Time: {item.pickuptime}</NormText>
+                                )}
                             </TextContainer>
                         </StyledScheduleView>
                         <Line></Line>
@@ -129,15 +116,35 @@ const ScheduleScreen = () => {
                                 <NormText>Transport type: {item.transporttype}</NormText>
                             </TextContainer>
                         </StyledScheduleView>
+                        <View style={styles.buttonContainer}>
+                            {item.transporttype === 'Bus' && (
+                                <StyledButton onPress={() => handleChangeTransportType(item)}>
+                                    <ButtonText>
+                                        Self PickUp
+                                    </ButtonText>
+                                </StyledButton>
+                            )}
+                            <Link href={{
+                                pathname: "/parent/AssignGuardian",
+                                params: {
+                                    scheduleid: item._id,
+                                    studentid: item.studentid
+                                }
+                            }} asChild>
+                                <StyledButton>
+                                    <ButtonText>
+                                        Assign guardian to pickup
+                                    </ButtonText>
+                                </StyledButton>
+                            </Link>
+                        </View>
                     </View>
                 ))}
-
             </Swiper>
         </StyledContainer>
     );
 };
 const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
 const styles = StyleSheet.create({
     placeholderInset: {
         borderWidth: 4,
@@ -166,53 +173,9 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
     },
-    picker: {
-        flex: 1,
-        maxHeight: 74,
-        paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    /** Item */
-    item: {
-        flex: 1,
-        height: 50,
-        marginHorizontal: 4,
-        paddingVertical: 6,
-        paddingHorizontal: 4,
-        borderWidth: 1,
-        borderRadius: 8,
-        borderColor: '#e3e3e3',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    itemRow: {
-        width: width,
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        marginHorizontal: -4,
-    },
-    itemWeekday: {
-        fontSize: 13,
-        fontWeight: '500',
-        color: '#737373',
-    },
-    itemDate: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: '#111',
-    },
+    buttonContainer: {
+        marginTop: 'auto',
 
-    /** Placeholder */
-    placeholder: {
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 0,
-        height: 400,
-        marginTop: 0,
-        padding: 0,
-        backgroundColor: 'transparent',
     },
     TopContainer: {
         width: width - 8,
@@ -223,4 +186,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScheduleScreen;
+export default UpdatesScreen;
