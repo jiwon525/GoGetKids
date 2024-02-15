@@ -1,19 +1,19 @@
 exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
-    const { studentid } = body;
-    const studentIdInt = parseInt(studentid);
-    if (!studentid) {
-      return { error: "student id is " + studentid};
+    const { driver_email } = body;
+    if (!driver_email) {
+      return { error: "student id is " + driver_email};
     }
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
-    var collName = "schedules";
+    var collName = "trips";
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
-    var findResult;
+    var findTrip;
     try {
-      findResult = await collection.findOne({studentid: studentIdInt});
-      return { findResult };
+      //later need to edit this part to find and set into array.
+      findTrip = await collection.findOne({driver_email: driver_email});
+      return { findTrip }; 
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
