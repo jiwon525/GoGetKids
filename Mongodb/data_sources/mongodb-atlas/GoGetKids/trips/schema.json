@@ -22,9 +22,6 @@
         "vehicle_number": {
             "bsonType": "string"
         },
-        "vehicle_type": {
-            "bsonType": "string"
-        },
         "zone": {
             "bsonType": "string"
         }
@@ -35,7 +32,6 @@
         "driver_email",
         "school_name",
         "vehicle_number",
-        "vehicle_type",
         "zone"
     ]
 }
