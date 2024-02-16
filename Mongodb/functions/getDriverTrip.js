@@ -5,11 +5,6 @@ exports = async function (payload) {
     if (!driver_email) {
       return { error: "driver email is null " + driver_email};
     }
-    var today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
-    
-    var tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1); // Get tomorrow's date
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collName = "trips";
@@ -17,13 +12,7 @@ exports = async function (payload) {
     var findTrip;
     try {
       //find the trip that is from today and before yesterday = today's date
-      findTrip = await collection.findOne({
-        driver_email: driver_email,
-        date: {
-          $gte: today,
-          $lt: tomorrow
-        }
-      });
+      findTrip = await collection.findOne({driver_email: driver_email});
       return { findTrip }; 
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
