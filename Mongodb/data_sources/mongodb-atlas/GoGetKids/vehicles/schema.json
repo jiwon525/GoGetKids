@@ -1,0 +1,29 @@
+{
+    "title": "vehicle",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "company_name": {
+            "bsonType": "string"
+        },
+        "nextServicing": {
+            "bsonType": "string"
+        },
+        "role": {
+            "bsonType": "string"
+        },
+        "status": {
+            "bsonType": "string"
+        },
+        "vehicleId": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "company_name",
+        "status",
+        "vehicleId"
+    ]
+}
