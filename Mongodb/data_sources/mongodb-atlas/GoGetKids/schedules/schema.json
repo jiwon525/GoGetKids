@@ -13,6 +13,9 @@
         "pickup_time": {
             "bsonType": "date"
         },
+        "school_name": {
+            "bsonType": "string"
+        },
         "studentid": {
             "bsonType": "int"
         },
@@ -24,6 +27,7 @@
         "_id",
         "date",
         "dismissal_time",
+        "school_name",
         "studentid",
         "transport_type"
     ]
