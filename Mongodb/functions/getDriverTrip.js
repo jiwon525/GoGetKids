@@ -3,7 +3,7 @@ exports = async function (payload) {
     const body = JSON.parse(payload.body.text());
     const { driver_email } = body;
     if (!driver_email) {
-      return { error: "student id is " + driver_email};
+      return { error: "driver email is null " + driver_email};
     }
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
@@ -11,7 +11,7 @@ exports = async function (payload) {
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findTrip;
     try {
-      //later need to edit this part to find and set into array.
+      //find the trip that is from today and before yesterday = today's date
       findTrip = await collection.findOne({driver_email: driver_email});
       return { findTrip }; 
     } catch(err) {

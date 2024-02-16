@@ -1,5 +1,5 @@
 {
-    "title": "trip",
+    "title": "vehicle",
     "properties": {
         "_id": {
             "bsonType": "objectId"
@@ -7,31 +7,23 @@
         "company_name": {
             "bsonType": "string"
         },
-        "driver_email": {
+        "nextServicing": {
             "bsonType": "string"
         },
-        "end_time": {
-            "bsonType": "date"
-        },
-        "school_name": {
+        "role": {
             "bsonType": "string"
         },
-        "start_time": {
-            "bsonType": "date"
-        },
-        "vehicle_number": {
+        "status": {
             "bsonType": "string"
         },
-        "zone": {
+        "vehicleId": {
             "bsonType": "string"
         }
     },
     "required": [
         "_id",
         "company_name",
-        "driver_email",
-        "school_name",
-        "vehicle_number",
-        "zone"
+        "status",
+        "vehicleId"
     ]
 }
