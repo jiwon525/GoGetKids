@@ -5,18 +5,16 @@
             "bsonType": "objectId"
         },
         "company_name": {
-            "bsonType": "string",
-            "default": "defaultCompany"
-        },
-        "date": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "driver_email": {
             "bsonType": "string"
         },
+        "end_time": {
+            "bsonType": "date"
+        },
         "school_name": {
-            "bsonType": "string",
-            "default": "defaultSchool"
+            "bsonType": "string"
         },
         "start_time": {
             "bsonType": "date"
@@ -34,7 +32,10 @@
     "required": [
         "_id",
         "company_name",
-        "date",
-        "school_name"
+        "driver_email",
+        "school_name",
+        "vehicle_number",
+        "vehicle_type",
+        "zone"
     ]
 }
