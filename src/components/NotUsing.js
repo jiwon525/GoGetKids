@@ -15,37 +15,78 @@ import {
     Colors, Subtitle,
 } from '../../src/components/styles';
 import TripSheet from '../../src/components/TripSheet';
-import ProfileTop from '../../src/components/ProfileTop';
+import { useUserSession } from '../../UserSessionContext';
 import { fetchDriverTrips } from '../../src/components/schema';
-import TripDetails from '../../src/components/TripDetails';
-import { ScrollView } from 'react-native-gesture-handler';
+const { width } = Dimensions.get('window');
+//need to get data of the date chosen only.
+const DATA = [
+    {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        address: 'FRANKEL ESTATE on the Coasts East, 5 Dunbar Walk',
+        postalcode: '459275',
+        name: 'Elliot Batts',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        address: 'East Coast Avenue, 20E',
+        postalcode: '459215',
+        name: 'Rachel Yeo',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        address: '934 East Coast Road',
+        postalcode: '459125',
+        name: 'Allyn Rodney',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e29d71',
+        address: 'East Coast Road, 932A',
+        postalcode: '459120',
+        name: 'Oliver Tan',
+    },
+    {
+        id: '58694a0f-3341-471f-bd96-145571e29d71',
+        address: 'East Coast Road, 634',
+        postalcode: '459020',
+        name: 'Chaim Yeo',
+    },
+    {
+        id: '58694a0f-3da1-4gtf-bd96-145571e29d71',
+        address: ' 632 EAST COAST ROAD',
+        postalcode: '459018',
+        name: 'Adam Lee',
+    },
+];
 
-const TripScreen = () => {
-    const { userDetails, tripDetails, setTripDetails } = useUserSession();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const fetchedTrip = await fetchDriverTrips(userDetails.email, userDetails.accessToken);
-                const userD = new TripDetails(
-                    fetchedTrip._id,
-                    fetchedTrip.date,
-                    fetchedTrip.vehicle_number,
-                    fetchedTrip.vehicle_type,
-                    fetchedTrip.driver_email,
-                    fetchedTrip.company_name,
-                    fetchedTrip.school_name,
-                    fetchedTrip.zone,
-                    fetchedTrip.start_time,
-                    fetchedTrip.end_time,
-                );
-                setTripDetails(userD);
-            } catch (error) {
-                // Handle any errors that occur during the fetching process
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, []);
+
+const N = () => {
+
+    const [value, setValue] = useState(new Date());
+    const startOfWeek = moment().startOf('week');
+    const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
+        const date = moment(startOfWeek).add(index, 'days');
+        const isActive = value.toDateString() === date.toDate().toDateString();
+        console.log("current date", date);
+        return (
+            <TouchableWithoutFeedback
+                key={index}
+                onPress={() => setValue(date.toDate())}
+            >
+                <View
+                    style={[
+                        styles.item,
+                        isActive && { backgroundColor: '#111', borderColor: '#111' },
+                    ]}>
+                    <Text style={[styles.itemWeekday, isActive && { color: '#fff' }]}>
+                        {date.format('ddd')}
+                    </Text>
+                    <Text style={[styles.itemDate, isActive && { color: '#fff' }]}>
+                        {date.date()}
+                    </Text>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    });
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -56,9 +97,9 @@ const TripScreen = () => {
                     <Subtitle>{value.toDateString()}</Subtitle>
                     <View style={styles.placeholder}>
                         <TripSheet
-                            school={tripDetails.school_name}
-                            zone={tripDetails.zone}
-                            vehiclenum={tripDetails.vehicle_number}
+                            school="Methodist Primary"
+                            zone="Zone A"
+                            vehiclenum="VH32132"
                             DATA={DATA}
                         />
                     </View>
@@ -143,4 +184,4 @@ const styles = StyleSheet.create({
         flexBasis: 0,
     },
 });
-export default TripScreen;
+export default N;

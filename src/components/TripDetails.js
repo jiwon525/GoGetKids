@@ -1,13 +1,15 @@
 class TripDetails {
-    constructor(accessToken, _id, email, role, firstName, lastName, company_name, school_name) {
-        this.accessToken = accessToken;
+    constructor(_id, date, vehicle_number, vehicle_type, driver_email, company_name, school_name, zone, start_time, end_time) {
         this._id = _id;
-        this.email = email;
-        this.role = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.company_name = company_name || null;
-        this.school_name = school_name || null;
+        this.date = date; //ill remove this 
+        this.vehicle_number = vehicle_number;
+        this.vehicle_type = vehicle_type;
+        this.driver_email = driver_email;
+        this.company_name = company_name;
+        this.school_name = school_name;
+        this.zone = zone;
+        this.start_time = start_time || null;
+        this.end_time = end_time || null;
     }
 };
 

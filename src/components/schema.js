@@ -1,5 +1,6 @@
+import { format } from '@expo/config-plugins/build/utils/XML';
 import { router } from 'expo-router';
-import * as MailComposer from 'expo-mail-composer';
+
 //signing user up at mongodb atlas function
 export async function signUp(email, firstName, lastName, password, phoneNum) {
     try {
@@ -144,6 +145,7 @@ export async function fetchStudentData(email, accessToken) {
     }
 };
 
+//updating the transport type of selected student to parent pick up (havent add yet: or guardian pick up), and returning schedule
 export async function changeTransportType(transport, accessToken) {
     console.log("inside change transport type");
     try {
@@ -188,7 +190,6 @@ export async function changeTransportType(transport, accessToken) {
     }
 };
 
-
 //fetching trips using driver email
 export async function fetchDriverTrips(driver_email, accessToken) {
     console.log("inside fetch schedule");
@@ -208,8 +209,27 @@ export async function fetchDriverTrips(driver_email, accessToken) {
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
-            const tripData = responseBody.findTrip || [];
-            return tripData;
+            let date = new Date(responseBody.findTrip.date);
+            //extracting data from the json $date
+            let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+            let startTime = new Date(responseBody.findTrip.start_time);
+            let endTime = new Date(responseBody.findTrip.end_time);
+            //because the start time and or end time may be empty, adding conditional checks.
+            let formattedStartTime = responseBody.findTrip.start_time ? new Date(responseBody.findTrip.start_time).toTimeString().split(' ')[0] : "not started yet";
+            let formattedEndTime = responseBody.findTrip.end_time ? new Date(responseBody.findTrip.end_time).toTimeString().split(' ')[0] : "not ended yet";
+            let trip = {
+                _id: responseBody.findTrip._id,
+                date: formattedDate,
+                vehicle_number: responseBody.findTrip.vehicle_number,
+                vehicle_type: responseBody.findTrip.vehicle_type,
+                driver_email: responseBody.findTrip.driver_email,
+                company_name: responseBody.findTrip.company_name,
+                school_name: responseBody.findTrip.school_name,
+                zone: responseBody.findTrip.zone,
+                start_time: formattedStartTime || null,
+                end_time: formattedEndTime || null,
+            }
+            return trip;
         };
     } catch (error) {
         console.error('Error fetching data:', error);
