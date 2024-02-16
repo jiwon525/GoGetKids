@@ -105,6 +105,7 @@ export async function fetchSchedule(studentId, accessToken) {
         let scheduleDetails = {
             _id: responseBody.findResult._id,
             studentid: responseBody.findResult.studentid,
+            school_name: responseBody.findResult.school_name,
             date: formattedDate,
             transport_type: responseBody.findResult.transport_type,
             pickup_time: formattedPickupTime,
@@ -209,9 +210,6 @@ export async function fetchDriverTrips(driver_email, accessToken) {
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
-            let date = new Date(responseBody.findTrip.date);
-            //extracting data from the json $date
-            let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
             let startTime = new Date(responseBody.findTrip.start_time);
             let endTime = new Date(responseBody.findTrip.end_time);
             //because the start time and or end time may be empty, adding conditional checks.
@@ -219,9 +217,7 @@ export async function fetchDriverTrips(driver_email, accessToken) {
             let formattedEndTime = responseBody.findTrip.end_time ? new Date(responseBody.findTrip.end_time).toTimeString().split(' ')[0] : "not ended yet";
             let trip = {
                 _id: responseBody.findTrip._id,
-                date: formattedDate,
                 vehicle_number: responseBody.findTrip.vehicle_number,
-                vehicle_type: responseBody.findTrip.vehicle_type,
                 driver_email: responseBody.findTrip.driver_email,
                 company_name: responseBody.findTrip.company_name,
                 school_name: responseBody.findTrip.school_name,
@@ -229,6 +225,7 @@ export async function fetchDriverTrips(driver_email, accessToken) {
                 start_time: formattedStartTime || null,
                 end_time: formattedEndTime || null,
             }
+            console.log("this is trip", trip);
             return trip;
         };
     } catch (error) {

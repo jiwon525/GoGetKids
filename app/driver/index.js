@@ -28,9 +28,7 @@ const TripScreen = () => {
                 const fetchedTrip = await fetchDriverTrips(userDetails.email, userDetails.accessToken);
                 const userD = new TripDetails(
                     fetchedTrip._id,
-                    fetchedTrip.date,
                     fetchedTrip.vehicle_number,
-                    fetchedTrip.vehicle_type,
                     fetchedTrip.driver_email,
                     fetchedTrip.company_name,
                     fetchedTrip.school_name,
@@ -51,15 +49,41 @@ const TripScreen = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
                 <ProfileTop name="Your Schedule" />
-                <View style={styles.picker}>{daysOfWeek}</View>
-                <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 5 }}>
-                    <Subtitle>{value.toDateString()}</Subtitle>
-                    <View style={styles.placeholder}>
-                        <TripSheet
-                            school={tripDetails.school_name}
-                            zone={tripDetails.zone}
-                            vehiclenum={tripDetails.vehicle_number}
-                            DATA={DATA}
+                <View style={styles.placeholder}>
+                    <View style={styles.placeholderInset}>
+                        <PageTitle>{school}</PageTitle>
+                        <ExtraText>{zone}</ExtraText>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="bus-outline" size={30} color="black" />
+                            <InnerScheduleView>
+                                <NormText>{vehiclenum}</NormText>
+                            </InnerScheduleView>
+                        </StyledScheduleView>
+                        <StyledContainer>
+                            <Line></Line>
+                            {studentDetails && studentDetails.length > 0 ? (
+                                studentDetails.map((student, index) => (
+                                    <Card
+                                        key={student._id}
+                                        firstName={student.firstname}
+                                        lastName={student.lastname}
+                                        status={student.status}
+                                        school={student.school_name}
+                                        grade={student.class_name}
+                                        studentID={student.studentid.toString()}
+                                        accessToken={userDetails.accessToken}
+                                    />
+
+                                ))
+                            ) : (
+                                <NormText>No students linked yet</NormText>
+                            )}
+                        </StyledContainer>
+                        <FlatList
+                            data={DATA}
+                            renderItem={({ item }) => <Item address={item.address} postalcode={item.postalcode} name={item.name} />}
+                            keyExtractor={item => item.id}
                         />
                     </View>
                 </View>
@@ -71,58 +95,15 @@ const TripScreen = () => {
 
 
 const styles = StyleSheet.create({
-    header: {
-        paddingTop: 14,
-        backgroundColor: Colors.primary,
+    placeholderInset: {
+        borderWidth: 4,
+        borderColor: '#e5e7eb',
+        borderStyle: 'dashed',
+        borderRadius: 9,
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
     },
-    title: {
-        fontSize: 32,
-        fontWeight: '700',
-        color: '#1d1d1d',
-        marginBottom: 12,
-    },
-    picker: {
-        flex: 1,
-        maxHeight: 74,
-        paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    footer: {
-        marginTop: 'auto',
-        paddingHorizontal: 16,
-    },
-    /** Item */
-    item: {
-        flex: 1,
-        height: 50,
-        marginHorizontal: 4,
-        paddingVertical: 6,
-        paddingHorizontal: 4,
-        borderWidth: 1,
-        borderRadius: 8,
-        borderColor: '#e3e3e3',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    itemRow: {
-        width: width,
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        marginHorizontal: -4,
-    },
-    itemWeekday: {
-        fontSize: 13,
-        fontWeight: '500',
-        color: '#737373',
-    },
-    itemDate: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: '#111',
-    },
-
     /** Placeholder */
     placeholder: {
         flexGrow: 1,
@@ -132,15 +113,6 @@ const styles = StyleSheet.create({
         marginTop: 0,
         padding: 0,
         backgroundColor: 'transparent',
-    },
-    placeholderInset: {
-        borderWidth: 4,
-        borderColor: '#e5e7eb',
-        borderStyle: 'dashed',
-        borderRadius: 9,
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 0,
     },
 });
 export default TripScreen;

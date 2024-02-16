@@ -44,7 +44,7 @@ const HomeScreen = () => {
                         s.date,
                         student.firstname,
                         student.lastname,
-                        student.school_name,
+                        s.school_name,
                         student.class_name,
                         student.status,
                         student.studentid,
