@@ -194,7 +194,6 @@ export async function fetchDriverTrips(driver_email, accessToken) {
             body: JSON.stringify(driver),
         });
         const responseBody = await response.json();
-        console.log(responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else if (!responseBody.findTrip) { // Check if findTrip is present
@@ -222,6 +221,7 @@ export async function fetchDriverTrips(driver_email, accessToken) {
 };
 
 export async function fetchTripStudents(school_name, zone, accessToken) {
+    console.log("sch name", school_name, "zone", zone);
     try {
         const stud = {
             school_name: school_name,
@@ -236,10 +236,12 @@ export async function fetchTripStudents(school_name, zone, accessToken) {
             body: JSON.stringify(stud),
         });
         const responseBody = await response.json();
+        console.log("trip students", responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
             const tripstudents = responseBody.result || []; // Assigning the result array
+            console.log("the return array", tripstudents);
             return tripstudents;
         };
     } catch (error) {
