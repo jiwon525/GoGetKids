@@ -11,10 +11,18 @@ exports = async function (payload) {
     if (!classDetails) {
       return { error: "Teacher has no linked class " + teacherid};
     }
-    var findResult;
+    var studentsWithSchedule = [];
     try {
-      findResult = await db.collection("students").find({class_name: classDetails.class_name}).toArray();
-      return { result: findResult };
+      students = await db.collection("students").find({class_name: classDetails.class_name}).toArray();
+     for (const student of students) {
+        // Fetch transport_type for the student from schedules collection
+        const schedule = await db.collection("schedules").findOne({studentid: student.studentid});
+        // Add transport_type to student's details, if schedule exists
+        student.transport_type = schedule ? schedule.transport_type : null;
+        studentsWithSchedule.push(student);
+      }
+
+      return { result: studentsWithSchedule };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
