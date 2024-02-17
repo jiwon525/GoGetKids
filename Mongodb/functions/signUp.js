@@ -10,7 +10,8 @@ exports = async function(payload) {
       phoneNum,
       role,
       school_name="",
-      company_name=""
+      company_name="",
+      license="",
     } = body;
     // Validate email address
     if (!email || typeof email !== 'string' || email.trim() === '') {
