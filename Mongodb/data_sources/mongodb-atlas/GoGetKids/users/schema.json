@@ -7,11 +7,17 @@
         "company_name": {
             "bsonType": "string"
         },
+        "license": {
+            "bsonType": "string"
+        },
         "email": {
             "bsonType": "string"
         },
         "firstName": {
             "bsonType": "string"
+        },
+        "isVerified": {
+            "bsonType": "bool"
         },
         "lastName": {
             "bsonType": "string"
@@ -34,8 +40,6 @@
         "email",
         "firstName",
         "lastName",
-        "password",
-        "phoneNum",
-        "role"
+        "password"
     ]
 }

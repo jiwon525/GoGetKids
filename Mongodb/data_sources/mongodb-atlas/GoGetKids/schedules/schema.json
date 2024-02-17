@@ -5,13 +5,13 @@
             "bsonType": "objectId"
         },
         "date": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "dismissal_time": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "pickup_time": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "school_name": {
             "bsonType": "string"
