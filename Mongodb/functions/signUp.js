@@ -37,7 +37,8 @@ exports = async function(payload) {
       phoneNum,
       role,
       school_name,
-      company_name
+      company_name,
+      license
     };
 
     // MongoDB collection information
