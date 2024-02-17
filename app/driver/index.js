@@ -3,13 +3,9 @@ import { Link } from 'expo-router';
 import {
     StyleSheet,
     SafeAreaView,
-    View, FlatList,
-    TouchableWithoutFeedback,
-    Text,
-    Dimensions,
+    View,
 } from 'react-native';
 import ProfileTop from '../../src/components/ProfileTop';
-import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,
     Colors, Subtitle, StyledScheduleView, NormText, ExtraText, InnerScheduleView, Line, MostSmallLogo,
@@ -18,28 +14,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { fetchDriverTrips, fetchTripStudents } from '../../src/components/schema';
 import TripDetails from '../../src/components/TripDetails';
 import StudentDetails from '../../src/components/StudentDetails';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useUserSession } from '../../UserSessionContext';
 
 const TripScreen = () => {
     const { userDetails, tripDetails, setTripDetails, studentDetails, setStudentDetails } = useUserSession();
     useEffect(() => {
+        console.log("inside trip", userDetails);
         const fetchData = async () => {
             try {
-                console.log(userDetails.email);
                 const fetchedTrip = await fetchDriverTrips(userDetails.email, userDetails.accessToken);
-                console.log(fetchedTrip);
-                const tripD = new TripDetails(
-                    fetchedTrip._id,
-                    fetchedTrip.vehicle_number,
-                    fetchedTrip.driver_email,
-                    fetchedTrip.company_name,
-                    fetchedTrip.school_name,
-                    fetchedTrip.zone,
-                    fetchedTrip.start_time,
-                    fetchedTrip.end_time,
-                );
-                setTripDetails(tripD);
-                const fetchedStudentDetails = await fetchTripStudents(fetchedTrip.school_name, fetchedTrip.zone, userDetails.accessToken);
+                console.log("fetchedTripcompanyname", fetchedTrip.company_name);
+                if (fetchedTrip) {
+                    console.log("inside if condition", fetchedTrip);
+                    setTripDetails(fetchedTrip);
+                    console.log("tripdDetails set", tripDetails);
+                }
+                else {
+                    console.log("Schedule for student not found");
+                }
+
+                const fetchedStudentDetails = await fetchTripStudents(tripDetails.school_name, tripDetails.zone, userDetails.accessToken);
+                console.log(fetchedStudentDetails);
                 const studentDetailsArray = fetchedStudentDetails.map(student =>
                     new StudentDetails(
                         student._id,
@@ -65,7 +60,6 @@ const TripScreen = () => {
         };
         fetchData();
     }, []);
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
@@ -73,20 +67,19 @@ const TripScreen = () => {
                 <View style={styles.placeholder}>
                     <View style={styles.placeholderInset}>
                         <PageTitle>{tripDetails.school_name}</PageTitle>
-                        <ExtraText>{tripDetails.zone}</ExtraText>
+                        <ExtraText>Transport Zone:{tripDetails.zone}</ExtraText>
                         <Line></Line>
                         <StyledScheduleView>
                             <Ionicons name="bus-outline" size={30} color="black" />
                             <InnerScheduleView>
-                                <NormText>{vehiclenum}</NormText>
+                                <NormText>Vehicle Plate: {tripDetails.vehicle_number}</NormText>
                             </InnerScheduleView>
                         </StyledScheduleView>
                         <StyledContainer>
-                            <Line></Line>
                             {studentDetails && studentDetails.length > 0 ? (
                                 studentDetails.map((student, index) => (
-                                    <StyledContainer>
-                                        <StyledScheduleView>
+                                    <StyledContainer key={student._id || student.studentid}>
+                                        <StyledScheduleView list={true}>
                                             <MostSmallLogo
                                                 resizeMode="contain" source={require('../../src/assets/student.png')} />
                                             <InnerScheduleView>
@@ -108,6 +101,8 @@ const TripScreen = () => {
                                 <NormText>No students linked yet</NormText>
                             )}
                         </StyledContainer>
+
+                        <Line></Line>
                     </View>
                 </View>
             </StyledContainer>
@@ -115,7 +110,14 @@ const TripScreen = () => {
     );
 };
 
+/**
+ * 
+ * 
 
+
+
+                            
+ */
 
 const styles = StyleSheet.create({
     placeholderInset: {

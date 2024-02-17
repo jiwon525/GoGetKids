@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 export default () => {
     return (
         <Tabs>
-
             <Tabs.Screen
                 name="index"
                 options={{

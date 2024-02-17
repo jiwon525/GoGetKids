@@ -15,7 +15,7 @@ const ScheduleScreen = () => {
     const params = useLocalSearchParams();
     const { studentid, accessToken } = params;
     const [oneSchedule, setOneSchedule] = useState({});
-    const { studentDetails, scheduleDetails } = useUserSession();
+    const { studentDetails, scheduleDetails, setScheduleDetails } = useUserSession();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -26,22 +26,25 @@ const ScheduleScreen = () => {
                     return;
                 }
                 console.log(studentid);
-                const studentSchedule = scheduleDetails.filter(schedule => schedule.studentid === selectedStudent.studentid);
-                console.log("Schedule for student", studentSchedule);
-                setOneSchedule(new ScheduleDetails(
-                    studentSchedule._id,
-                    studentSchedule.date,
-                    studentSchedule.firstname,
-                    studentSchedule.lastname,
-                    studentSchedule.school_name,
-                    studentSchedule.class_name,
-                    studentSchedule.status,
-                    studentSchedule.studentid,
-                    s.transport_type,
-                    s.pickup_time,
-                    s.dismissal_time
-                ));
-
+                const selectS = scheduleDetails.find(schedule => schedule.studentid === selectedStudent.studentid);
+                if (selectS) {
+                    const newSchedule = new ScheduleDetails(
+                        selectS._id,
+                        selectS.date,
+                        selectS.firstName,
+                        selectS.lastName,
+                        selectS.school,
+                        selectS.studentclass,
+                        selectS.status,
+                        selectS.studentid,
+                        selectS.transporttype,
+                        selectS.pickuptime,
+                        selectS.dismissaltime
+                    );
+                    setOneSchedule(newSchedule);
+                } else {
+                    console.log("Schedule for student not found");
+                }
             } catch (error) {
                 console.error('Error fetching schedule:', error);
             }
@@ -60,14 +63,31 @@ const ScheduleScreen = () => {
                     },
                     {
                         text: "OK", onPress: async () => {
-                            // Call changeTransportType function to change transport type
-                            const us = await changeTransportType(studentSchedule._id, accessToken);
-                            const updatedTransportType = us.transport_type;
-                            const updatedScheduleDetails = {
-                                ...studentSchedule,
-                                transporttype: updatedTransportType
-                            };
-                            await setScheduleDetails(updatedScheduleDetails);
+                            try {
+                                console.log("tis is id", oneSchedule._id);
+                                const us = await changeTransportType(oneSchedule._id, accessToken);
+                                if (us) {
+                                    const uSchedule = new ScheduleDetails(
+                                        us._id,
+                                        us.date,
+                                        oneSchedule.firstName,
+                                        oneSchedule.lastName,
+                                        us.school_name,
+                                        oneSchedule.studentclass,
+                                        oneSchedule.status,
+                                        us.studentid,
+                                        us.transport_type,
+                                        us.pickup_time,
+                                        us.dismissal_time
+                                    );
+                                    setOneSchedule(uSchedule);
+                                } else {
+                                    console.log("Schedule for student not found");
+                                }
+                            } catch (error) {
+                                console.error("Unable to update transport type", error);
+                                Alert.alert("Error!", "Unable to update transport type");
+                            }
                         }
                     }
                 ]
@@ -87,7 +107,7 @@ const ScheduleScreen = () => {
     };
     return (
         <StyledContainer>
-            <ProfileTop name={studentSchedule.date} />
+            <ProfileTop name={oneSchedule.date} />
             <View style={styles.placeholderInset}>
                 <PageTitle>Today's Schedule</PageTitle>
                 <Line></Line>
@@ -96,36 +116,36 @@ const ScheduleScreen = () => {
                         <MostSmallLogo
                             resizeMode="contain" source={require('../../src/assets/student.png')} />
                         <InnerScheduleView>
-                            <Subtitle>{studentSchedule.firstName} {studentSchedule.lastName}</Subtitle>
-                            <ExtraText> - {studentSchedule.studentid}</ExtraText>
+                            <Subtitle>{oneSchedule.firstName} {oneSchedule.lastName}</Subtitle>
+                            <ExtraText> - {oneSchedule.studentid}</ExtraText>
                         </InnerScheduleView>
                     </StyledScheduleView>
                     <View style={styles.cardContainer}>
-                        <CardTextStatus>Status : {studentSchedule.status} </CardTextStatus>
+                        <CardTextStatus>Status : {oneSchedule.status} </CardTextStatus>
                     </View>
                 </View>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="ribbon-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>Class: {studentSchedule.studentclass}</NormText>
+                        <NormText>Class: {oneSchedule.studentclass}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="school-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>{studentSchedule.school}</NormText>
+                        <NormText>{oneSchedule.school}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="sunny-outline" size={30} color="black" />
                     <TextContainer>
-                        {studentSchedule.pickuptime === "Invalid" || !studentSchedule.pickuptime ? (
+                        {oneSchedule.pickuptime === "Invalid" || !oneSchedule.pickuptime || oneSchedule.transporttype === "Parent" ? (
                             <NormText>Parents Car to School!</NormText>
                         ) : (
-                            <NormText>Morning pick up Time: {studentSchedule.pickuptime}</NormText>
+                            <NormText>Morning pick up Time: {oneSchedule.pickuptime}</NormText>
                         )}
                     </TextContainer>
                 </StyledScheduleView>
@@ -133,18 +153,18 @@ const ScheduleScreen = () => {
                 <StyledScheduleView>
                     <Ionicons name="moon-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>School dismissal Time: {studentSchedule.dismissaltime}</NormText>
+                        <NormText>School dismissal Time: {oneSchedule.dismissaltime}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
                 <Line></Line>
                 <StyledScheduleView>
                     <Ionicons name="location-outline" size={30} color="black" />
                     <TextContainer>
-                        <NormText>Transport type: {studentSchedule.transporttype}</NormText>
+                        <NormText>Transport type: {oneSchedule.transporttype}</NormText>
                     </TextContainer>
                 </StyledScheduleView>
             </View>
-            {studentSchedule.transporttype === 'Bus' && (
+            {oneSchedule.transporttype === 'Bus' && (
                 <StyledButton onPress={handleChangeTransportType}>
                     <ButtonText>
                         Self PickUp
@@ -154,8 +174,8 @@ const ScheduleScreen = () => {
             <Link href={{
                 pathname: "/parent/AssignGuardian",
                 params: {
-                    scheduleid: studentSchedule._id,
-                    studentid: studentSchedule.studentid
+                    scheduleid: oneSchedule._id,
+                    studentid: oneSchedule.studentid
                 }
             }} asChild>
                 <StyledButton>

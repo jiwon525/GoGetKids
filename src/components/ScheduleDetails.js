@@ -1,6 +1,6 @@
 class ScheduleDetails {
-    constructor(id = null, date, firstName = '', lastName = '', school = '', studentclass = '', status = '', studentid = '', transporttype = '', pickuptime = null, dismissaltime = null) {
-        this.id = id;
+    constructor(_id, date, firstName = '', lastName = '', school = '', studentclass = '', status = '', studentid = '', transporttype = '', pickuptime = null, dismissaltime = null) {
+        this._id = _id;
         this.date = date;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -36,7 +36,7 @@ const UpdatesScreen = () => {
                     {
                         text: "OK", onPress: async () => {
                             // Call changeTransportType function to change transport type
-                            const us = await changeTransportType(studentSchedule._id, accessToken);
+                            const us = await changeTransportType(studentSchedule._id, userDetails.accessToken);
                             const updatedTransportType = us.transport_type;
                             const updatedScheduleDetails = {
                                 ...studentSchedule,

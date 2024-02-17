@@ -1,6 +1,4 @@
 import { Stack } from "expo-router";
-import ParentLayout from "./parent/_layout";
-/** <Stack.Screen name="index" options={{ headerShown: false }} />*/
 const StackLayout = () => {
 
     return (

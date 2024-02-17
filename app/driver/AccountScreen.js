@@ -12,7 +12,7 @@ import { StyleSheet, View, Text } from "react-native";
 //check if account sch name is null and show accordingly
 
 const AccountScreen = () => {
-
+    const { userDetails } = useUserSession();
     return (
         <StyledContainer>
             <LoginTab>
@@ -22,11 +22,12 @@ const AccountScreen = () => {
                     <LoginLogo resizeMode="contain" source={require('../../src/assets/profile.png')} />
                 </ProfileContainer>
             </LoginTab>
-            <View style={styles.textContainer}>
-                <LoginTitle>Name</LoginTitle>
-                <NormText>Jiwon Jung</NormText>
-                <LoginTitle>Username</LoginTitle>
-                <NormText>hello@gmail.com</NormText>
+            <View style={styles.placeholderInset}>
+                <View style={styles.textContainer}>
+                    <LoginTitle>Name: {userDetails.firstName} {userDetails.lastName}</LoginTitle>
+                    <LoginTitle>Username: {userDetails.email}</LoginTitle>
+                    <LoginTitle>Role: {userDetails.role}</LoginTitle>
+                </View>
             </View>
             <BottomContainer>
                 <StyledButton onPress={() => router.push("/driver/ChangePasswordScreen")}>
@@ -59,6 +60,15 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: Colors.night,
         marginBottom: 15,
+    },
+    placeholderInset: {
+        borderWidth: 4,
+        borderColor: '#e5e7eb',
+        borderStyle: 'dashed',
+        borderRadius: 9,
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
     },
 });
 

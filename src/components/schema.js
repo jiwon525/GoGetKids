@@ -67,10 +67,10 @@ export async function fetchUserData(userId, accessToken, refreshToken) {
             lastName: responseBody.userDetails.lastName,
             phoneNum: responseBody.userDetails.phoneNum,
             role: responseBody.userDetails.role,
+            license: responseBody.userDetails.license || null,
             company_name: responseBody.userDetails.company_name || null,
             school_name: responseBody.userDetails.school_name || null,
         };
-        console.log("fetchUserdata", userDetails);
         return userDetails;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -94,23 +94,17 @@ export async function fetchSchedule(studentId, accessToken) {
             body: JSON.stringify(studentID),
         });
         const responseBody = await response.json();
-        let date = new Date(responseBody.findResult.date);
-        //extracting data from the json $date
-        let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-        let pickupTime = new Date(responseBody.findResult.pickup_time);
-        let dismissalTime = new Date(responseBody.findResult.dismissal_time);
-        let formattedPickupTime = pickupTime.toTimeString().split(' ')[0]; // Extracting time part
-        let formattedDismissalTime = dismissalTime.toTimeString().split(' ')[0]; // Extracting time part
-
+        console.log(responseBody.findResult);
         let scheduleDetails = {
             _id: responseBody.findResult._id,
             studentid: responseBody.findResult.studentid,
             school_name: responseBody.findResult.school_name,
-            date: formattedDate,
+            date: responseBody.findResult.date,
             transport_type: responseBody.findResult.transport_type,
-            pickup_time: formattedPickupTime,
-            dismissal_time: formattedDismissalTime
+            pickup_time: responseBody.findResult.pickup_time,
+            dismissal_time: responseBody.findResult.dismissal_time,
         };
+        console.log(responseBody);
         return scheduleDetails;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -151,8 +145,7 @@ export async function changeTransportType(transport, accessToken) {
     console.log("inside change transport type");
     try {
         const t = {
-            _id: transport._id,
-
+            _id: transport,
         };
         const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changeTransportType', {
             method: 'POST',
@@ -168,20 +161,14 @@ export async function changeTransportType(transport, accessToken) {
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
-            let date = new Date(responseBody.findResult.date);
-            //extracting data from the json $date
-            let formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-            let pickupTime = new Date(responseBody.findResult.pickup_time);
-            let dismissalTime = new Date(responseBody.findResult.dismissal_time);
-            let formattedPickupTime = pickupTime.toTimeString().split(' ')[0]; // Extracting time part
-            let formattedDismissalTime = dismissalTime.toTimeString().split(' ')[0];
             let updatedSchedule = {
                 _id: responseBody.findResult._id,
                 studentid: responseBody.findResult.studentid,
-                date: formattedDate,
+                school_name: responseBody.findResult.school_name,
+                date: responseBody.findResult.date,
                 transport_type: responseBody.findResult.transport_type,
-                pickup_time: formattedPickupTime,
-                dismissal_time: formattedDismissalTime
+                pickup_time: responseBody.findResult.pickup_time,
+                dismissal_time: responseBody.findResult.dismissal_time,
             };
             return updatedSchedule;
         };
@@ -193,7 +180,7 @@ export async function changeTransportType(transport, accessToken) {
 
 //fetching trips using driver email
 export async function fetchDriverTrips(driver_email, accessToken) {
-    console.log("inside fetch schedule");
+    console.log("inside fetch trip");
     try {
         const driver = {
             driver_email: driver_email,
@@ -207,23 +194,23 @@ export async function fetchDriverTrips(driver_email, accessToken) {
             body: JSON.stringify(driver),
         });
         const responseBody = await response.json();
+        console.log(responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
+        } else if (!responseBody.findTrip) { // Check if findTrip is present
+            console.error('No trip data found in response');
+            return null; // Return null or an appropriate default object
         } else {
-            let startTime = new Date(responseBody.findTrip.start_time);
-            let endTime = new Date(responseBody.findTrip.end_time);
-            //because the start time and or end time may be empty, adding conditional checks.
-            let formattedStartTime = responseBody.findTrip.start_time ? new Date(responseBody.findTrip.start_time).toTimeString().split(' ')[0] : "not started yet";
-            let formattedEndTime = responseBody.findTrip.end_time ? new Date(responseBody.findTrip.end_time).toTimeString().split(' ')[0] : "not ended yet";
             let trip = {
                 _id: responseBody.findTrip._id,
+                tripId: responseBody.findTrip.tripId,
                 vehicle_number: responseBody.findTrip.vehicle_number,
                 driver_email: responseBody.findTrip.driver_email,
                 company_name: responseBody.findTrip.company_name,
                 school_name: responseBody.findTrip.school_name,
                 zone: responseBody.findTrip.zone,
-                start_time: formattedStartTime || null,
-                end_time: formattedEndTime || null,
+                start_time: responseBody.findTrip.start_time || null,
+                end_time: responseBody.findTrip.end_time || null,
             }
             console.log("this is trip", trip);
             return trip;
@@ -236,7 +223,7 @@ export async function fetchDriverTrips(driver_email, accessToken) {
 
 export async function fetchTripStudents(school_name, zone, accessToken) {
     try {
-        const tripd = {
+        const stud = {
             school_name: school_name,
             zone: zone,
         };
@@ -246,7 +233,7 @@ export async function fetchTripStudents(school_name, zone, accessToken) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`,
             },
-            body: JSON.stringify(tripd),
+            body: JSON.stringify(stud),
         });
         const responseBody = await response.json();
         if (!response.ok) {

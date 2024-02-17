@@ -34,7 +34,6 @@ const LoginScreen = () => {
                 console.log('User logged in successfully');
                 const userDetails = await saveUser(responseBody.user_id, responseBody.access_token);
                 setUserDetails(userDetails);
-                console.log(userDetails);
                 router.replace({
                     pathname: `/${userDetails.role}`,
                 });
@@ -59,6 +58,7 @@ const LoginScreen = () => {
                 fetchedUserDetails.role,
                 fetchedUserDetails.firstName,
                 fetchedUserDetails.lastName,
+                fetchedUserDetails.license,
                 fetchedUserDetails.company_name,
                 fetchedUserDetails.school_name
             );

@@ -39,6 +39,7 @@ const HomeScreen = () => {
                 setStudentDetails(studentDetailsArray);
                 const schedules = studentDetailsArray.map(async (student) => {
                     const s = await fetchSchedule(student.studentid, userDetails.accessToken);
+                    console.log(s);
                     return new ScheduleDetails(
                         s._id,
                         s.date,
