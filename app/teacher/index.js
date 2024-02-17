@@ -3,7 +3,7 @@ import Checkbox from 'expo-checkbox';
 import { Link } from 'expo-router';
 import {
     StyleSheet, View, SafeAreaView,
-    Dimensions, ScrollView,
+    Dimensions, ScrollView, Text,
     TouchableOpacity, FlatList,
 } from 'react-native';
 import moment from 'moment';
@@ -15,61 +15,17 @@ import {
     StyledInputLabel,
 } from '../../src/components/styles';
 import ProfileTop from '../../src/components/ProfileTop';
-
+import { useUserSession } from '../../UserSessionContext';
+import { fetchTeacherStudents } from '../../src/components/schema'
 const { width } = Dimensions.get('window');
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        studentid: 'S10192353',
-        transport: 'Parent',
-        zone: '',
-        name: 'Elliot Batts',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        studentid: 'S10194567',
-        transport: 'Bus',
-        zone: 'Zone A',
-        name: 'Rachel Yeo',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        studentid: 'S10199865',
-        transport: 'Bus',
-        zone: 'Zone A',
-        name: 'Allyn Rodney',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d71',
-        studentid: 'S10195642',
-        transport: 'Bus',
-        zone: 'Zone B',
-        name: 'Oliver Tan',
-    },
-    {
-        id: '58694a0f-3341-471f-bd96-145571e29d71',
-        studentid: 'S10194567',
-        transport: 'Parent',
-        zone: '',
-        name: 'Chaim Yeo',
-    },
-    {
-        id: '58694a0f-3da1-4gtf-bd96-145571e29d71',
-        studentid: 'S10191212',
-        transport: 'Bus',
-        zone: 'Zone A',
-        name: 'Adam Lee',
-    },
-];
-
-const Item = ({ studentid, transport, zone, name }) => (
+const Item = ({ studentid, transport, zone, firstname, lastname }) => (
     <StyledContainer>
         <StyledScheduleView list={true}>
             <MostSmallLogo
                 resizeMode="contain" source={require('../../src/assets/student.png')} />
             <InnerScheduleView>
-                <ExtraText>{name} - {studentid}</ExtraText>
+                <ExtraText>{firstname} {lastname} - {studentid}</ExtraText>
             </InnerScheduleView>
         </StyledScheduleView>
         <ListItem>
@@ -79,31 +35,57 @@ const Item = ({ studentid, transport, zone, name }) => (
     </StyledContainer>
 );
 
-const StudentListScreen = ({ navigation }) => {
-    const [ParentisChecked, psetChecked] = useState(true);
-    const [BusisChecked, bsetChecked] = useState(true);
-
-    const [filteredList, setFilteredList] = useState(DATA);
-
+const StudentListScreen = () => {
+    const { userDetails } = useUserSession();
+    const [ParentisChecked, setParentisChecked] = useState(true);
+    const [BusisChecked, setBusisChecked] = useState(true);
+    const [students, setStudents] = useState([]);
+    const [filteredStudents, setFilteredStudents] = useState([]);
     useEffect(() => {
-        const updatedList = DATA.filter(item => {
-            if (ParentisChecked && BusisChecked) {
-                return true;  // Show all when both checkboxes are checked
-            } else if (ParentisChecked) {
-                return item.transport === 'Parent';
-            } else if (BusisChecked) {
-                return item.transport === 'Bus';
+        const fetchData = async () => {
+            const response = await fetchTeacherStudents(userDetails.email, userDetails.accessToken);
+            console.log(response);
+            if (response) {
+                const newStudents = response.map(student => {
+                    // Example transformation: You might want to add a new field, modify an existing one, etc.
+                    // For now, we'll just return the student object as-is, assuming no transformation is needed.
+                    // Insert any transformation or additional processing you need here.
+                    return student;
+                });
+                setStudents(newStudents);
+            } else {
+                console.log("Schedule for student not found");
             }
-            return false;  // Show nth when both checkboxes are unchecked
-        });
-        setFilteredList(updatedList);
-    }, [ParentisChecked, BusisChecked]);
+            setStudents(response); // Store the fetched students in state
+            filterStudents(response, ParentisChecked, BusisChecked);
+        };
+        fetchData();
+    }, []);
 
+    // Update filtered list when checkboxes change
+    useEffect(() => {
+        filterStudents(students, ParentisChecked, BusisChecked);
+    }, [ParentisChecked, BusisChecked, students]);
+
+    // Function to filter students based on transport type
+    const filterStudents = (studentsList, parentCheck, busCheck) => {
+        const updatedList = studentsList.filter(student => {
+            if (parentCheck && busCheck) {
+                return true; // Show all if both checkboxes are checked
+            } else if (parentCheck) {
+                return student.transport_type === 'Parent';
+            } else if (busCheck) {
+                return student.transport_type === 'Bus';
+            }
+            return false; // Show none if both checkboxes are unchecked
+        });
+        setFilteredStudents(updatedList);
+    };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
-                <ProfileTop name="Students" navigation={navigation} />
+                <ProfileTop name="Students" />
                 <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 5 }}>
                     <StyledScheduleView>
                         <Ionicons name="easel-outline" size={30} color="black" />
@@ -117,23 +99,32 @@ const StudentListScreen = ({ navigation }) => {
                             <View style={styles.check}>
                                 <Checkbox
                                     value={ParentisChecked}
-                                    onValueChange={psetChecked}
+                                    onValueChange={setParentisChecked}
                                     color={ParentisChecked ? '#4630EB' : undefined}
-                                /><Subtitle> Parent</Subtitle>
+                                />
+                                <Text> Parent</Text>
                             </View>
                             <View style={styles.check}>
                                 <Checkbox
                                     value={BusisChecked}
-                                    onValueChange={bsetChecked}
+                                    onValueChange={setBusisChecked}
                                     color={BusisChecked ? '#4630EB' : undefined}
-                                /><Subtitle> Bus</Subtitle>
+                                />
+                                <Text> Bus</Text>
                             </View>
                         </View>
                         <FlatList
-                            key={filteredList.length}
-                            data={filteredList}
-                            renderItem={({ item }) => <Item studentid={item.studentid} zone={item.zone} name={item.name} transport={item.transport} />}
-                            keyExtractor={item => item.id}
+                            data={students}
+                            keyExtractor={(item) => item.studentid}
+                            renderItem={({ item }) => (
+                                <Item
+                                    studentid={item.studentid.$numberInt}
+                                    firstname={item.firstname}
+                                    lastname={item.lastname}
+                                    transport={item.transport_type}
+                                    zone={item.zone}
+                                />
+                            )}
                         />
                     </StyledContainer>
                 </View>

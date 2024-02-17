@@ -181,7 +181,11 @@ export const Subtitle = styled.Text`
     font-size:17px;
     font-weight: 600;
 `;
-
+export const Account = styled.Text`
+    color: ${night};
+    font-size:20px;
+    font-weight: 300;
+`;
 export const RightIcon = styled.TouchableOpacity`
     right:15px;
     top:38px;

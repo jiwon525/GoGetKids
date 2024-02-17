@@ -17,14 +17,11 @@ import LoadingScreen from './loading';
 SignUpScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
-
     const handleSubmit = async (values) => {
-        if ((values.email || values.firstName || values.lastName || values.password || values.phoneNum) === '') {
-            showAlert("Please make sure there is no empty values");
-        }
         if (values.password === values.confirmPassword) {
             // Navigate to loading screen
             router.push("/loading");
+            console.log(values);
             try {
                 //the function for signUp
                 await signUp({
@@ -34,6 +31,7 @@ SignUpScreen = () => {
                     password: values.password,
                     phoneNum: values.phoneNum,
                 });
+                showSuccess();
                 router.replace("/");
             } catch (error) {
                 console.log(error);
@@ -48,6 +46,13 @@ SignUpScreen = () => {
             {
                 cancelable: true,
                 text: 'Try again',
+            },
+        ]);
+    const showSuccess = () =>
+        Alert.alert('Successful SignUp!', 'proceed to login page', [
+            {
+                cancelable: true,
+                text: 'OK',
             },
         ]);
     return (

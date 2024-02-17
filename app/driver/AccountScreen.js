@@ -4,11 +4,11 @@ import {
     StyledContainer, InnerContainer, PageTitle, LoginTab, LoginTitle,
     Colors, BackIcon, AlignRow, InnerMidContainer, LoginLogo,
     StyledFormArea, LeftIcon, StyledButton, ButtonText, NormText,
-    ProfileContainer, BottomContainer,
+    ProfileContainer, BottomContainer, Subtitle, Account,
 } from '../../src/components/styles';
 import ProfileTop from '../../src/components/ProfileTop';
 import { StyleSheet, View, Text } from "react-native";
-
+import { useUserSession } from '../../UserSessionContext';
 //check if account sch name is null and show accordingly
 
 const AccountScreen = () => {
@@ -24,9 +24,22 @@ const AccountScreen = () => {
             </LoginTab>
             <View style={styles.placeholderInset}>
                 <View style={styles.textContainer}>
-                    <LoginTitle>Name: {userDetails.firstName} {userDetails.lastName}</LoginTitle>
-                    <LoginTitle>Username: {userDetails.email}</LoginTitle>
-                    <LoginTitle>Role: {userDetails.role}</LoginTitle>
+                    <AlignRow>
+                        <LoginTitle>Name:</LoginTitle>
+                        <Account> {userDetails.firstName} {userDetails.lastName}</Account>
+                    </AlignRow>
+                    <AlignRow>
+                        <LoginTitle>Email:</LoginTitle>
+                        <Account> {userDetails.email}</Account>
+                    </AlignRow>
+                    <AlignRow>
+                        <LoginTitle>Role:</LoginTitle>
+                        <Account> {userDetails.role}</Account>
+                    </AlignRow>
+                    <AlignRow>
+                        <LoginTitle>License:</LoginTitle>
+                        <Account> {userDetails.license}</Account>
+                    </AlignRow>
                 </View>
             </View>
             <BottomContainer>

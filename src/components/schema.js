@@ -2,16 +2,18 @@ import { format } from '@expo/config-plugins/build/utils/XML';
 import { router } from 'expo-router';
 
 //signing user up at mongodb atlas function
-export async function signUp(email, firstName, lastName, password, phoneNum) {
+export async function signUp(details) {
     try {
+        console.log("email and other signup stuff", details);
         const userData = {
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            password: password,
-            phoneNum: phoneNum,
+            email: details.email,
+            firstName: details.firstName,
+            lastName: details.lastName,
+            password: details.password,
+            phoneNum: details.phoneNum,
             role: "parent"
         };
+        console.log(userData);
         const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/signUp', {
             method: 'POST',
             headers: {
@@ -25,8 +27,8 @@ export async function signUp(email, firstName, lastName, password, phoneNum) {
             //console.log(responseBody);
             if (responseBody.success && responseBody.debug) {
                 console.log('User inserted successfully:', responseBody.debug);
-                router.replace("/");
             } else {
+                console.error(responseBody.error);
                 console.error('Error registering user: Response format is incorrect');
             }
         } else {
@@ -249,3 +251,34 @@ export async function fetchTripStudents(school_name, zone, accessToken) {
         return null;
     }
 };
+
+
+export async function fetchTeacherStudents(teacherid, accessToken) {
+    console.log("sch name", teacherid);
+    try {
+        const teac = {
+            teacherid: teacherid,
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getTeacherStudents', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(teac),
+        });
+        const responseBody = await response.json();
+        console.log("trip students", responseBody);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        } else {
+            const teachStud = responseBody.result || []; // Assigning the result array
+            console.log("the return array", teachStud);
+            return teachStud;
+        };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
+
