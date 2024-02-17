@@ -62,5 +62,10 @@
         "name": "changeTransportType",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "getTripStudents",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
