@@ -1,0 +1,22 @@
+{
+    "title": "school",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "address": {
+            "bsonType": "string"
+        },
+        "postal_code": {
+            "bsonType": "string"
+        },
+        "school_name": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "postal_code",
+        "school_name"
+    ]
+}

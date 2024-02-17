@@ -1,0 +1,22 @@
+{
+    "title": "company",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "address": {
+            "bsonType": "string"
+        },
+        "company_name": {
+            "bsonType": "string"
+        },
+        "postal_code": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "company_name",
+        "postal_code"
+    ]
+}
