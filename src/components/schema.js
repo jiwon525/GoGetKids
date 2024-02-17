@@ -233,3 +233,30 @@ export async function fetchDriverTrips(driver_email, accessToken) {
         return null;
     }
 };
+
+export async function fetchTripStudents(school_name, zone, accessToken) {
+    try {
+        const tripd = {
+            school_name: school_name,
+            zone: zone,
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getDriverStudents', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(tripd),
+        });
+        const responseBody = await response.json();
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        } else {
+            const tripstudents = responseBody.result || []; // Assigning the result array
+            return tripstudents;
+        };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};

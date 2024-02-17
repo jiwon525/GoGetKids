@@ -12,21 +12,23 @@ import ProfileTop from '../../src/components/ProfileTop';
 import moment from 'moment';
 import {
     PageTitle, LeftIcon, StyledLabel, StyledContainer, ListItem,
-    Colors, Subtitle,
+    Colors, Subtitle, StyledScheduleView, NormText, ExtraText, InnerScheduleView, Line, MostSmallLogo,
 } from '../../src/components/styles';
-import TripSheet from '../../src/components/TripSheet';
-import ProfileTop from '../../src/components/ProfileTop';
-import { fetchDriverTrips } from '../../src/components/schema';
+import { Ionicons } from '@expo/vector-icons';
+import { fetchDriverTrips, fetchTripStudents } from '../../src/components/schema';
 import TripDetails from '../../src/components/TripDetails';
+import StudentDetails from '../../src/components/StudentDetails';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const TripScreen = () => {
-    const { userDetails, tripDetails, setTripDetails } = useUserSession();
+    const { userDetails, tripDetails, setTripDetails, studentDetails, setStudentDetails } = useUserSession();
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log(userDetails.email);
                 const fetchedTrip = await fetchDriverTrips(userDetails.email, userDetails.accessToken);
-                const userD = new TripDetails(
+                console.log(fetchedTrip);
+                const tripD = new TripDetails(
                     fetchedTrip._id,
                     fetchedTrip.vehicle_number,
                     fetchedTrip.driver_email,
@@ -36,7 +38,26 @@ const TripScreen = () => {
                     fetchedTrip.start_time,
                     fetchedTrip.end_time,
                 );
-                setTripDetails(userD);
+                setTripDetails(tripD);
+                const fetchedStudentDetails = await fetchTripStudents(fetchedTrip.school_name, fetchedTrip.zone, userDetails.accessToken);
+                const studentDetailsArray = fetchedStudentDetails.map(student =>
+                    new StudentDetails(
+                        student._id,
+                        student.address,
+                        student.class_name,
+                        student.dob,
+                        student.firstname,
+                        student.gender,
+                        student.lastname,
+                        student.parent_id,
+                        student.postcode,
+                        student.school_name,
+                        student.status,
+                        student.studentid,
+                        student.zone
+                    )
+                );
+                setStudentDetails(studentDetailsArray);
             } catch (error) {
                 // Handle any errors that occur during the fetching process
                 console.error('Error fetching data:', error);
@@ -51,8 +72,8 @@ const TripScreen = () => {
                 <ProfileTop name="Your Schedule" />
                 <View style={styles.placeholder}>
                     <View style={styles.placeholderInset}>
-                        <PageTitle>{school}</PageTitle>
-                        <ExtraText>{zone}</ExtraText>
+                        <PageTitle>{tripDetails.school_name}</PageTitle>
+                        <ExtraText>{tripDetails.zone}</ExtraText>
                         <Line></Line>
                         <StyledScheduleView>
                             <Ionicons name="bus-outline" size={30} color="black" />
@@ -64,27 +85,29 @@ const TripScreen = () => {
                             <Line></Line>
                             {studentDetails && studentDetails.length > 0 ? (
                                 studentDetails.map((student, index) => (
-                                    <Card
-                                        key={student._id}
-                                        firstName={student.firstname}
-                                        lastName={student.lastname}
-                                        status={student.status}
-                                        school={student.school_name}
-                                        grade={student.class_name}
-                                        studentID={student.studentid.toString()}
-                                        accessToken={userDetails.accessToken}
-                                    />
+                                    <StyledContainer>
+                                        <StyledScheduleView>
+                                            <MostSmallLogo
+                                                resizeMode="contain" source={require('../../src/assets/student.png')} />
+                                            <InnerScheduleView>
+                                                <ExtraText>{student.firstname} {student.lastname}</ExtraText>
+                                            </InnerScheduleView>
+                                        </StyledScheduleView>
+                                        <ListItem>
+                                            <NormText>{student.address}</NormText>
+                                        </ListItem>
+                                        <ListItem>
+                                            <NormText>{student.postcode}</NormText>
+                                        </ListItem>
+
+                                        <Line></Line>
+                                    </StyledContainer>
 
                                 ))
                             ) : (
                                 <NormText>No students linked yet</NormText>
                             )}
                         </StyledContainer>
-                        <FlatList
-                            data={DATA}
-                            renderItem={({ item }) => <Item address={item.address} postalcode={item.postalcode} name={item.name} />}
-                            keyExtractor={item => item.id}
-                        />
                     </View>
                 </View>
             </StyledContainer>
