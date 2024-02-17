@@ -11,7 +11,7 @@
             "bsonType": "string"
         },
         "dob": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "firstname": {
             "bsonType": "string"

@@ -11,13 +11,13 @@
             "bsonType": "string"
         },
         "end_time": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "school_name": {
             "bsonType": "string"
         },
         "start_time": {
-            "bsonType": "date"
+            "bsonType": "string"
         },
         "vehicle_number": {
             "bsonType": "string"
