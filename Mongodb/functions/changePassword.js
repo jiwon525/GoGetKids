@@ -4,11 +4,6 @@ exports = async function (payload) {
     const { _id, password } = body;
     // Fetch user from the database based on id
     const db = context.services.get("mongodb-atlas").db("GoGetKids");
-    const userID = await db.collection("customUserData").findOne({ user_id: _id });
-    // If user not found, return an error
-    if (!userID) {
-      return { error: "User not registered!" };
-    }
     // Hash the password
     const hashedPassword = await context.functions.execute(
       "bcryptHash",
@@ -18,18 +13,16 @@ exports = async function (payload) {
     if (!hashedPassword) {
       return { error: "Error hashing password" };
     }
-    let id = userID.external_id;
-    const nid = new BSON.ObjectId(id)
-
-    // Define the update operation to update the pw
+    let id = new BSON.ObjectId(_id)
     // Execute the update operation
-    const updateResult = await usersCollection.updateOne(
-      { _id: nid },
+    const updateResult = await db.collection("users").updateOne(
+      { _id: id },
       { $set: { password: hashedPassword } }
     );
+    console.log(updateResult.modifiedCount);
     // Check the result of the update operation
     if (updateResult.modifiedCount === 1) {
-      return { message: "Password updated successfully" };
+      return { success:true };
     } else {
       return { error: "Failed to update password" };
     }
