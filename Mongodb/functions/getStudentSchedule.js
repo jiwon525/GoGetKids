@@ -1,7 +1,7 @@
 exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
-    const { studentid } = body;
+    const { studentid, date } = body;
     const studentIdInt = parseInt(studentid);
     if (!studentid) {
       return { error: "student id is " + studentid};
@@ -12,7 +12,7 @@ exports = async function (payload) {
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findResult;
     try {
-      findResult = await collection.find({studentid: studentIdInt}).toArray();
+      findResult = await collection.find({studentid: studentIdInt, date:date}).toArray();
       return { findResult };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
