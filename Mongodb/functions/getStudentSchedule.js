@@ -12,7 +12,7 @@ exports = async function (payload) {
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findResult;
     try {
-      findResult = await collection.findOne({studentid: studentIdInt});
+      findResult = await collection.find({studentid: studentIdInt}).toArray();
       return { findResult };
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
