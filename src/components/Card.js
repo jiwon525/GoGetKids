@@ -2,12 +2,15 @@ import React from "react";
 import { Link, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from "react-native";
 import PropTypes from 'prop-types';
-
+import { useUserSession } from "../../UserSessionContext";
 import {
     Colors, CardTextStatus,
 } from '../components/styles';
 
-export default function Card({ firstName, lastName, status, school, grade, studentID, accessToken }) {
+export default function Card({ firstName, lastName, index, status, school, grade, studentID, accessToken }) {
+    const { studentDetails } = useUserSession();
+    console.log(studentID);
+    console.log(studentDetails[index]);
     return (
         <Link key={studentID} push href={{
             pathname: "/parent/ScheduleScreen",

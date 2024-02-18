@@ -9,6 +9,7 @@ import {
 } from '../../src/components/styles';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileTop from '../../src/components/ProfileTop';
+import moment from 'moment';
 import { fetchSchedule, changeTransportType } from '../../src/components/schema';
 import ScheduleDetails from '../../src/components/ScheduleDetails';
 const ScheduleScreen = () => {
@@ -25,8 +26,9 @@ const ScheduleScreen = () => {
                     console.error('Error: Student not found');
                     return;
                 }
-                console.log(studentid);
-                const selectS = scheduleDetails.find(schedule => schedule.studentid === selectedStudent.studentid);
+                const today = moment().format('YYYY-MM-DD');
+                console.log("today is: ", today);
+                const selectS = scheduleDetails.find(schedule => schedule.studentid === selectedStudent.studentid && schedule.date === today);
                 if (selectS) {
                     const newSchedule = new ScheduleDetails(
                         selectS._id,
@@ -42,6 +44,7 @@ const ScheduleScreen = () => {
                         selectS.dismissaltime
                     );
                     setOneSchedule(newSchedule);
+
                 } else {
                     console.log("Schedule for student not found");
                 }
@@ -50,7 +53,7 @@ const ScheduleScreen = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [studentid]);
     const handleChangeTransportType = async () => {
         try {
             Alert.alert(
@@ -64,21 +67,38 @@ const ScheduleScreen = () => {
                     {
                         text: "OK", onPress: async () => {
                             try {
-                                console.log("tis is id", oneSchedule._id);
-                                const us = await changeTransportType(oneSchedule._id, accessToken);
-                                if (us) {
+                                const updatedSchedule = await changeTransportType(oneSchedule._id, accessToken);
+                                if (updatedSchedule) {
+                                    const newScheduleDetails = scheduleDetails.map(schedule => {
+                                        if (schedule._id === updatedSchedule._id) {
+                                            // Update the schedule with new data from the server
+                                            return {
+                                                ...schedule,
+                                                school_name: updatedSchedule.school_name,
+                                                transport_type: updatedSchedule.transport_type,
+                                                pickup_time: updatedSchedule.pickup_time,
+                                                dismissal_time: updatedSchedule.dismissal_time
+                                            };
+                                        }
+                                        return schedule; // Return unmodified for other schedules
+                                    });
+
+                                    // Update the session with the new array of schedule details
+                                    setScheduleDetails(newScheduleDetails);
+
+                                    // Update the state for the current schedule being displayed
                                     const uSchedule = new ScheduleDetails(
-                                        us._id,
-                                        us.date,
+                                        updatedSchedule._id,
+                                        updatedSchedule.date,
                                         oneSchedule.firstName,
                                         oneSchedule.lastName,
-                                        us.school_name,
+                                        updatedSchedule.school_name,
                                         oneSchedule.studentclass,
                                         oneSchedule.status,
-                                        us.studentid,
-                                        us.transport_type,
-                                        us.pickup_time,
-                                        us.dismissal_time
+                                        updatedSchedule.studentid,
+                                        updatedSchedule.transport_type,
+                                        updatedSchedule.pickup_time,
+                                        updatedSchedule.dismissal_time
                                     );
                                     setOneSchedule(uSchedule);
                                 } else {

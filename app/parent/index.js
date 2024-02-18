@@ -1,5 +1,5 @@
 import React, { useEffect, } from 'react';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams, router } from 'expo-router';
 import { useUserSession } from '../../UserSessionContext';
 import {
     StyledContainer,
@@ -12,9 +12,11 @@ import { fetchStudentData, fetchSchedule } from '../../src/components/schema';
 import StudentDetails from '../../src/components/StudentDetails';
 import ScheduleDetails from '../../src/components/ScheduleDetails';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import moment
+    from 'moment';
 const HomeScreen = () => {
     const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
+    const today = moment().format('YYYY-MM-DD');
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -37,26 +39,29 @@ const HomeScreen = () => {
                     )
                 );
                 setStudentDetails(studentDetailsArray);
-                const schedules = studentDetailsArray.map(async (student) => {
+
+                const schedulesPromises = studentDetailsArray.map(async (student) => {
                     const s = await fetchSchedule(student.studentid, userDetails.accessToken);
                     console.log(s);
-                    return new ScheduleDetails(
-                        s._id,
-                        s.date,
-                        student.firstname,
-                        student.lastname,
-                        s.school_name,
-                        student.class_name,
-                        student.status,
-                        student.studentid,
-                        s.transport_type,
-                        s.pickup_time,
-                        s.dismissal_time
+                    return s.map(schedule =>
+                        new ScheduleDetails(
+                            schedule._id,
+                            schedule.date,
+                            student.firstname,
+                            student.lastname,
+                            schedule.school_name,
+                            student.class_name,
+                            student.status,
+                            student.studentid,
+                            schedule.transport_type,
+                            schedule.pickup_time,
+                            schedule.dismissal_time
+                        )
                     );
                 });
-                const resolvedSchedules = await Promise.all(schedules);
-                console.log("Schedules for all students: ", resolvedSchedules);
-                setScheduleDetails(resolvedSchedules);
+                const resolvedSchedules = await Promise.all(schedulesPromises);
+                console.log("Schedules for all students: ", resolvedSchedules.flat()); // Use .flat() to flatten the array of arrays
+                setScheduleDetails(resolvedSchedules.flat());
             } catch (error) {
                 // Handle any errors that occur during the fetching process
                 console.error('Error fetching data:', error);
@@ -76,6 +81,7 @@ const HomeScreen = () => {
                         studentDetails.map((student, index) => (
                             <Card
                                 key={student._id}
+                                index={index}
                                 firstName={student.firstname}
                                 lastName={student.lastname}
                                 status={student.status}

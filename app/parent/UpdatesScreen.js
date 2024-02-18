@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import {
     StyleSheet,
@@ -22,7 +22,41 @@ import { changeTransportType } from '../../src/components/schema'
 
 const UpdatesScreen = () => {
     const { userDetails, setScheduleDetails, scheduleDetails } = useUserSession();
-    const today = moment().format('YYYY-MM-DD');
+    const [filteredSchedules, setFilteredSchedules] = useState([]);
+    const [value, setValue] = useState(new Date());
+    const startOfWeek = moment().startOf('week');
+    const daysOfWeek = Array.from({ length: 7 }).map((_, index) => {
+        const date = moment(startOfWeek).add(index, 'days');
+        const isActive = value.toDateString() === date.toDate().toDateString();
+        return (
+            <TouchableWithoutFeedback
+                key={index}
+                onPress={() => setValue(date.toDate())}
+            >
+                <View
+                    style={[
+                        styles.item,
+                        isActive && { backgroundColor: '#111', borderColor: '#111' },
+                    ]}>
+                    <Text style={[styles.itemWeekday, isActive && { color: '#fff' }]}>
+                        {date.format('ddd')}
+                    </Text>
+                    <Text style={[styles.itemDate, isActive && { color: '#fff' }]}>
+                        {date.date()}
+                    </Text>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    });
+    // Filter schedules for the selected date
+    useEffect(() => {
+        const filtered = scheduleDetails.filter(item => {
+            const scheduleDate = moment(item.date, 'YYYY-MM-DD');
+            const selectedDate = moment(value, 'YYYY-MM-DD');
+            return scheduleDate.isSame(selectedDate, 'day');
+        });
+        setFilteredSchedules(filtered);
+    }, [value, scheduleDetails]);
     const handleChangeTransportType = async ({ studentSchedule }) => {
         try {
             Alert.alert(
@@ -63,11 +97,12 @@ const UpdatesScreen = () => {
     return (
         <StyledContainer>
             <ProfileTop name="Student Schedule" />
+            <View style={styles.picker}>{daysOfWeek}</View>
             <View style={{ paddingHorizontal: 16, paddingVertical: 5 }}>
-                <Subtitle>{today}</Subtitle>
+                <Subtitle>{value.toDateString()}</Subtitle>
             </View>
             <Swiper>
-                {scheduleDetails.map((item, index) => (
+                {filteredSchedules.map((item, index) => (
                     <View key={index} style={styles.placeholderInset}>
                         <PageTitle>Schedule Details</PageTitle>
                         <Line></Line>
@@ -155,6 +190,13 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexBasis: 0,
     },
+    picker: {
+        flex: 1,
+        maxHeight: 74,
+        paddingVertical: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     cardContainer: {
         width: width * 0.9,
         padding: 10,
@@ -183,6 +225,36 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         alignItems: 'center',
         backgroundColor: Colors.bgrey,
+    },
+    /** Item */
+    item: {
+        flex: 1,
+        height: 50,
+        marginHorizontal: 4,
+        paddingVertical: 6,
+        paddingHorizontal: 4,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: '#e3e3e3',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    itemRow: {
+        width: width,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        marginHorizontal: -4,
+    },
+    itemWeekday: {
+        fontSize: 13,
+        fontWeight: '500',
+        color: '#737373',
+    },
+    itemDate: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#111',
     },
 });
 

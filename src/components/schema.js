@@ -1,6 +1,6 @@
 import { format } from '@expo/config-plugins/build/utils/XML';
 import { router } from 'expo-router';
-
+import moment from 'moment';
 //signing user up at mongodb atlas function
 export async function signUp(details) {
     try {
@@ -80,6 +80,32 @@ export async function fetchUserData(userId, accessToken, refreshToken) {
     }
 };
 
+//changing user password using user id
+
+//fetching user data using external user id
+export async function changepassword(userId, newpassword, accessToken) {
+    try {
+        const userupdate = {
+            _id: userId,
+            password: newpassword,
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(userupdate),
+        });
+        if (response.ok) {
+            return;
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null; // Return null or throw an error based on your app's logic
+    }
+};
+
 //fetching student schedules using student id
 export async function fetchSchedule(studentId, accessToken) {
     console.log("inside fetch schedule");
@@ -96,17 +122,8 @@ export async function fetchSchedule(studentId, accessToken) {
             body: JSON.stringify(studentID),
         });
         const responseBody = await response.json();
-        console.log(responseBody.findResult);
-        let scheduleDetails = {
-            _id: responseBody.findResult._id,
-            studentid: responseBody.findResult.studentid,
-            school_name: responseBody.findResult.school_name,
-            date: responseBody.findResult.date,
-            transport_type: responseBody.findResult.transport_type,
-            pickup_time: responseBody.findResult.pickup_time,
-            dismissal_time: responseBody.findResult.dismissal_time,
-        };
-        console.log(responseBody);
+        console.log("the array of fetchstchedule", responseBody.findResult);
+        const scheduleDetails = responseBody.findResult || [];
         return scheduleDetails;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -221,7 +238,7 @@ export async function fetchDriverTrips(driver_email, accessToken) {
         return null;
     }
 };
-
+//fetch students inside the trip assigned to driver
 export async function fetchTripStudents(school_name, zone, accessToken) {
     console.log("sch name", school_name, "zone", zone);
     try {
@@ -252,7 +269,7 @@ export async function fetchTripStudents(school_name, zone, accessToken) {
     }
 };
 
-
+//fetch students in the same class as teacher
 export async function fetchTeacherStudents(teacherid, accessToken) {
     console.log("sch name", teacherid);
     try {
