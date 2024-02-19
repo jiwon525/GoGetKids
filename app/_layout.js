@@ -9,6 +9,7 @@ const StackLayout = () => {
             <Stack.Screen name="parent" options={{ headerShown: false }} />
             <Stack.Screen name="teacher" options={{ headerShown: false }} />
             <Stack.Screen name="driver" options={{ headerShown: false }} />
+
         </Stack>
     );
 };

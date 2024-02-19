@@ -1,37 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 const Testscreens = () => {
-    const [students, setStudents] = useState([]);
 
+    const [qrSize, setQrSize] = useState(0);
     useEffect(() => {
-
-        const functionEndpoint = 'https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/getStudents';
-
-        // Make a request to the MongoDB Realm function
-        fetch(functionEndpoint)
-            .then((response) => response.json())
-            .then((data) => {
-                // Update state with the received data
-                setStudents(data.result || []);
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
-    }, []); // Empty dependency array to run the effect only once on component mount
+        // Calculate the size of the QR code to fit the screen
+        const screenDimensions = Dimensions.get('window');
+        const maxSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.8; // Adjust this factor as needed
+        setQrSize(maxSize);
+    }, []);
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Student List</Text>
-            <FlatList
-                data={students}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text>{item.firstname}</Text>
-                        <Text>{item.gender}</Text>
-                    </View>
-                )}
+            <Text style={styles.header}>Bus QR</Text>
+            <QRCode
+                value={JSON.stringify({ _id: '65cfc184835708e75cdfef4d', vehicleId: 'L321V' })}
+                color={'#2C8DDB'}
+                backgroundColor={'white'}
+                size={qrSize}
+            />
+            <Text style={styles.header}>School QR</Text>
+            <QRCode
+                value={JSON.stringify({ _id: '65d2f3cfebffbc6d778bf0a3', schoolName: 'Test School 4' })}
+                color={'#2C8DDB'}
+                backgroundColor={'white'}
+                size={qrSize}
             />
         </View>
     );
