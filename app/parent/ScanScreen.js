@@ -27,6 +27,7 @@ const ScanScreen = () => {
         );
     }
     //after scanning QR
+    //parent will scan either bus or school
     const handleQRScanned = ({ type, data }) => {
         setScanData(data);
         try {
