@@ -34,16 +34,19 @@ const ScanScreen = () => {
             // Parse the JSON data
             const parsedData = JSON.parse(data);
             // Extract necessary information (e.g., scheduleid and studentid)
-            const { id: _id, vehicleId, driver_email } = parsedData;
+            const { id: _id,
+                vehicleId = '',
+                driver_email = '',
+                studentid = '',
+                guardianName = ''
+            } = parsedData;
 
             // Now you have scheduleid and studentid, you can use them as needed
-            console.log('Schedule ID:', _id);
-            console.log('Student ID:', vehicleId);
-            console.log('Guardian Name:', driver_email);
+            console.log('data:', parsedData);
             //need to make a function to check for schedule id and student id to verify and then 
             //update the database for students to be 'out of school'
             //router.push("/")
-            alert(`QR code with data schedule ID: ${_id} taking vehicle: ${vehicleId} being picked up by driver: ${driver_email} has been scanned!`);
+            alert(`QR code with data: ${parsedData} has been scanned!`);
             //empty data
         } catch (error) {
             console.error('Error parsing QR code data:', error);
