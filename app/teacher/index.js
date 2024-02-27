@@ -40,6 +40,7 @@ const StudentListScreen = () => {
     const [ParentisChecked, setParentisChecked] = useState(true);
     const [BusisChecked, setBusisChecked] = useState(true);
     const [students, setStudents] = useState([]);
+    const [className, setClassName] = useState('');
     const [filteredStudents, setFilteredStudents] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -47,11 +48,10 @@ const StudentListScreen = () => {
             console.log(response);
             if (response) {
                 const newStudents = response.map(student => {
-                    // Example transformation: You might want to add a new field, modify an existing one, etc.
-                    // For now, we'll just return the student object as-is, assuming no transformation is needed.
-                    // Insert any transformation or additional processing you need here.
+                    setClassName(student.class_name);
                     return student;
                 });
+
                 setStudents(newStudents);
             } else {
                 console.log("Schedule for student not found");
@@ -90,7 +90,7 @@ const StudentListScreen = () => {
                     <StyledScheduleView>
                         <Ionicons name="easel-outline" size={30} color="black" />
                         <InnerScheduleView>
-                            <NormText>Class 1</NormText>
+                            <NormText>Class name: {className}</NormText>
                         </InnerScheduleView>
                     </StyledScheduleView>
                     <StyledContainer>

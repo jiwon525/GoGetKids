@@ -16,14 +16,14 @@ const Testscreens = () => {
         <View style={styles.container}>
             <Text style={styles.header}>Bus QR</Text>
             <QRCode
-                value={JSON.stringify({ _id: '65cfc184835708e75cdfef4d', vehicleId: 'L321V' })}
+                value={JSON.stringify({ vehicleId: 'L321V' })}
                 color={'#2C8DDB'}
                 backgroundColor={'white'}
                 size={qrSize}
             />
             <Text style={styles.header}>School QR</Text>
             <QRCode
-                value={JSON.stringify({ _id: '65d2f3cfebffbc6d778bf0a3', schoolName: 'Test School 4' })}
+                value={JSON.stringify({ schoolName: 'Test School 4' })}
                 color={'#2C8DDB'}
                 backgroundColor={'white'}
                 size={qrSize}

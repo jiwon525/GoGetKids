@@ -34,14 +34,18 @@ const ScanScreen = () => {
             // Parse the JSON data
             const parsedData = JSON.parse(data);
             // Extract necessary information (e.g., scheduleid and studentid)
-            const { id: _id, vehicleId = '', schoolName = '' } = parsedData;
-            //router.push("/")
-            alert(`QR code with data: ${parsedData} has been scanned!`);
+            const { id: id, vehicleId = '', schoolName = '' } = parsedData;
+            //
+            alert(`QR code with data: ${vehicleId} ${schoolName} has been scanned!`);
+            setTimeout(() => setScanData(undefined), 2000);
+            //setScanData(undefined);
+            //router.push("/parent")
             //empty data
         } catch (error) {
             console.error('Error parsing QR code data:', error);
             // Handle error (e.g., invalid QR code format)
             alert('Invalid QR code format!');
+            setScanData(undefined);
         }
     };
 

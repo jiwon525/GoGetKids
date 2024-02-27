@@ -36,7 +36,6 @@ const ScanScreen = () => {
             // Extract necessary information (e.g., scheduleid and studentid)
             const { id: _id,
                 vehicleId = '',
-                driver_email = '',
                 studentid = '',
                 guardianName = ''
             } = parsedData;
@@ -46,12 +45,14 @@ const ScanScreen = () => {
             //need to make a function to check for schedule id and student id to verify and then 
             //update the database for students to be 'out of school'
             //router.push("/")
-            alert(`QR code with data: ${parsedData} has been scanned!`);
+            alert(`QR code with data: ${vehicleId} ${studentid} ${guardianName} has been scanned!`);
             //empty data
+            setTimeout(() => setScanData(undefined), 2000);
         } catch (error) {
             console.error('Error parsing QR code data:', error);
             // Handle error (e.g., invalid QR code format)
             alert('Invalid QR code format!');
+            setScanData(undefined)
         }
     };
 

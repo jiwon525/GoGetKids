@@ -1,5 +1,5 @@
 class StudentDetails {
-    constructor(_id, address, class_name, dob, firstname, gender, lastname, parent_id, postcode, school_name, status, studentid, zone) {
+    constructor(_id, address, class_name, dob, firstname, gender, lastname, parent_id, postcode, school_name, status = 'At Home', studentid, zone) {
         this._id = _id;
         this.address = address;
         this.class_name = class_name;

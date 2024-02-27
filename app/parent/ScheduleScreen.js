@@ -125,65 +125,73 @@ const ScheduleScreen = () => {
             )
         }
     };
+    const isScheduleEmpty = Object.keys(oneSchedule).length === 0;
     return (
         <StyledContainer>
-            <ProfileTop name={oneSchedule.date} />
-            <View style={styles.placeholderInset}>
-                <PageTitle>Today's Schedule</PageTitle>
-                <Line></Line>
-                <View style={styles.TopContainer}>
-                    <StyledScheduleView>
-                        <MostSmallLogo
-                            resizeMode="contain" source={require('../../src/assets/student.png')} />
-                        <InnerScheduleView>
-                            <Subtitle>{oneSchedule.firstName} {oneSchedule.lastName}</Subtitle>
-                            <ExtraText> - {oneSchedule.studentid}</ExtraText>
-                        </InnerScheduleView>
-                    </StyledScheduleView>
-                    <View style={styles.cardContainer}>
-                        <CardTextStatus>Status : {oneSchedule.status} </CardTextStatus>
-                    </View>
+            <ProfileTop name={oneSchedule.date || "Schedule"} />
+            {/* Conditional rendering based on if the schedule is empty */}
+            {isScheduleEmpty ? (
+                <View style={styles.placeholderInset}>
+                    <PageTitle>Schedule Not Loaded Yet</PageTitle>
                 </View>
-                <Line></Line>
-                <StyledScheduleView>
-                    <Ionicons name="ribbon-outline" size={30} color="black" />
-                    <TextContainer>
-                        <NormText>Class: {oneSchedule.studentclass}</NormText>
-                    </TextContainer>
-                </StyledScheduleView>
-                <Line></Line>
-                <StyledScheduleView>
-                    <Ionicons name="school-outline" size={30} color="black" />
-                    <TextContainer>
-                        <NormText>{oneSchedule.school}</NormText>
-                    </TextContainer>
-                </StyledScheduleView>
-                <Line></Line>
-                <StyledScheduleView>
-                    <Ionicons name="sunny-outline" size={30} color="black" />
-                    <TextContainer>
-                        {oneSchedule.pickuptime === "Invalid" || !oneSchedule.pickuptime || oneSchedule.transporttype === "Parent" ? (
-                            <NormText>Parents Car to School!</NormText>
-                        ) : (
-                            <NormText>Morning pick up Time: {oneSchedule.pickuptime}</NormText>
-                        )}
-                    </TextContainer>
-                </StyledScheduleView>
-                <Line></Line>
-                <StyledScheduleView>
-                    <Ionicons name="moon-outline" size={30} color="black" />
-                    <TextContainer>
-                        <NormText>School dismissal Time: {oneSchedule.dismissaltime}</NormText>
-                    </TextContainer>
-                </StyledScheduleView>
-                <Line></Line>
-                <StyledScheduleView>
-                    <Ionicons name="location-outline" size={30} color="black" />
-                    <TextContainer>
-                        <NormText>Transport type: {oneSchedule.transporttype}</NormText>
-                    </TextContainer>
-                </StyledScheduleView>
-            </View>
+            ) : (
+                <View style={styles.placeholderInset}>
+                    <PageTitle>Today's Schedule</PageTitle>
+                    <Line></Line>
+                    <View style={styles.TopContainer}>
+                        <StyledScheduleView>
+                            <MostSmallLogo
+                                resizeMode="contain" source={require('../../src/assets/student.png')} />
+                            <InnerScheduleView>
+                                <Subtitle>{oneSchedule.firstName} {oneSchedule.lastName}</Subtitle>
+                                <ExtraText> - {oneSchedule.studentid}</ExtraText>
+                            </InnerScheduleView>
+                        </StyledScheduleView>
+                        <View style={styles.cardContainer}>
+                            <CardTextStatus>Status : {oneSchedule.status} </CardTextStatus>
+                        </View>
+                    </View>
+                    <Line></Line>
+                    <StyledScheduleView>
+                        <Ionicons name="ribbon-outline" size={30} color="black" />
+                        <TextContainer>
+                            <NormText>Class: {oneSchedule.studentclass}</NormText>
+                        </TextContainer>
+                    </StyledScheduleView>
+                    <Line></Line>
+                    <StyledScheduleView>
+                        <Ionicons name="school-outline" size={30} color="black" />
+                        <TextContainer>
+                            <NormText>{oneSchedule.school}</NormText>
+                        </TextContainer>
+                    </StyledScheduleView>
+                    <Line></Line>
+                    <StyledScheduleView>
+                        <Ionicons name="sunny-outline" size={30} color="black" />
+                        <TextContainer>
+                            {oneSchedule.pickuptime === "Invalid" || !oneSchedule.pickuptime || oneSchedule.transporttype === "Parent" ? (
+                                <NormText>Parents Car to School!</NormText>
+                            ) : (
+                                <NormText>Morning pick up Time: {oneSchedule.pickuptime}</NormText>
+                            )}
+                        </TextContainer>
+                    </StyledScheduleView>
+                    <Line></Line>
+                    <StyledScheduleView>
+                        <Ionicons name="moon-outline" size={30} color="black" />
+                        <TextContainer>
+                            <NormText>School dismissal Time: {oneSchedule.dismissaltime}</NormText>
+                        </TextContainer>
+                    </StyledScheduleView>
+                    <Line></Line>
+                    <StyledScheduleView>
+                        <Ionicons name="location-outline" size={30} color="black" />
+                        <TextContainer>
+                            <NormText>Transport type: {oneSchedule.transporttype}</NormText>
+                        </TextContainer>
+                    </StyledScheduleView>
+                </View>
+            )}
             {oneSchedule.transporttype === 'Bus' && (
                 <StyledButton onPress={handleChangeTransportType}>
                     <ButtonText>
@@ -204,6 +212,7 @@ const ScheduleScreen = () => {
                     </ButtonText>
                 </StyledButton>
             </Link>
+
         </StyledContainer>
     );
 };

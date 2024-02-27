@@ -34,6 +34,11 @@ const AccountScreen = () => {
                     <LoginTitle>Role:</LoginTitle>
                     <Account> {userDetails.role}</Account>
                 </AlignRow>
+                <AlignRow>
+                    <LoginTitle>School Name:</LoginTitle>
+
+                </AlignRow>
+                <Account> {userDetails.school_name}</Account>
             </View>
             <BottomContainer>
                 <StyledButton onPress={() => router.push("/teacher/ChangePasswordScreen")}>
