@@ -17,17 +17,24 @@ exports = async function (payload) {
       if (!findResult) {
         return { error: "Document not found for studentid: " + studentid };
       }
-
-      // Define the update operation
-      const update = { $set: { status: 'In School' } };
-      
-      // Execute the update operation
-      const updateResult = await collection.updateOne({ _id: nid }, update);
-      if (updateResult.modifiedCount === 1) {
-        return { findResult };
-      } else {
-        return { error: "Failed to update document" };
+      if(findResult.status==="At Home"||findResult.status === undefined){
+        const update = { $set: { status: 'In School' } };
+        const updateResult = await collection.updateOne({ studentid: studentid }, update);
+        if (updateResult.modifiedCount === 1) {
+          return { findResult };
+        } else {
+          return { error: "Failed to update document" };
+        }
+      }else{
+        const update = { $set: { status: 'At Home' } };
+        const updateResult = await collection.updateOne({ studentid: studentid }, update);
+        if (updateResult.modifiedCount === 1) {
+          return { findResult };
+        } else {
+          return { error: "Failed to update document" };
+        }
       }
+      
     } catch (err) {
       console.error("Error occurred while executing find or update:", err.message);
       return { error: err.message };
