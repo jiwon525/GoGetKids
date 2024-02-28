@@ -6,18 +6,22 @@ import ProfileTop from '../../src/components/ProfileTop';
 import {
     StyledContainer, Colors, InnerContainer,
 } from '../../src/components/styles';
+import { useIsFocused } from '@react-navigation/native';
 import { changeStatusDriver, changeStatusSchool, loadStudents } from '../../src/components/schema';
 import { useUserSession } from '../../UserSessionContext';
 
 const ScanQR = () => {
     const [hasPermission, setHasPermission] = useState(false);
-    const [scanData, setScanData] = useState();
+    const [scanned, setScanned] = useState(false);
     const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
     const params = useLocalSearchParams();
     const { studentid } = params;
     const [currentStudent, setCurrentStudent] = useState();
+    console.log(hasPermission, scanned);
+    const isFocused = useIsFocused();
+
+
     useEffect(() => {
-        console.log('scanned', scanData);
         var id = parseInt(studentid);
         const selectedStudent = studentDetails.find(student => student.studentid === id);
         if (!selectedStudent) {
@@ -41,7 +45,9 @@ const ScanQR = () => {
         Alert.alert('Successful', errMsg, [
             {
                 cancelable: true,
-                text: 'OK',
+                text: 'OK', onPress: async () => {
+                    setScanned(false)
+                }
             },
         ]);
     if (!hasPermission) {
@@ -63,7 +69,6 @@ const ScanQR = () => {
             const { studentDetailsArray, resolvedSchedules } = await loadStudents(userDetails.email, userDetails.accessToken);
             setStudentDetails(studentDetailsArray);
             setScheduleDetails(resolvedSchedules.flat());
-            setTimeout(() => setScanData(undefined), 2000);
             router.push("/parent/ScanScreen");
         } catch (error) {
             showAlert("changeStatus does not work");
@@ -74,7 +79,7 @@ const ScanQR = () => {
     //parent will scan either bus or school
     const handleQRScanned = ({ type, data }) => {
         console.log("handleQR scanned")
-        setScanData(data);
+        setScanned(false);
         // Parse the JSON data
         // Extract necessary information
         const parsedData = JSON.parse(data);
@@ -85,10 +90,12 @@ const ScanQR = () => {
     return (
         <StyledContainer>
             <ProfileTop name="Scan QR" />
-            <BarCodeScanner
-                style={styles.scanBox}
-                onBarCodeScanned={scanData ? undefined : handleQRScanned}
-            />
+            {isFocused ? (
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleQRScanned}
+                    style={styles.scanBox}
+                />) : null}
+
         </StyledContainer>
     );
 };
