@@ -110,7 +110,6 @@ export async function changepassword(userId, newpassword, accessToken) {
 
 //fetching student schedules using student id
 export async function fetchSchedule(studentId, accessToken) {
-    console.log("inside fetch schedule");
     try {
         const studentID = {
             studentid: studentId,
@@ -124,7 +123,7 @@ export async function fetchSchedule(studentId, accessToken) {
             body: JSON.stringify(studentID),
         });
         const responseBody = await response.json();
-        console.log("the array of fetchstchedule", responseBody.findResult);
+        //console.log("the array of fetchstchedule", responseBody.findResult);
         const scheduleDetails = responseBody.findResult || [];
         return scheduleDetails;
     } catch (error) {
@@ -352,7 +351,7 @@ export async function fetchTeacherStudents(teacherid, accessToken) {
 
 //updating the status of students of parents drop off
 export async function changeStatusSchool(studentid, school_name, accessToken) {
-    console.log("inside change status type");
+    console.log("inside change status type school");
     try {
         const statusUpdate = {
             studentid: studentid,
@@ -367,12 +366,36 @@ export async function changeStatusSchool(studentid, school_name, accessToken) {
             body: JSON.stringify(statusUpdate),
         });
 
-        const responseBody = await response.json();
-        console.log(responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         }
-        return responseBody.findResult;
+        return;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
+export async function changeStatusDriver(studentid, vehicle_number, accessToken) {
+    console.log("inside change status driver type");
+    try {
+        const statusUpdateD = {
+            studentid: studentid,
+            vehicle_number: vehicle_number
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changeStatusDriver', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(statusUpdateD),
+        });
+        const responseBody = await response.json();
+        console.log(" students", responseBody.updateResult);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        }
+        return;
     } catch (error) {
         console.error('Error fetching data:', error);
         return null;

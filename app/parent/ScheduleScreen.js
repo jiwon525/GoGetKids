@@ -22,6 +22,7 @@ const ScheduleScreen = () => {
             try {
                 var id = parseInt(studentid);
                 const selectedStudent = studentDetails.find(student => student.studentid === id);
+                console.log(selectedStudent);
                 if (!selectedStudent) {
                     console.error('Error: Student not found');
                     return;
@@ -44,7 +45,6 @@ const ScheduleScreen = () => {
                         selectS.dismissaltime
                     );
                     setOneSchedule(newSchedule);
-
                 } else {
                     console.log("Schedule for student not found");
                 }
@@ -53,7 +53,7 @@ const ScheduleScreen = () => {
             }
         };
         fetchData();
-    }, [studentid]);
+    }, [studentid, studentDetails]);
     const handleChangeTransportType = async () => {
         try {
             Alert.alert(

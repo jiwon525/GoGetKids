@@ -72,15 +72,14 @@ const styles = StyleSheet.create({
         padding: 15,
         marginTop: 15,
         width: deviceWidth * 0.9,
-        height: deviceHeight * 0.3,
-        marginEnd: 22,
-        marginBottom: 50,
+        height: deviceHeight * 0.2,
+        marginBottom: 10,
         borderRadius: 5,
         backgroundColor: Colors.primary,
     },
     title: {
         fontWeight: "bold",
-        fontSize: 17,
+        fontSize: 18,
     },
     detail: {
         fontSize: 16,
