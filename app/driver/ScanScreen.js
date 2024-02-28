@@ -7,26 +7,19 @@ import {
     StyledContainer, Colors, InnerContainer,
 } from '../../src/components/styles';
 import { useIsFocused } from '@react-navigation/native';
-import { changeStatusDriver, changeStatusSchool, loadStudents } from '../../src/components/schema';
+import { changeStatusDriver, changeStatusSchool, loadTrips, putTripStart } from '../../src/components/schema';
 import { useUserSession } from '../../UserSessionContext';
+import moment from 'moment';
 
-const ScanQR = () => {
+const ScanScreen = () => {
     const [hasPermission, setHasPermission] = useState(false);
     const [scanned, setScanned] = useState(false);
-    const { userDetails, studentDetails, setStudentDetails, setTripDetails, TripDetails } = useUserSession();
-    const params = useLocalSearchParams();
-    const { studentid } = params;
+    const { userDetails, studentDetails, setStudentDetails, setTripDetails, tripDetails } = useUserSession();
     console.log(hasPermission, scanned);
     const isFocused = useIsFocused();
-
+    const today = moment().format('YYYY-MM-DD');
     useEffect(() => {
-        var id = parseInt(studentid);
-        const selectedStudent = studentDetails.find(student => student.studentid === id);
-        if (!selectedStudent) {
-            console.error('Error: Student not found');
-            router.push("/driver/index");
-        }
-        setCurrentStudent(selectedStudent);
+        console.log("the trip array in scanscreen useEffect", tripDetails);
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === "granted");
@@ -56,17 +49,19 @@ const ScanQR = () => {
         );
     }
     const updateTrip = async (vehicleid) => {
+        console.log("the trip array in scanscreen", tripDetails);
         try {
-
-            updateTripDriver(vehicleid, userDetails.email, userDetails.accessToken)
+            putTripStart(vehicleid, userDetails.email, today, userDetails.accessToken)
             showSuccess("Status updated");
-
-            router.push("/parent/ScanScreen");
+            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+            console.log("inside the driver trip array", tripArray);
+            setTripDetails(tripArray);
+            setStudentDetails(studentArray);
+            router.push("/driver");
         } catch (error) {
             showAlert("changeStatus does not work");
         }
     }
-
     //after scanning QR
     //parent will scan either bus or school
     const handleQRScanned = ({ type, data }) => {
@@ -107,4 +102,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScanQR;
+export default ScanScreen;

@@ -15,6 +15,7 @@ import { fetchDriverTrips, fetchTripStudents, loadTrips } from '../../src/compon
 import { useUserSession } from '../../UserSessionContext';
 import moment from 'moment';
 import TripDetails from '../../src/components/TripDetails';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const TripScreen = () => {
     const { userDetails, tripDetails, setTripDetails, studentDetails, setStudentDetails } = useUserSession();
@@ -23,6 +24,7 @@ const TripScreen = () => {
 
     useEffect(() => {
         console.log("when loading tripscreen");
+        console.log("Updated tripDetails:", tripDetails);
         const fetchData = async () => {
             try {
                 const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
@@ -60,46 +62,62 @@ const TripScreen = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
                 <ProfileTop name="Your Schedule" />
-                <View style={styles.placeholderInset}>
-                    <PageTitle>{oneTrip?.school_name || 'Loading...'}</PageTitle>
-                    <ExtraText>Transport Zone:{oneTrip?.zone || 'Loading...'}</ExtraText>
-                    <Line></Line>
-                    <StyledScheduleView>
-                        <Ionicons name="bus-outline" size={30} color="black" />
-                        <InnerScheduleView>
-                            <NormText>Vehicle Plate: {oneTrip?.vehicle_number || 'Loading...'}</NormText>
-                        </InnerScheduleView>
-                    </StyledScheduleView>
-                    <Line></Line>
-                    <StyledContainer>
-                        {studentDetails && studentDetails.length > 0 ? (
-                            studentDetails.map((student, index) => (
-                                <StyledContainer key={student._id || student.studentid}>
-                                    <StyledScheduleView list={true}>
-                                        <MostSmallLogo
-                                            resizeMode="contain" source={require('../../src/assets/student.png')} />
-                                        <InnerScheduleView>
-                                            <ExtraText>{student.firstname} {student.lastname}</ExtraText>
-                                        </InnerScheduleView>
-                                    </StyledScheduleView>
-                                    <View style={styles.align}>
-                                        <View style={styles.cardContainer}>
-                                            <CardTextStatus>Status : {student.status} </CardTextStatus>
+                <Subtitle> Today: {today} </Subtitle>
+                <ScrollView showsHorizontalScrollIndicator={false}>
+                    <View style={styles.placeholderInset}>
+                        <PageTitle>{oneTrip?.school_name || 'Loading...'}</PageTitle>
+                        <ExtraText>Transport Zone:{oneTrip?.zone || 'Loading...'}</ExtraText>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="bus-outline" size={30} color="black" />
+                            <InnerScheduleView>
+                                <NormText>Vehicle Plate: {oneTrip?.vehicle_number || 'Loading...'}</NormText>
+                            </InnerScheduleView>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="alarm-outline" size={30} color="black" />
+                            <InnerScheduleView>
+                                <NormText>{oneTrip?.start_time ? `Trip has started at: ${oneTrip.start_time}` : 'Trip has not started'}</NormText>
+                            </InnerScheduleView>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledScheduleView>
+                            <Ionicons name="log-out-outline" size={30} color="black" />
+                            <InnerScheduleView>
+                                <NormText>{oneTrip?.end_time ? `Trip has ended at: ${oneTrip.end_time}` : 'Trip has not ended'}</NormText>
+                            </InnerScheduleView>
+                        </StyledScheduleView>
+                        <Line></Line>
+                        <StyledContainer>
+                            {studentDetails && studentDetails.length > 0 ? (
+                                studentDetails.map((student, index) => (
+                                    <StyledContainer key={student._id || student.studentid}>
+                                        <StyledScheduleView list={true}>
+                                            <MostSmallLogo
+                                                resizeMode="contain" source={require('../../src/assets/student.png')} />
+                                            <InnerScheduleView>
+                                                <ExtraText>{student.firstname} {student.lastname}</ExtraText>
+                                            </InnerScheduleView>
+                                        </StyledScheduleView>
+                                        <View style={styles.align}>
+                                            <View style={styles.cardContainer}>
+                                                <CardTextStatus>Status : {student.status} </CardTextStatus>
+                                            </View>
                                         </View>
-                                    </View>
-                                    <NormText>  Address: {student.address}</NormText>
-                                    <NormText>  Postal Code: {student.postcode}</NormText>
-                                    <Line></Line>
-                                </StyledContainer>
+                                        <NormText>  Address: {student.address}</NormText>
+                                        <NormText>  Postal Code: {student.postcode}</NormText>
+                                        <Line></Line>
+                                    </StyledContainer>
 
-                            ))
-                        ) : (
-                            <NormText>No students linked yet</NormText>
-                        )}
-                    </StyledContainer>
-                    <Line></Line>
-                </View>
-
+                                ))
+                            ) : (
+                                <NormText>No students linked yet</NormText>
+                            )}
+                        </StyledContainer>
+                        <Line></Line>
+                    </View>
+                </ScrollView>
             </StyledContainer>
         </SafeAreaView>
     );
