@@ -116,7 +116,7 @@ const UpdatesScreen = () => {
                                 </InnerScheduleView>
                             </StyledScheduleView>
                             <View style={styles.cardContainer}>
-                                <CardTextStatus>{item.status} - {item.studentclass}</CardTextStatus>
+                                <CardTextStatus>Status: {item.status}</CardTextStatus>
                             </View>
                         </View>
                         <Line></Line>
@@ -124,6 +124,7 @@ const UpdatesScreen = () => {
                             <Ionicons name="school-outline" size={30} color="black" />
                             <TextContainer>
                                 <NormText>{item.school}</NormText>
+                                <NormText>Class: {item.studentclass}</NormText>
                             </TextContainer>
                         </StyledScheduleView>
                         <Line></Line>

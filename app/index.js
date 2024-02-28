@@ -44,7 +44,6 @@ const LoginScreen = () => {
         } catch (error) {
             console.error('Error:', error.message || 'Unknown error');
         }
-
     };
     //saving user inside UserDetails entity and inside User Session
     const saveUser = async (userId, accessToken) => {
@@ -121,14 +120,12 @@ const LoginScreen = () => {
                                     setHidePassword={setHidePassword}
                                 />
                                 <MsgBox>...</MsgBox>
-
                                 <Line />
                                 <StyledButton teacher={true} onPress={() => { handleSubmit(); }}>
                                     <ButtonText>
                                         Login
                                     </ButtonText>
                                 </StyledButton>
-
                                 <ExtraView>
                                     <ExtraText>Don't have an account?  </ExtraText>
                                     <Link href="/SignupScreen" asChild>

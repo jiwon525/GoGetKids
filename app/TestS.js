@@ -16,14 +16,7 @@ const Testscreens = () => {
         <View style={styles.container}>
             <Text style={styles.header}>Bus QR</Text>
             <QRCode
-                value={JSON.stringify({ vehicleId: 'L321V' })}
-                color={'#2C8DDB'}
-                backgroundColor={'white'}
-                size={qrSize}
-            />
-            <Text style={styles.header}>School QR</Text>
-            <QRCode
-                value={JSON.stringify({ schoolName: 'Test School 4' })}
+                value={JSON.stringify({ vehicleId: 'K123X' })}
                 color={'#2C8DDB'}
                 backgroundColor={'white'}
                 size={qrSize}
@@ -31,10 +24,20 @@ const Testscreens = () => {
         </View>
     );
 };
-
+/**
+ * 
+ * <Text style={styles.header}>School QR</Text>
+            <QRCode
+                value={JSON.stringify({ schoolName: 'Test School 4' })}
+                color={'#2C8DDB'}
+                backgroundColor={'white'}
+                size={qrSize}
+            />
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 20,
         padding: 16,
         backgroundColor: '#fff',
     },

@@ -1,24 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { Link, router } from 'expo-router';
-import { Text, View, StyleSheet, Button, Dimensions } from 'react-native';
+import { Link, router, useLocalSearchParams } from 'expo-router';
+import { Text, View, StyleSheet, Button, Dimensions, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import ProfileTop from '../../src/components/ProfileTop';
 import {
     StyledContainer, Colors, InnerContainer,
 } from '../../src/components/styles';
+import { useIsFocused } from '@react-navigation/native';
+import { changeStatusDriver, changeStatusSchool, loadStudents } from '../../src/components/schema';
+import { useUserSession } from '../../UserSessionContext';
 
-const ScanScreen = () => {
-    const [hasPermission, setHasPermission] = React.useState(false);
-    const [scanData, setScanData] = React.useState();
+const ScanQR = () => {
+    const [hasPermission, setHasPermission] = useState(false);
+    const [scanned, setScanned] = useState(false);
+    const { userDetails, studentDetails, setStudentDetails, setTripDetails, TripDetails } = useUserSession();
+    const params = useLocalSearchParams();
+    const { studentid } = params;
+    console.log(hasPermission, scanned);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        setScanData(undefined);
+        var id = parseInt(studentid);
+        const selectedStudent = studentDetails.find(student => student.studentid === id);
+        if (!selectedStudent) {
+            console.error('Error: Student not found');
+            router.push("/driver/index");
+        }
+        setCurrentStudent(selectedStudent);
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === "granted");
         })();
     }, []);
-
+    const showAlert = (errMsg) =>
+        Alert.alert('Unable to Scan', errMsg, [
+            {
+                cancelable: true,
+                text: 'Try again',
+            },
+        ]);
+    const showSuccess = (errMsg) =>
+        Alert.alert('Successful', errMsg, [
+            {
+                cancelable: true,
+                text: 'OK', onPress: async () => {
+                    setScanned(false)
+                }
+            },
+        ]);
     if (!hasPermission) {
         return (
             <StyledContainer>
@@ -26,39 +55,42 @@ const ScanScreen = () => {
             </StyledContainer>
         );
     }
-    //after scanning QR
-    //driver will scan the qr of bus only
-    const handleQRScanned = ({ type, data }) => {
-        setScanData(data);
+    const updateTrip = async (vehicleid) => {
         try {
-            // Parse the JSON data
-            const parsedData = JSON.parse(data);
-            // Extract necessary information (e.g., scheduleid and studentid)
-            const { id: id, vehicleId = '' } = parsedData;
-            //need to make a function to check for schedule id and student id to verify and then 
-            //update the database for students to be 'out of school'
-            //router.push("/")
-            alert(`QR code with data: ${vehicleId} has been scanned!`);
-            //empty data
-            setTimeout(() => setScanData(undefined), 2000);
+
+            updateTripDriver(vehicleid, userDetails.email, userDetails.accessToken)
+            showSuccess("Status updated");
+
+            router.push("/parent/ScanScreen");
         } catch (error) {
-            console.error('Error parsing QR code data:', error);
-            // Handle error (e.g., invalid QR code format)
-            alert('Invalid QR code format!');
-            setScanData(undefined)
+            showAlert("changeStatus does not work");
         }
+    }
+
+    //after scanning QR
+    //parent will scan either bus or school
+    const handleQRScanned = ({ type, data }) => {
+        console.log("handleQR scanned")
+        setScanned(false);
+        // Parse the JSON data
+        // Extract necessary information
+        const parsedData = JSON.parse(data);
+        const { id: id, vehicleId = '' } = parsedData;
+        updateTrip(vehicleId);
     };
 
     return (
         <StyledContainer>
             <ProfileTop name="Scan QR" />
-            <BarCodeScanner
-                style={styles.scanBox}
-                onBarCodeScanned={scanData ? undefined : handleQRScanned}
-            />
+            {isFocused ? (
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleQRScanned}
+                    style={styles.scanBox}
+                />) : null}
+
         </StyledContainer>
     );
-}
+};
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
 
@@ -75,4 +107,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScanScreen;
+export default ScanQR;

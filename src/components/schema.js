@@ -3,6 +3,8 @@ import { router } from 'expo-router';
 import moment from 'moment';
 import StudentDetails from './StudentDetails';
 import ScheduleDetails from './ScheduleDetails';
+import TripDetails from './TripDetails';
+
 //signing user up at mongodb atlas function
 export async function signUp(details) {
     try {
@@ -132,7 +134,54 @@ export async function fetchSchedule(studentId, accessToken) {
     }
 };
 
-//setting up the function to call student data from parent session
+//setting up the function to call trip data for driver
+export async function loadTrips(email, accessToken) {
+    try {
+        console.log("inside load trip");
+        const fetchedTrip = await fetchDriverTrips(email, accessToken);
+        const tripArray = fetchedTrip.map(trip =>
+            new TripDetails(
+                trip._id,
+                trip.tripId,
+                trip.vehicle_number,
+                trip.driver_email,
+                trip.company_name,
+                trip.date,
+                trip.school_name,
+                trip.zone,
+                trip.start_time,
+                trip.end_time
+            )
+        );
+
+        const getStudents = await fetchTripStudents(tripArray[0].school_name, tripArray[0].zone, accessToken);
+        const studentArray = getStudents.map(student =>
+            new StudentDetails(
+                student._id,
+                student.address,
+                student.class_name,
+                student.dob,
+                student.firstname,
+                student.gender,
+                student.lastname,
+                student.parent_id,
+                student.postcode,
+                student.school_name,
+                student.status,
+                student.studentid,
+                student.zone
+            )
+        );
+        console.log("fetched trip array", tripArray);
+        console.log("fetched student array", studentArray);
+        return { tripArray, studentArray };
+    } catch (error) {
+        console.log("error at load trips & students");
+    }
+};
+
+
+//setting up the function to load student data from mongodb to parent session
 export async function loadStudents(email, accessToken) {
     try {
         const fetchedStudentDetails = await fetchStudentData(email, accessToken);
@@ -264,23 +313,10 @@ export async function fetchDriverTrips(driver_email, accessToken) {
         const responseBody = await response.json();
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
-        } else if (!responseBody.findTrip) { // Check if findTrip is present
-            console.error('No trip data found in response');
-            return null; // Return null or an appropriate default object
         } else {
-            let trip = {
-                _id: responseBody.findTrip._id,
-                tripId: responseBody.findTrip.tripId,
-                vehicle_number: responseBody.findTrip.vehicle_number,
-                driver_email: responseBody.findTrip.driver_email,
-                company_name: responseBody.findTrip.company_name,
-                school_name: responseBody.findTrip.school_name,
-                zone: responseBody.findTrip.zone,
-                start_time: responseBody.findTrip.start_time || null,
-                end_time: responseBody.findTrip.end_time || null,
-            }
-            console.log("this is trip", trip);
-            return trip;
+            const tripData = responseBody.result || [];
+            console.log("this is trip", tripData);
+            return tripData;
         };
     } catch (error) {
         console.error('Error fetching data:', error);

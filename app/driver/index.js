@@ -11,99 +11,69 @@ import {
     Colors, Subtitle, StyledScheduleView, NormText, ExtraText, InnerScheduleView, Line, MostSmallLogo, InnerContainer,
 } from '../../src/components/styles';
 import { Ionicons } from '@expo/vector-icons';
-import { fetchDriverTrips, fetchTripStudents } from '../../src/components/schema';
-import TripDetails from '../../src/components/TripDetails';
-import StudentDetails from '../../src/components/StudentDetails';
+import { fetchDriverTrips, fetchTripStudents, loadTrips } from '../../src/components/schema';
 import { useUserSession } from '../../UserSessionContext';
+import moment from 'moment';
+import TripDetails from '../../src/components/TripDetails';
 
 const TripScreen = () => {
     const { userDetails, tripDetails, setTripDetails, studentDetails, setStudentDetails } = useUserSession();
-    const [trip, setTrip] = useState({});
-    const [studentarray, setStudents] = useState({});
-    const saveTrip = async () => {
-        try {
-            const fetchedTrip = await fetchDriverTrips(userDetails.email, userDetails.accessToken);
-            const trip = new TripDetails(
-                fetchedTrip._id,
-                fetchedTrip.tripId,
-                fetchedTrip.vehicle_number,
-                fetchedTrip.driver_email,
-                fetchedTrip.company_name,
-                fetchedTrip.school_name,
-                fetchedTrip.zone,
-                fetchedTrip.start_time,
-                fetchedTrip.end_time
-            );
-            console.log("the trip s", trip);
-            return trip;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
-        }
-    };
-    const saveStudents = async (name, zone, token) => {
-        try {
-            console.log("getting std ", name, zone, token);
-            const getStudents = await fetchTripStudents(name, zone, token);
-            const studentDetailsArray = getStudents.map(student =>
-                new StudentDetails(
-                    student._id,
-                    student.address,
-                    student.class_name,
-                    student.dob,
-                    student.firstname,
-                    student.gender,
-                    student.lastname,
-                    student.parent_id,
-                    student.postcode,
-                    student.school_name,
-                    student.status,
-                    student.studentid,
-                    student.zone
-                )
-            );
-            console.log("student array", studentDetailsArray);
-            return studentDetailsArray;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
-        }
-    };
+    const today = moment().format('YYYY-MM-DD');
+    const [oneTrip, setOneTrip] = useState({});
+
     useEffect(() => {
+        console.log("when loading tripscreen");
         const fetchData = async () => {
             try {
-                const trip = await saveTrip();
-                setTrip(trip);
-                const students = await saveStudents(trip.school_name, trip.zone, userDetails.accessToken);
-                setStudents(students);
-                setTripDetails(trip);
-                setStudentDetails(students);
+                const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+                console.log("inside the driver trip array", tripArray);
+                setTripDetails(tripArray);
+                setStudentDetails(studentArray);
+                console.log("inside the useUserSession tripdetails", tripDetails);
+                const selectT = tripArray.find(trip => trip.date === today);
+                console.log("selected trip", selectT);
+                if (selectT) {
+                    const newTrip = new TripDetails(
+                        selectT._id,
+                        selectT.tripId,
+                        selectT.vehicle_number,
+                        selectT.driver_email,
+                        selectT.company_name,
+                        selectT.date,
+                        selectT.school_name,
+                        selectT.zone,
+                        selectT.start_time,
+                        selectT.end_time
+                    );
+                    setOneTrip(newTrip);
+                } else {
+                    console.log("Trip for driver not found");
+                }
             } catch (error) {
-                // Handle any errors that occur during the fetching process
-                console.error('Error fetching data:', error);
+                console.error('Error fetching schedule:', error);
             }
         };
         fetchData();
     }, []);
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <StyledContainer>
                 <ProfileTop name="Your Schedule" />
-
                 <View style={styles.placeholderInset}>
-                    <PageTitle>{trip.school_name}</PageTitle>
-                    <ExtraText>Transport Zone:{trip.zone}</ExtraText>
+                    <PageTitle>{oneTrip?.school_name || 'Loading...'}</PageTitle>
+                    <ExtraText>Transport Zone:{oneTrip?.zone || 'Loading...'}</ExtraText>
                     <Line></Line>
                     <StyledScheduleView>
                         <Ionicons name="bus-outline" size={30} color="black" />
                         <InnerScheduleView>
-                            <NormText>Vehicle Plate: {trip.vehicle_number}</NormText>
+                            <NormText>Vehicle Plate: {oneTrip?.vehicle_number || 'Loading...'}</NormText>
                         </InnerScheduleView>
                     </StyledScheduleView>
                     <Line></Line>
                     <StyledContainer>
-                        {studentarray && studentarray.length > 0 ? (
-                            studentarray.map((student, index) => (
+                        {studentDetails && studentDetails.length > 0 ? (
+                            studentDetails.map((student, index) => (
                                 <StyledContainer key={student._id || student.studentid}>
                                     <StyledScheduleView list={true}>
                                         <MostSmallLogo
