@@ -5,7 +5,7 @@ exports = async function (payload) {
     if (!school_name || !studentid) {
       return { error: "data does not exist. id:  " + school_name};
     }
-    
+    const studentIdInt = parseInt(studentid);
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collName = "students";
@@ -13,23 +13,23 @@ exports = async function (payload) {
     var findResult;
     try {
       // Find the document by _id
-      findResult = await collection.findOne({ studentid: studentid });
+      findResult = await collection.findOne({ studentid: studentIdInt });
       if (!findResult) {
         return { error: "Document not found for studentid: " + studentid };
       }
       if(findResult.status==="At Home"||findResult.status === undefined){
         const update = { $set: { status: 'In School' } };
-        const updateResult = await collection.updateOne({ studentid: studentid }, update);
+        const updateResult = await collection.updateOne({ studentid: studentIdInt }, update);
         if (updateResult.modifiedCount === 1) {
-          return { findResult };
+          return;
         } else {
           return { error: "Failed to update document" };
         }
       }else{
         const update = { $set: { status: 'At Home' } };
-        const updateResult = await collection.updateOne({ studentid: studentid }, update);
+        const updateResult = await collection.updateOne({ studentid: studentIdInt }, update);
         if (updateResult.modifiedCount === 1) {
-          return { findResult };
+          return;
         } else {
           return { error: "Failed to update document" };
         }
