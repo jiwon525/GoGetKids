@@ -21,7 +21,7 @@ exports = async function (payload) {
         const update = { $set: { status: 'In School' } };
         const updateResult = await collection.updateOne({ studentid: studentid }, update);
         if (updateResult.modifiedCount === 1) {
-          return { findResult };
+          return;
         } else {
           return { error: "Failed to update document" };
         }
@@ -29,7 +29,7 @@ exports = async function (payload) {
         const update = { $set: { status: 'At Home' } };
         const updateResult = await collection.updateOne({ studentid: studentid }, update);
         if (updateResult.modifiedCount === 1) {
-          return { findResult };
+          return;
         } else {
           return { error: "Failed to update document" };
         }
