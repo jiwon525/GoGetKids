@@ -22,7 +22,7 @@ exports = async function (payload) {
       const update = { $set: { status: 'In School' } };
       
       // Execute the update operation
-      const updateResult = await collection.updateOne({ _id: nid }, update);
+      const updateResult = await collection.updateOne({ studentid: studentid }, update);
       if (updateResult.modifiedCount === 1) {
         return { findResult };
       } else {
