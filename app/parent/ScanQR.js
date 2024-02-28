@@ -6,17 +6,18 @@ import ProfileTop from '../../src/components/ProfileTop';
 import {
     StyledContainer, Colors, InnerContainer,
 } from '../../src/components/styles';
-import { changeStatusSchool } from '../../src/components/schema';
+import { changeStatusSchool, loadStudents } from '../../src/components/schema';
 import { useUserSession } from '../../UserSessionContext';
 
 const ScanQR = () => {
     const [hasPermission, setHasPermission] = React.useState(false);
-    const [scanData, setScanData] = React.useState();
-    const { userDetails, studentDetails } = useUserSession();
+    const [scanData, setScanData] = React.useState(undefined);
+    const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
     const params = useLocalSearchParams();
     const { studentid } = params;
     const [currentStudent, setCurrentStudent] = useState();
     useEffect(() => {
+        setScanData(undefined);
         try {
             var id = parseInt(studentid);
             const selectedStudent = studentDetails.find(student => student.studentid === id);
@@ -25,7 +26,6 @@ const ScanQR = () => {
                 router.push("/parent/ScanScreen");
             }
             setCurrentStudent(selectedStudent);
-            setScanData(undefined);
             (async () => {
                 const { status } = await BarCodeScanner.requestPermissionsAsync();
                 setHasPermission(status === "granted");
@@ -33,12 +33,19 @@ const ScanQR = () => {
         } catch (error) {
             showAlert("student does not exist")
         }
-    }, []);
+    }, [scanData]);
     const showAlert = (errMsg) =>
         Alert.alert('Unable to Scan', errMsg, [
             {
                 cancelable: true,
                 text: 'Try again',
+            },
+        ]);
+    const showSuccess = (errMsg) =>
+        Alert.alert('Successful', errMsg, [
+            {
+                cancelable: true,
+                text: 'OK',
             },
         ]);
     if (!hasPermission) {
@@ -47,6 +54,12 @@ const ScanQR = () => {
                 <Text>Please grant camera permissions to app.</Text>
             </StyledContainer>
         );
+    }
+    const updateStudent = async () => {
+        const { studentDetailsArray, resolvedSchedules } = await loadStudents(userDetails.email, userDetails.accessToken);
+        setStudentDetails(studentDetailsArray);
+        //console.log("Schedules for all students: ", resolvedSchedules.flat()); // Use .flat() to flatten the array of arrays
+        setScheduleDetails(resolvedSchedules.flat());
     }
     //after scanning QR
     //parent will scan either bus or school
@@ -59,17 +72,21 @@ const ScanQR = () => {
             const { id: id, vehicleId = '', schoolName = '' } = parsedData;
             //
             alert(`QR code with data: ${vehicleId} ${schoolName} has been scanned!`);
-            setTimeout(() => setScanData(undefined), 2000);
             if (!vehicleId) {
                 //run function to find school & change status
                 try {
-
-                } catch (error) {
                     changeStatusSchool(currentStudent.studentid, schoolName, userDetails.accessToken);
+                    showSuccess("Status updated")
+                    setTimeout(() => setScanData(undefined), 2000);
+                    updateStudent();
+                    router.push("/parent/ScanScreen");
+                } catch (error) {
+                    showAlert("changeStatus does not work");
                 }
 
             } else {
                 //run function to find vehicleid & change status
+                setTimeout(() => setScanData(undefined), 2000);
             }
             //setScanData(undefined);
             //router.push("/parent")

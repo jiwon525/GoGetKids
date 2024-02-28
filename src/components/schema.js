@@ -1,6 +1,8 @@
 import { format } from '@expo/config-plugins/build/utils/XML';
 import { router } from 'expo-router';
 import moment from 'moment';
+import StudentDetails from './StudentDetails';
+import ScheduleDetails from './ScheduleDetails';
 //signing user up at mongodb atlas function
 export async function signUp(details) {
     try {
@@ -128,6 +130,54 @@ export async function fetchSchedule(studentId, accessToken) {
     } catch (error) {
         console.error('Error fetching data:', error);
         return null; // Return null or throw an error based on your app's logic
+    }
+};
+
+//setting up the function to call student data from parent session
+export async function loadStudents(email, accessToken) {
+    try {
+        const fetchedStudentDetails = await fetchStudentData(email, accessToken);
+        const studentDetailsArray = fetchedStudentDetails.map(student =>
+            new StudentDetails(
+                student._id,
+                student.address,
+                student.class_name,
+                student.dob,
+                student.firstname,
+                student.gender,
+                student.lastname,
+                student.parent_id,
+                student.postcode,
+                student.school_name,
+                student.status,
+                student.studentid,
+                student.zone
+            )
+        );
+        const schedulesPromises = studentDetailsArray.map(async (student) => {
+            const s = await fetchSchedule(student.studentid, accessToken);
+            console.log(s);
+            return s.map(schedule =>
+                new ScheduleDetails(
+                    schedule._id,
+                    schedule.date,
+                    student.firstname,
+                    student.lastname,
+                    schedule.school_name,
+                    student.class_name,
+                    student.status,
+                    student.studentid,
+                    schedule.transport_type,
+                    schedule.pickup_time,
+                    schedule.dismissal_time
+                )
+            );
+        });
+        const resolvedSchedules = await Promise.all(schedulesPromises);
+
+        return { studentDetailsArray, resolvedSchedules };
+    } catch (error) {
+        console.log("error at load students");
     }
 };
 
@@ -302,7 +352,7 @@ export async function fetchTeacherStudents(teacherid, accessToken) {
 
 //updating the status of students of parents drop off
 export async function changeStatusSchool(studentid, school_name, accessToken) {
-    console.log("inside change transport type");
+    console.log("inside change status type");
     try {
         const statusUpdate = {
             studentid: studentid,

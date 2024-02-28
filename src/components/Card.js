@@ -9,8 +9,8 @@ import {
 
 export default function Card({ firstName, lastName, index, status, school, grade, studentID, accessToken }) {
     const { studentDetails } = useUserSession();
-    console.log(studentID);
-    console.log(studentDetails[index]);
+    //console.log(studentID);
+    //console.log(studentDetails[index]);
     return (
         <Link key={studentID} push href={{
             pathname: "/parent/ScheduleScreen",
