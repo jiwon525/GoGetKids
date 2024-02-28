@@ -16,7 +16,15 @@ exports = async function (payload) {
       if (!findResult) {
         return { error: "Document not found for studentid: " + driver_email };
       }
-      const update = { $set: { start_time: 'time' } };
+      const now = new Date();
+      const timeZone = 'Asia/Singapore';
+      const timeSGT = new Intl.DateTimeFormat('en-SG', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: timeZone
+      }).format(now);
+      const update = { $set: { start_time: timeSGT } };
       const updateResult = await collection.updateOne( {driver_email: driver_email, date: date}, update);
       if (updateResult.modifiedCount === 1) {
         return;
