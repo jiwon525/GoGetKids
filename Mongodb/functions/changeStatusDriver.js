@@ -22,6 +22,7 @@ exports = async function (payload) {
         const update = { $set: { status: 'At Home' } };
         const updateResult = await collection.updateOne({ studentid: studentIdInt }, update);
       }
+    return {updateResult};
   } catch (error) {
     console.error("Internal server error:", error);
     return { error: "Internal server error" };
