@@ -48,20 +48,6 @@ const ScanScreen = () => {
             </StyledContainer>
         );
     }
-    const updateTrip = async (vehicleid) => {
-        console.log("the trip array in scanscreen", tripDetails);
-        try {
-            putTripStart(vehicleid, userDetails.email, today, userDetails.accessToken)
-            showSuccess("Status updated");
-            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
-            console.log("inside the driver trip array", tripArray);
-            setTripDetails(tripArray);
-            setStudentDetails(studentArray);
-            router.push("/driver");
-        } catch (error) {
-            showAlert("changeStatus does not work");
-        }
-    }
     //after scanning QR
     //parent will scan either bus or school
     const handleQRScanned = ({ type, data }) => {
@@ -71,17 +57,55 @@ const ScanScreen = () => {
         // Extract necessary information
         const parsedData = JSON.parse(data);
         const { id: id, vehicleId = '' } = parsedData;
-        updateTrip(vehicleId);
+        Alert.alert(
+            "Confirm",
+            "Trip Start? End?",
+            [
+                {
+                    text: "Trip Start", onPress: async (vehicleId) => {
+                        console.log("the trip array in scanscreen", tripDetails);
+                        try {
+                            putTripStart(vehicleId, userDetails.email, today, userDetails.accessToken)
+                            showSuccess("Status updated");
+                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+                            console.log("inside the driver trip array", tripArray);
+                            setTripDetails(tripArray);
+                            setStudentDetails(studentArray);
+                            router.push("/driver");
+                        } catch (error) {
+                            showAlert("changeStatus does not work");
+                        }
+                    }
+                },
+                {
+                    text: "Trip End", onPress: async (vehicleId) => {
+                        console.log("the trip array in scanscreen", tripDetails);
+                        try {
+                            putTripEnd(vehicleId, userDetails.email, today, userDetails.accessToken)
+                            showSuccess("Status updated");
+                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+                            console.log("inside the driver trip array", tripArray);
+                            setTripDetails(tripArray);
+                            setStudentDetails(studentArray);
+                            router.push("/driver");
+                        } catch (error) {
+                            showAlert("changeStatus does not work");
+                        }
+                    }
+                }
+            ]
+        );
     };
-
     return (
         <StyledContainer>
             <ProfileTop name="Scan QR" />
-            {isFocused ? (
-                <BarCodeScanner
-                    onBarCodeScanned={scanned ? undefined : handleQRScanned}
-                    style={styles.scanBox}
-                />) : null}
+            {
+                isFocused ? (
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleQRScanned}
+                        style={styles.scanBox}
+                    />) : null
+            }
 
         </StyledContainer>
     );

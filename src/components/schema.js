@@ -465,3 +465,31 @@ export async function putTripStart(vehicle_number, driver_email, date, accessTok
         return null;
     }
 };
+
+export async function putTripEnd(vehicle_number, driver_email, date, accessToken) {
+    console.log("inside change trip driver type");
+    try {
+        const tripUpdateD = {
+            vehicle_number: vehicle_number,
+            driver_email: driver_email,
+            date: date
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/putTripEnd', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(tripUpdateD),
+        });
+        const responseBody = await response.json();
+        console.log(" trip", responseBody.updateResult);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        }
+        return;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
