@@ -3,7 +3,7 @@ exports = async function (payload) {
     const body = JSON.parse(payload.body.text());
     const { studentid, vehicle_number } = body;
     if (!vehicle || !studentid) {
-      return { error: "data does not exist. id:  " + school_name};
+      return { error: "data does not exist. id:  "+studentid};
     }
     
     var serviceName = "mongodb-atlas";
