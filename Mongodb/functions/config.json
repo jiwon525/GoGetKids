@@ -84,7 +84,17 @@
         "disable_arg_logs": true
     },
     {
+        "name": "changeTripStart",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
         "name": "putTripStart",
+        "private": false,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "putTripEnd",
         "private": false,
         "disable_arg_logs": true
     }
