@@ -82,5 +82,10 @@
         "name": "changeStatusDriver",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "putTripStart",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]

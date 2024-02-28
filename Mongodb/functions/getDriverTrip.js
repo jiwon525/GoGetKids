@@ -11,9 +11,8 @@ exports = async function (payload) {
     var collection = context.services.get(serviceName).db(dbName).collection(collName);
     var findTrip;
     try {
-      //find the trip that is from today and before yesterday = today's date
-      findTrip = await collection.findOne({driver_email: driver_email});
-      return { findTrip }; 
+      findTrip = await collection.find({driver_email: driver_email}).toArray();
+      return { result:findTrip }; 
     } catch(err) {
       console.log("Error occurred while executing find:", err.message);
       return { error: err.message };
