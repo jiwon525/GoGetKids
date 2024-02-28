@@ -17,7 +17,7 @@ exports = async function (payload) {
       if (!findResult) {
         return { error: "Document not found for studentid: " + studentid };
       }
-      if(findResult.status==="At Home"){
+      if(findResult.status==="At Home"||findResult.status === undefined){
         const update = { $set: { status: 'In School' } };
       }else{
         const update = { $set: { status: 'At Home' } };
