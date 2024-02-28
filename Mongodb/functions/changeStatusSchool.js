@@ -17,9 +17,11 @@ exports = async function (payload) {
       if (!findResult) {
         return { error: "Document not found for studentid: " + studentid };
       }
-
-      // Define the update operation
-      const update = { $set: { status: 'In School' } };
+      if(findResult.status==="At Home"){
+        const update = { $set: { status: 'In School' } };
+      }else{
+        const update = { $set: { status: 'At Home' } };
+      }
       
       // Execute the update operation
       const updateResult = await collection.updateOne({ studentid: studentid }, update);
