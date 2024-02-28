@@ -16,15 +16,14 @@ exports = async function (payload) {
       if (!findResult) {
         return { error: "Document not found for studentid: " + driver_email };
       }
+      // Manually calculate the current time in SGT (UTC+8)
       const now = new Date();
-      const timeZone = 'Asia/Singapore';
-      const timeSGT = new Intl.DateTimeFormat('en-SG', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-        timeZone: timeZone
-      }).format(now);
-      const update = { $set: { start_time: timeSGT } };
+      const utcTime = now.getTime() + now.getTimezoneOffset() * 60000; // Convert local time to UTC
+      const sgtTime = new Date(utcTime + (3600000 * 8)); // Convert UTC to SGT (UTC+8)
+
+      // Format the SGT time as a string like "16:00"
+      const formattedTime = sgtTime.getUTCHours().toString().padStart(2, '0') + ":" + sgtTime.getUTCMinutes().toString().padStart(2, '0');
+      const update = { $set: { start_time: formattedTime } };
       const updateResult = await collection.updateOne( {driver_email: driver_email, date: date}, update);
       if (updateResult.modifiedCount === 1) {
         return;
