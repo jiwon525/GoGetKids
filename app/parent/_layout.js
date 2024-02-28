@@ -67,6 +67,13 @@ export default () => {
                     href: null,
                 }}
             />
+            <Tabs.Screen
+                name="ScanQR"
+                options={{
+                    headerShown: false,
+                    href: null,
+                }}
+            />
         </Tabs>
     );
 };

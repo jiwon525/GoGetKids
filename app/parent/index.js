@@ -12,11 +12,10 @@ import { fetchStudentData, fetchSchedule } from '../../src/components/schema';
 import StudentDetails from '../../src/components/StudentDetails';
 import ScheduleDetails from '../../src/components/ScheduleDetails';
 import { ScrollView } from 'react-native-gesture-handler';
-import moment
-    from 'moment';
+
 const HomeScreen = () => {
     const { userDetails, studentDetails, setStudentDetails, setScheduleDetails } = useUserSession();
-    const today = moment().format('YYYY-MM-DD');
+
     useEffect(() => {
         const fetchData = async () => {
             try {

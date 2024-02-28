@@ -14,7 +14,6 @@ import {
     MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent,
 } from '../src/components/styles';
 import { useUserSession } from '../UserSessionContext';
-import LoadingScreen from './loading';
 
 const LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);

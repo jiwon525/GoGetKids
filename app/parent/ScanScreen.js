@@ -1,78 +1,109 @@
-import React, { useState, useEffect } from 'react';
-import { Link, router } from 'expo-router';
-import { Text, View, StyleSheet, Button, Dimensions } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
-import ProfileTop from '../../src/components/ProfileTop';
+import React, { useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import {
-    StyledContainer, Colors, InnerContainer,
+    StyledContainer, InnerContainer, PageTitle, LoginTab,
+    Colors, LoginLogo, LoginTitle, InnerMidContainer,
+    StyledFormArea, LeftIcon, StyledButton, ButtonText,
+    StyledInputLabel, StyledTextInput, RightIcon,
+    MsgBox, Line, ExtraText, ExtraView, TextLink, TextLinkContent, NormText,
 } from '../../src/components/styles';
+import { Octicons, Ionicons } from '@expo/vector-icons'
+import ProfileTop from '../../src/components/ProfileTop';
+import { StyleSheet, View, Dimensions, ScrollView, Alert, TouchableOpacity, Text } from "react-native";
+import { Link, router } from 'expo-router';
+import { useUserSession } from '../../UserSessionContext';
+import moment from 'moment';
 
-const ScanScreen = () => {
-    const [hasPermission, setHasPermission] = React.useState(false);
-    const [scanData, setScanData] = React.useState();
-
-    useEffect(() => {
-        setScanData(undefined);
-        (async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === "granted");
-        })();
-    }, []);
-
-    if (!hasPermission) {
-        return (
-            <StyledContainer>
-                <Text>Please grant camera permissions to app.</Text>
-            </StyledContainer>
-        );
-    }
-    //after scanning QR
-    //parent will scan either bus or school
-    const handleQRScanned = ({ type, data }) => {
-        setScanData(data);
-        try {
-            // Parse the JSON data
-            const parsedData = JSON.parse(data);
-            // Extract necessary information (e.g., scheduleid and studentid)
-            const { id: id, vehicleId = '', schoolName = '' } = parsedData;
-            //
-            alert(`QR code with data: ${vehicleId} ${schoolName} has been scanned!`);
-            setTimeout(() => setScanData(undefined), 2000);
-            //setScanData(undefined);
-            //router.push("/parent")
-            //empty data
-        } catch (error) {
-            console.error('Error parsing QR code data:', error);
-            // Handle error (e.g., invalid QR code format)
-            alert('Invalid QR code format!');
-            setScanData(undefined);
-        }
-    };
+ScanScreen = () => {
+    const { userDetails, studentDetails, scheduleDetails } = useUserSession();
+    const today = moment().format('YYYY-MM-DD');
 
     return (
         <StyledContainer>
-            <ProfileTop name="Scan QR" />
-            <BarCodeScanner
-                style={styles.scanBox}
-                onBarCodeScanned={scanData ? undefined : handleQRScanned}
-            />
+            <StatusBar style="dark" />
+            <ProfileTop
+                name="Select Student" />
+            <ScrollView
+                showsVerticalScrollIndicator={false}>
+                <InnerContainer>
+                    {studentDetails.map((item, index) => {
+                        const selectS = scheduleDetails.find(schedule => schedule.studentid === item.studentid && schedule.date === today);
+                        return (
+                            <TouchableOpacity key={item._id} onPress={() => {
+                                router.replace({
+                                    pathname: "/parent/ScanQR",
+                                    params: {
+                                        studentid: item.studentid
+                                    }
+                                });
+                            }}>
+                                <View style={styles.container}>
+                                    <Text style={styles.title}>
+                                        {item.firstname} {item.lastname}
+                                    </Text>
+                                    <View style={styles.cardContainer}>
+                                        <Text style={styles.detail}>{item.status}</Text>
+                                    </View>
+                                    <Text style={styles.detail}>
+                                        student ID: {item.studentid}
+                                    </Text>
+                                    <Text style={styles.detail}>
+                                        Transport Type: {selectS ? selectS.transporttype : 'N/A'}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    })}
+                </InnerContainer>
+            </ScrollView>
         </StyledContainer>
     );
-}
+};
+/** <Link push href={{
+                            pathname: "/parent/ScanQR",
+                            params: {
+                                studentid: "test",
+                            }
+                        }} asChild> */
 const deviceHeight = Dimensions.get('window').height
 const deviceWidth = Dimensions.get('window').width
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: 15,
+        marginTop: 15,
+        width: deviceWidth * 0.9,
+        height: deviceHeight * 0.3,
+        marginEnd: 22,
+        marginBottom: 50,
+        borderRadius: 5,
+        backgroundColor: Colors.primary,
     },
-    scanBox: {
-        height: deviceHeight * 0.8,
-        width: deviceWidth,
+    title: {
+        fontWeight: "bold",
+        fontSize: 17,
+    },
+    detail: {
+        fontSize: 16,
+    },
+    cardContainer: {
+        marginTop: 10,
+        width: deviceWidth * 0.7,
+        padding: 10,
+        marginBottom: 20,
+        borderRadius: 5,
+        backgroundColor: Colors.plain,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 5,
+            height: 5,
+        },
+        shadowOpacity: 0.75,
+        shadowRadius: 5,
+        elevation: 9,
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
     },
 });
 
-export default ScanScreen;
+export default ScanScreen; 

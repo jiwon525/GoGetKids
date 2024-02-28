@@ -299,3 +299,32 @@ export async function fetchTeacherStudents(teacherid, accessToken) {
     }
 };
 
+
+//updating the status of students of parents drop off
+export async function changeStatusSchool(studentid, school_name, accessToken) {
+    console.log("inside change transport type");
+    try {
+        const statusUpdate = {
+            studentid: studentid,
+            school_name: school_name
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changeStatusSchool', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(statusUpdate),
+        });
+
+        const responseBody = await response.json();
+        console.log(responseBody);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        }
+        return responseBody.findResult;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
