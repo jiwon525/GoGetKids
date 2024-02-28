@@ -2,7 +2,7 @@ exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
     const { studentid, vehicle_number } = body;
-    if (!vehicle || !studentid) {
+    if (!vehicle_number || !studentid) {
       return { error: "data does not exist. id:  "+studentid};
     }
     
