@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Button, Dimensions, Alert } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import ProfileTop from '../../src/components/ProfileTop';
 import {
-    StyledContainer, Colors, InnerContainer,
+    StyledContainer, Colors, InnerContainer, NormText,
 } from '../../src/components/styles';
 import { useIsFocused } from '@react-navigation/native';
 import { changeStatusDriver, changeStatusSchool, loadStudents } from '../../src/components/schema';

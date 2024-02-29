@@ -7,7 +7,7 @@ export default () => {
             <Tabs.Screen
                 name="index"
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Schedule',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="home" size={size} color={color} />
@@ -18,7 +18,7 @@ export default () => {
             <Tabs.Screen
                 name="ScanScreen"
                 options={{
-                    tabBarLabel: 'Scan',
+                    tabBarLabel: 'Start/End',
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="qr-code" size={size} color={color} />

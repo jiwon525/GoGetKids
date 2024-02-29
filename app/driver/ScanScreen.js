@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Button, Dimensions, Alert } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import ProfileTop from '../../src/components/ProfileTop';
 import {
-    StyledContainer, Colors, InnerContainer,
+    StyledContainer, Colors, InnerContainer, NormText,
 } from '../../src/components/styles';
 import { useIsFocused } from '@react-navigation/native';
 import { changeStatusDriver, changeStatusSchool, loadTrips, putTripStart } from '../../src/components/schema';
@@ -15,7 +15,7 @@ const ScanScreen = () => {
     const [hasPermission, setHasPermission] = useState(false);
     const [scanned, setScanned] = useState(false);
     const { userDetails, studentDetails, setStudentDetails, setTripDetails, tripDetails } = useUserSession();
-    console.log(hasPermission, scanned);
+    const [vehicleid, setVehicleID] = useState('');
     const isFocused = useIsFocused();
     const today = moment().format('YYYY-MM-DD');
     useEffect(() => {
@@ -25,87 +25,62 @@ const ScanScreen = () => {
             setHasPermission(status === "granted");
         })();
     }, []);
-    const showAlert = (errMsg) =>
-        Alert.alert('Unable to Scan', errMsg, [
-            {
-                cancelable: true,
-                text: 'Try again',
-            },
-        ]);
-    const showSuccess = (errMsg) =>
-        Alert.alert('Successful', errMsg, [
-            {
-                cancelable: true,
-                text: 'OK', onPress: async () => {
-                    setScanned(false)
-                }
-            },
-        ]);
     if (!hasPermission) {
         return (
             <StyledContainer>
-                <Text>Please grant camera permissions to app.</Text>
+                <InnerContainer>
+                    <NormText>Please grant camera permissions to app.</NormText>
+                </InnerContainer>
             </StyledContainer>
         );
     }
-    //after scanning QR
-    //parent will scan either bus or school
-    const handleQRScanned = ({ type, data }) => {
-        console.log("handleQR scanned")
-        setScanned(false);
-        // Parse the JSON data
-        // Extract necessary information
-        const parsedData = JSON.parse(data);
-        const { id: id, vehicleId = '' } = parsedData;
+    const updateTrip = async () => {
         Alert.alert(
-            "Confirm",
-            "Trip Start? End?",
+            "Confirm Action",
+            "Do you want to start or end the trip?",
             [
                 {
-                    text: "Trip Start", onPress: async (vehicleId) => {
-                        console.log("the trip array in scanscreen", tripDetails);
-                        try {
-                            putTripStart(vehicleId, userDetails.email, today, userDetails.accessToken)
-                            showSuccess("Status updated");
-                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
-                            console.log("inside the driver trip array", tripArray);
-                            setTripDetails(tripArray);
-                            setStudentDetails(studentArray);
-                            router.push("/driver");
-                        } catch (error) {
-                            showAlert("changeStatus does not work");
-                        }
+                    text: "Start Trip", onPress: async () => {
+                        // Your logic to start the trip
+                        console.log("Starting trip for vehicle ID:", vehicleid);
+                        // Reset scanned state to allow for new scans
+                        setScanned(false);
                     }
                 },
                 {
-                    text: "Trip End", onPress: async (vehicleId) => {
-                        console.log("the trip array in scanscreen", tripDetails);
-                        try {
-                            putTripEnd(vehicleId, userDetails.email, today, userDetails.accessToken)
-                            showSuccess("Status updated");
-                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
-                            console.log("inside the driver trip array", tripArray);
-                            setTripDetails(tripArray);
-                            setStudentDetails(studentArray);
-                            router.push("/driver");
-                        } catch (error) {
-                            showAlert("changeStatus does not work");
-                        }
+                    text: "End Trip", onPress: async () => {
+                        // Your logic to end the trip
+                        console.log("Ending trip for vehicle ID:", vehicleid);
+                        // Reset scanned state to allow for new scans
+                        setScanned(false);
                     }
                 }
-            ]
+            ],
+            { cancelable: true }
         );
     };
+
+    const handleQRScanned = ({ type, data }) => {
+        if (scanned) return; // Prevent multiple scans from triggering multiple alerts
+        console.log("QR Code scanned");
+        setScanned(true); // Prevent re-scanning until user makes a decision
+
+        // Parse the QR data
+        const parsedData = JSON.parse(data);
+        const { vehicleId: scannedVehicleId } = parsedData;
+        setVehicleID(scannedVehicleId); // Update vehicleId state
+
+        updateTrip(); // Show alert to start or end trip
+    };
+
     return (
         <StyledContainer>
             <ProfileTop name="Scan QR" />
-            {
-                isFocused ? (
-                    <BarCodeScanner
-                        onBarCodeScanned={scanned ? undefined : handleQRScanned}
-                        style={styles.scanBox}
-                    />) : null
-            }
+            {isFocused ? (
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleQRScanned}
+                    style={styles.scanBox}
+                />) : null}
 
         </StyledContainer>
     );
