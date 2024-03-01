@@ -16,7 +16,7 @@ exports = async function (payload) {
 
     var findResult;
     try {
-      if(!vehicle_number||vehicle_number===undefined){
+      if(!vehicle_number||vehicle_number===undefined || vehicle_number===''){
         // Find the document by _id
         findResult = await collection.findOne({ studentid: studentIdInt});
         if (!findResult) {
@@ -31,7 +31,6 @@ exports = async function (payload) {
         }
       }else{
         //when vehicle is scanned.
-        
         // Find the trip by vehicle_number and the current date
         const trip = await vehicleUp.findOne({ vehicle_number: vehicle_number, date: currentDate });
         if (!trip) {
