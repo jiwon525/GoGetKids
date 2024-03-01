@@ -1,7 +1,7 @@
 exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
-    const { vehicle_number, studentid, school_name, zone } = body;
+    const { vehicle_number, studentid } = body;
     const studentIdInt = parseInt(studentid);
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
