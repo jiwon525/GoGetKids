@@ -1,14 +1,19 @@
 exports = async function (payload) {
   try {
     const body = JSON.parse(payload.body.text());
-    const { vehicle_number, studentid } = body;
+    const { vehicle_number='', studentid='' } = body;
     const studentIdInt = parseInt(studentid);
     var serviceName = "mongodb-atlas";
     var dbName = "GoGetKids";
     var collection = context.services.get(serviceName).db(dbName).collection("students");
+    var vehicleUp = context.services.get(serviceName).db(dbName).collection("trips");
     // Get the current date in Singapore timezone
-    const sgTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Singapore"});
-    const currentDate = new Date(sgTime).toISOString().slice(0, 10);
+    // Assuming Singapore is UTC+8
+    const sgOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+    const nowUtc = new Date().getTime(); // Current UTC time in milliseconds
+    const sgTime = new Date(nowUtc + sgOffset); // Adjust to Singapore time
+    const currentDate = sgTime.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+
     var findResult;
     try {
       if(!vehicle_number||vehicle_number===undefined){
@@ -26,22 +31,22 @@ exports = async function (payload) {
         }
       }else{
         //when vehicle is scanned.
-        var vehicleUp = context.services.get(serviceName).db(dbName).collection("trips");
+        
         // Find the trip by vehicle_number and the current date
-        const trip = await tripsCollection.findOne({ vehicle_number: vehicle_number, date: currentDate });
+        const trip = await vehicleUp.findOne({ vehicle_number: vehicle_number, date: currentDate });
         if (!trip) {
           return { error: "Trip not found for vehicle number: " + vehicle_number + " on date: " + currentDate };
         }
         
         // Use trip details to find students
-        const studentsToUpdate = await studentsCollection.find({ school_name: trip.school_name, zone: trip.zone }).toArray();
+        const studentsToUpdate = await collection.find({ school_name: trip.school_name, zone: trip.zone }).toArray();
         if (studentsToUpdate.length === 0) {
           return { error: "No students found for school: " + trip.school_name + " in zone: " + trip.zone };
         }
         
         // Update each student's status
         const updatePromises = studentsToUpdate.map(student => 
-          studentsCollection.updateOne({ _id: student._id }, { $set: { status: "In transit Out of School" } })
+          collection.updateOne({ _id: student._id }, { $set: { status: "In transit Out of School" } })
         );
         await Promise.all(updatePromises);
   
