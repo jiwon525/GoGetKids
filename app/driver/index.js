@@ -16,12 +16,13 @@ import { useUserSession } from '../../UserSessionContext';
 import moment from 'moment';
 import TripDetails from '../../src/components/TripDetails';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
 const TripScreen = () => {
     const { userDetails, tripDetails, setTripDetails, studentDetails, setStudentDetails } = useUserSession();
     const today = moment().format('YYYY-MM-DD');
     const [oneTrip, setOneTrip] = useState({});
-
+    const isFocused = useIsFocused();
     useEffect(() => {
         console.log("when loading tripscreen");
         console.log("Updated tripDetails:", tripDetails);
@@ -31,9 +32,7 @@ const TripScreen = () => {
                 console.log("inside the driver trip array", tripArray);
                 setTripDetails(tripArray);
                 setStudentDetails(studentArray);
-                console.log("inside the useUserSession tripdetails", tripDetails);
                 const selectT = tripArray.find(trip => trip.date === today);
-                console.log("selected trip", selectT);
                 if (selectT) {
                     const newTrip = new TripDetails(
                         selectT._id,
@@ -55,8 +54,10 @@ const TripScreen = () => {
                 console.error('Error fetching schedule:', error);
             }
         };
-        fetchData();
-    }, []);
+        if (isFocused) {
+            fetchData();
+        }
+    }, [isFocused]);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

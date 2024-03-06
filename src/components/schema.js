@@ -153,7 +153,7 @@ export async function loadTrips(email, accessToken) {
                 trip.end_time
             )
         );
-
+        console.log("this is trip loaded", tripArray);
         const getStudents = await fetchTripStudents(tripArray[0].school_name, tripArray[0].zone, accessToken);
         const studentArray = getStudents.map(student =>
             new StudentDetails(
@@ -325,7 +325,6 @@ export async function fetchDriverTrips(driver_email, accessToken) {
 };
 //fetch students inside the trip assigned to driver
 export async function fetchTripStudents(school_name, zone, accessToken) {
-    console.log("sch name", school_name, "zone", zone);
     try {
         const stud = {
             school_name: school_name,
@@ -340,12 +339,11 @@ export async function fetchTripStudents(school_name, zone, accessToken) {
             body: JSON.stringify(stud),
         });
         const responseBody = await response.json();
-        console.log("trip students", responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         } else {
             const tripstudents = responseBody.result || []; // Assigning the result array
-            console.log("the return array", tripstudents);
+            console.log("the return array from fetch trip students", tripstudents);
             return tripstudents;
         };
     } catch (error) {
@@ -438,6 +436,35 @@ export async function changeStatusDriver(studentid, vehicle_number, accessToken)
     }
 };
 
+export async function changeStatusTeacher(vehicle_number, studentid, accessToken) {
+    try {
+        const teac = {
+            vehicle_number: vehicle_number,
+            studentid: studentid
+        };
+        const response = await fetch('https://ap-southeast-1.aws.data.mongodb-api.com/app/gogetkidsmobile-csapx/endpoint/changeStatusTeacher', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(teac),
+        });
+        const responseBody = await response.json();
+        console.log("trip students", responseBody);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Status: ' + response.status);
+        } else {
+            const teachStud = responseBody.result || []; // Assigning the result array
+            console.log("the return array", teachStud);
+            return teachStud;
+        };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+};
+
 export async function putTripStart(vehicle_number, driver_email, date, accessToken) {
     console.log("inside change trip driver type");
     try {
@@ -455,7 +482,7 @@ export async function putTripStart(vehicle_number, driver_email, date, accessTok
             body: JSON.stringify(tripUpdateD),
         });
         const responseBody = await response.json();
-        console.log(" trip", responseBody.updateResult);
+        console.log(" trip of putTripStart", responseBody);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         }
@@ -483,7 +510,7 @@ export async function putTripEnd(vehicle_number, driver_email, date, accessToken
             body: JSON.stringify(tripUpdateD),
         });
         const responseBody = await response.json();
-        console.log(" trip", responseBody.updateResult);
+        console.log(" trip end gives this result", responseBody.updateResult);
         if (!response.ok) {
             throw new Error('Failed to fetch data. Status: ' + response.status);
         }

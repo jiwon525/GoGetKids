@@ -76,7 +76,7 @@ const AssignGuardian = () => {
                                             <Line></Line>
                                             <View style={styles.qrCodeContainer}>
                                                 <QRCode
-                                                    value={JSON.stringify({ id: scheduleid, studentid: studentid, guardianName: values.guardianName })}
+                                                    value={JSON.stringify({ studentid: studentid, guardianName: values.guardianName })}
                                                     color={'#2C8DDB'}
                                                     logo={logoFromFile}
                                                     logoBackgroundColor='white'

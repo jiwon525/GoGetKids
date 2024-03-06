@@ -7,7 +7,7 @@ import {
     StyledContainer, Colors, InnerContainer, NormText,
 } from '../../src/components/styles';
 import { useIsFocused } from '@react-navigation/native';
-import { changeStatusDriver, changeStatusSchool, loadTrips, putTripStart } from '../../src/components/schema';
+import { changeStatusDriver, changeStatusSchool, loadTrips, putTripStart, putTripEnd } from '../../src/components/schema';
 import { useUserSession } from '../../UserSessionContext';
 import moment from 'moment';
 
@@ -15,9 +15,18 @@ const ScanScreen = () => {
     const [hasPermission, setHasPermission] = useState(false);
     const [scanned, setScanned] = useState(false);
     const { userDetails, studentDetails, setStudentDetails, setTripDetails, tripDetails } = useUserSession();
-    const [vehicleid, setVehicleID] = useState('');
     const isFocused = useIsFocused();
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
     const today = moment().format('YYYY-MM-DD');
+    const showSuccess = (errMsg) =>
+        Alert.alert('Successful', errMsg, [
+            {
+                cancelable: true,
+                text: 'OK', onPress: async () => {
+                    setScanned(false)
+                }
+            },
+        ]);
     useEffect(() => {
         console.log("the trip array in scanscreen useEffect", tripDetails);
         (async () => {
@@ -34,7 +43,7 @@ const ScanScreen = () => {
             </StyledContainer>
         );
     }
-    const updateTrip = async () => {
+    const updateTrip = async (vehicleid) => {
         Alert.alert(
             "Confirm Action",
             "Do you want to start or end the trip?",
@@ -43,16 +52,44 @@ const ScanScreen = () => {
                     text: "Start Trip", onPress: async () => {
                         // Your logic to start the trip
                         console.log("Starting trip for vehicle ID:", vehicleid);
-                        // Reset scanned state to allow for new scans
-                        setScanned(false);
+                        putTripStart(vehicleid, userDetails.email, today, userDetails.accessToken)
+                        await delay(1000); // Wait for 1 second (1000 milliseconds)
+                        showSuccess("Status updated");
+                        // Now fetch the updated trip and student data
+                        try {
+                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+                            console.log("inside the driver scan array", tripArray);
+                            setTripDetails(tripArray);
+                            setStudentDetails(studentArray);
+                            router.push("/driver");
+                            // Reset scanned state to allow for new scans
+                            setScanned(false);
+                        } catch (error) {
+                            console.error("Error updating trip start:", error);
+                            // Handle error, e.g., show an alert
+                        }
                     }
                 },
                 {
                     text: "End Trip", onPress: async () => {
                         // Your logic to end the trip
                         console.log("Ending trip for vehicle ID:", vehicleid);
-                        // Reset scanned state to allow for new scans
-                        setScanned(false);
+                        putTripEnd(vehicleid, userDetails.email, today, userDetails.accessToken)
+                        await delay(1000); // Wait for 1 second (1000 milliseconds)
+                        showSuccess("Status updated");
+                        // Now fetch the updated trip and student data
+                        try {
+                            const { tripArray, studentArray } = await loadTrips(userDetails.email, userDetails.accessToken);
+                            console.log("inside the driver trip array", tripArray);
+                            setTripDetails(tripArray);
+                            setStudentDetails(studentArray);
+                            router.push("/driver");
+                            // Reset scanned state to allow for new scans
+                            setScanned(false);
+                        } catch (error) {
+                            console.error("Error updating trip end:", error);
+                            // Handle error
+                        }
                     }
                 }
             ],
@@ -64,13 +101,11 @@ const ScanScreen = () => {
         if (scanned) return; // Prevent multiple scans from triggering multiple alerts
         console.log("QR Code scanned");
         setScanned(true); // Prevent re-scanning until user makes a decision
-
         // Parse the QR data
         const parsedData = JSON.parse(data);
         const { vehicleId: scannedVehicleId } = parsedData;
-        setVehicleID(scannedVehicleId); // Update vehicleId state
-
-        updateTrip(); // Show alert to start or end trip
+        console.log("vehicle id is read", scannedVehicleId);
+        updateTrip(scannedVehicleId); // Show alert to start or end trip
     };
 
     return (

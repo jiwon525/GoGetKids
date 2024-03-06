@@ -40,6 +40,10 @@ const AccountScreen = () => {
                         <LoginTitle>License:</LoginTitle>
                         <Account> {userDetails.license}</Account>
                     </AlignRow>
+                    <AlignRow>
+                        <LoginTitle>Company:</LoginTitle>
+                        <Account> {userDetails.company_name}</Account>
+                    </AlignRow>
                 </View>
             </View>
             <BottomContainer>
