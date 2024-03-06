@@ -97,5 +97,10 @@
         "name": "putTripEnd",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "changeStatusTeacher",
+        "private": false,
+        "disable_arg_logs": true
     }
 ]
