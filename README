@@ -1,4 +1,13 @@
-Need to use Expo .go 
-download on mobile phone
+This web-mobile application service is to provide safe and accurate tracking services for parents regards to their children, provided by the school.
+
+Entities:
+Students,
+Teachers,
+Parents,
+Bus Drivers
+
+
+Need to use Expo .go.
+Find 'Expo Go' on ios app store or google play and download on mobile phone.
 
 run the code and scan the qr code with Expo app 
